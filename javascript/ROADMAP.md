@@ -43,7 +43,7 @@ Each topic links to the matching MDN chapter for deeper reading.
 | 3 | Regular Expressions | [`advanced/03-regular-expressions`](./advanced/03-regular-expressions) | [Regular expressions](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_expressions) | done |
 | 4 | Proxy, Reflect & Metaprogramming | [`advanced/04-proxy-reflect-and-metaprogramming`](./advanced/04-proxy-reflect-and-metaprogramming) | [Meta programming](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Meta_programming) | done |
 | 5 | Memory Management & Performance | [`advanced/05-memory-management-and-performance`](./advanced/05-memory-management-and-performance) | [Memory management](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Memory_management) | done |
-| 6 | Resource Management (`using`/`await using`) | `advanced/06-resource-management` | [Resource management](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Resource_management) | planned |
+| 6 | Resource Management (`using`/`await using`) | [`advanced/06-resource-management`](./advanced/06-resource-management) | [Resource management](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Resource_management) | done |
 | 7 | Typed Arrays | `advanced/07-typed-arrays` | [Typed arrays](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Typed_arrays) | planned |
 | 8 | Browser APIs (DOM, Fetch, Events) | `advanced/08-browser-apis` | [Web APIs](https://developer.mozilla.org/en-US/docs/Web/API) | planned |
 | 9 | Node.js Core (fs, streams, events, modules) | `advanced/09-nodejs-core` | - | planned |
