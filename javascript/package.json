@@ -1,0 +1,10 @@
+{
+  "name": "javascript-learning",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "JavaScript learning notes, examples, and exercises",
+  "scripts": {
+    "test": "node --test"
+  }
+}
