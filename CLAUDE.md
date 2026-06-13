@@ -17,9 +17,13 @@ Each topic is a numbered folder, e.g. `fundamentals/06-functions/`, with
 exactly 4 files:
 
 - **`notes.md`** — concept explanation. Terse and direct: syntax, rules,
-  gotchas, short code snippets. No "why this matters" filler prose. Ends with
-  a "Further Reading (MDN)" section linking the matching MDN Guide chapter(s)
-  and relevant reference pages.
+  gotchas, short code snippets. No "why this matters" filler prose — but the
+  notes must be **self-contained**: include the gotchas and good practices
+  needed to use the concept well (e.g. reference vs. value, closures-in-loops,
+  guard clauses, pure functions), not just bare syntax. Ends with a
+  "Further Reading (MDN)" section linking precisely to the page(s) that cover
+  what THIS topic discusses — prefer specific reference pages over broad guide
+  chapters that include material the topic doesn't cover.
 - **`examples.js`** — runnable via `node examples.js`. Demonstrates every
   concept from `notes.md` with `console.log`. No exercises here.
 - **`exercise.js`** — 5 exported function stubs with JSDoc (params, return
@@ -40,6 +44,8 @@ implementation to check against.
 ### Writing style
 
 Short and direct. No filler words. Prefer bullet points and code over prose.
+"Terse" means cutting prose, not substance — don't drop important gotchas or
+good practices for the sake of brevity.
 
 ### Adding a new topic
 
