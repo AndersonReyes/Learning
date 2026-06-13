@@ -65,6 +65,18 @@ for (const group of groups) {
 // flat = [1, 2, 3, 4, 5]
 ```
 
+## Choosing a loop
+
+- Need the index, a custom step, or to iterate backwards → `for`
+- Iterate values of an array/string/iterable → `for...of`
+- Unknown number of iterations, condition-based → `while` / `do...while`
+- Object's own enumerable keys → `for...in` (rare — prefer
+  `Object.keys`/`Object.entries`, [Topic 08](../08-objects-and-destructuring/notes.md))
+
+A loop variable captured by a closure (e.g. a callback created inside the
+loop body) behaves differently for `var` vs `let` — see
+[Topic 03](../03-scope-hoisting-and-declarations/notes.md#closures-and-loops).
+
 ## Further Reading (MDN)
 
 - [Loops and iteration](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Loops_and_iteration)

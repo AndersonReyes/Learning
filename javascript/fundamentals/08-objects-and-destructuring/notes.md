@@ -36,7 +36,7 @@ const updated = { ...person, last: "Byron" }; // copy with one field changed
 ```
 
 Spread is shallow — nested objects/arrays are shared by reference between the
-original and the copy.
+original and the copy (see [Topic 01](../01-variables-and-data-types/notes.md#reference-vs-value)).
 
 ## Destructuring
 

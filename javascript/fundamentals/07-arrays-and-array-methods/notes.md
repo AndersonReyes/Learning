@@ -72,11 +72,28 @@ To avoid mutating, sort a copy: `[...arr].sort(...)`.
 [...new Set([1, 2, 2, 3, 1])]; // [1, 2, 3]
 ```
 
+## Copying arrays
+
+Assignment copies the reference, not the array (see
+[Topic 01](../01-variables-and-data-types/notes.md#reference-vs-value)):
+
+```js
+const a = [1, 2, 3];
+const b = a;
+b.push(4);
+a; // [1, 2, 3, 4] — same array, both names point to it
+
+const copy = [...a];     // shallow copy
+const copy2 = a.slice(); // also a shallow copy
+```
+
 ## Further Reading (MDN)
 
-- [Indexed collections](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Indexed_collections)
 - [`Array.prototype.map`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/map)
 - [`Array.prototype.filter`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/filter)
 - [`Array.prototype.reduce`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/reduce)
+- [`Array.prototype.find`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/find)
 - [`Array.prototype.sort`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/sort)
 - [`Array.prototype.slice`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/slice)
+- [`Array.prototype.flat`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/flat)
+- [`Set`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Set)

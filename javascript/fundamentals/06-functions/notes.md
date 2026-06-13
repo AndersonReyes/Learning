@@ -62,6 +62,21 @@ parameters — useful for generic helpers like `curry`:
 
 A function with no `return` (or a bare `return;`) evaluates to `undefined`.
 
+## Pure functions
+
+A pure function's output depends only on its inputs, with no side effects —
+no mutating arguments, no reading or writing outside state:
+
+```js
+const double = (x) => x * 2; // pure
+
+let total = 0;
+function addToTotal(x) { total += x; return total; } // impure — mutates `total`
+```
+
+Pure functions are easier to test and to combine — the basis for `compose`
+and `curry` in this topic's exercises.
+
 ## Further Reading (MDN)
 
 - [Functions](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Functions)

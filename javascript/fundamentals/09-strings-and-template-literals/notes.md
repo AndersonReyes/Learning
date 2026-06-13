@@ -48,6 +48,9 @@ const items = ["a", "b"];
 `Items: ${items.map((i) => `[${i}]`).join(", ")}`; // nesting -> "Items: [a], [b]"
 ```
 
+Prefer template literals over `+` concatenation once more than one value is
+involved — fewer quotes, easier to read.
+
 ## Char codes
 
 ```js
@@ -75,8 +78,8 @@ all occurrences (not just the first).
 
 ## Further Reading (MDN)
 
-- [Numbers and strings](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Numbers_and_strings)
 - [String reference](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)
 - [Template literals](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_literals)
-- [Regular expressions](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_expressions)
 - [`String.prototype.replace`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/replace)
+- [`String.prototype.split`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/split)
+- [`RegExp`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp)

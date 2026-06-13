@@ -73,9 +73,33 @@ Falsy: `false 0 -0 0n "" null undefined NaN`. Everything else — including
 - `Object.is(a, b)` distinguishes `+0`/`-0` and treats `NaN` as equal to
   itself — useful for implementing deep equality.
 
+## Reference vs. value
+
+Primitives are copied by value. Objects and arrays are copied by
+**reference** — copying the variable copies the pointer, not the contents:
+
+```js
+let a = 5;
+let b = a;
+b = 10;
+a; // 5 — unaffected
+
+const obj1 = { x: 1 };
+const obj2 = obj1;
+obj2.x = 99;
+obj1.x;        // 99 — same object
+obj1 === obj2; // true — same reference
+
+const obj3 = { x: 1 };
+obj1 === obj3; // false — different objects, even with equal contents
+```
+
+An independent copy needs a shallow spread (`{ ...obj }`,
+[Topic 08](../08-objects-and-destructuring/notes.md)) or, for nested data, a
+recursive clone (`cloneDeep` in this topic's exercises).
+
 ## Further Reading (MDN)
 
 - [Grammar and types](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Grammar_and_types)
-- [Data structures](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Data_structures)
 - [`Object.prototype.toString`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/toString)
 - [`Object.is`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/is)
