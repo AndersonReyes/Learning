@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>02. Custom Properties (CSS Variables)</title>
+    <style>
+      * { box-sizing: border-box; }
+
+      /* --- Global variables, declared on :root (the <html> element) --- */
+      :root {
+        --primary-color: #2266cc;
+        --primary-color-dark: #1a4d8f;
+        --bg: #ffffff;
+        --fg: #1a1a1a;
+        --card-bg: #f0f0f0;
+        --spacing-unit: 8px;
+        --max-width: 800px;
+      }
+
+      /* --- Auto dark mode based on OS preference (no JS) --- */
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --bg: #1a1a1a;
+          --fg: #eee;
+          --card-bg: #2a2a2a;
+          --primary-color: #5b9dff;
+          --primary-color-dark: #3a7ad9;
+        }
+      }
+
+      /* --- Manual theme override: .theme-dark forces dark regardless of OS --- */
+      .theme-dark {
+        --bg: #1a1a1a;
+        --fg: #eee;
+        --card-bg: #2a2a2a;
+        --primary-color: #5b9dff;
+        --primary-color-dark: #3a7ad9;
+      }
+
+      body {
+        font-family: sans-serif;
+        margin: 0;
+        padding: calc(var(--spacing-unit) * 3);
+        background-color: var(--bg);
+        color: var(--fg);
+        max-width: var(--max-width);
+      }
+
+      h1 {
+        color: var(--primary-color);
+      }
+
+      .card {
+        background-color: var(--card-bg);
+        border-radius: 8px;
+        padding: calc(var(--spacing-unit) * 2);
+        margin-bottom: calc(var(--spacing-unit) * 2);
+      }
+
+      .button {
+        background-color: var(--primary-color);
+        color: white;
+        border: none;
+        border-radius: 4px;
+        padding: calc(var(--spacing-unit) * 1.5) calc(var(--spacing-unit) * 3);
+        font-size: 1rem;
+        cursor: pointer;
+        transition: background-color 0.2s ease-in-out;
+      }
+      .button:hover {
+        background-color: var(--primary-color-dark);
+      }
+
+      /* fallback value demo: --undefined-var was never declared, so the
+         fallback "2px dashed gray" is used */
+      .fallback-demo {
+        border: var(--undefined-var, 2px dashed gray);
+        padding: var(--spacing-unit);
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Custom Properties (CSS Variables)</h1>
+    <p>
+      Colors and spacing here come from <code>--primary-color</code>,
+      <code>--bg</code>, <code>--fg</code>, <code>--spacing-unit</code>, etc.,
+      declared once on <code>:root</code> and consumed via
+      <code>var(--name)</code>.
+    </p>
+
+    <div class="card">
+      <p>
+        This page also responds to your OS's dark mode setting via
+        <code>@media (prefers-color-scheme: dark)</code>, which redeclares
+        the SAME variable names with dark values — every rule using
+        <code>var(--bg)</code>/<code>var(--fg)</code>/etc. updates
+        automatically, with no duplicated rules.
+      </p>
+      <button class="button">Themed button</button>
+    </div>
+
+    <div class="theme-dark">
+      <div class="card">
+        <p>
+          This box has class <code>theme-dark</code>, which re-declares the
+          same variables to dark values in THIS SCOPE only — demonstrating
+          that custom properties cascade/inherit and can be overridden per
+          subtree, independent of the OS preference.
+        </p>
+        <button class="button">Themed button (forced dark)</button>
+      </div>
+    </div>
+
+    <div class="fallback-demo">
+      Box using <code>var(--undefined-var, 2px dashed gray)</code> — the
+      variable was never declared, so the fallback value is used.
+    </div>
+  </body>
+</html>

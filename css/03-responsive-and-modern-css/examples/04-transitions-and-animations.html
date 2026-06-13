@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>04. Transitions and Animations</title>
+    <style>
+      * { box-sizing: border-box; }
+      body {
+        font-family: sans-serif;
+        padding: 16px;
+        line-height: 1.5;
+      }
+
+      /* --- Transition: animates property changes between states --- */
+      .button {
+        background-color: #2266cc;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        padding: 12px 24px;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: background-color 0.2s ease-in-out, transform 0.2s ease-out;
+      }
+      .button:hover {
+        background-color: #1a4d8f;
+        transform: translateY(-2px);
+      }
+      .button:active {
+        transform: translateY(0);
+      }
+
+      /* --- Card hover transition: multiple properties --- */
+      .card {
+        display: inline-block;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        padding: 16px;
+        margin: 16px 0;
+        box-shadow: 0 1px 3px rgb(0 0 0 / 0.1);
+        transition: box-shadow 0.3s ease, transform 0.3s ease;
+      }
+      .card:hover {
+        box-shadow: 0 8px 16px rgb(0 0 0 / 0.15);
+        transform: translateY(-4px);
+      }
+
+      /* --- @keyframes: spin animation --- */
+      @keyframes spin {
+        from { transform: rotate(0deg); }
+        to   { transform: rotate(360deg); }
+      }
+      .spinner {
+        display: inline-block;
+        width: 32px;
+        height: 32px;
+        border: 4px solid #cfe2ff;
+        border-top-color: #2266cc;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+        vertical-align: middle;
+      }
+
+      /* --- @keyframes: pulse animation --- */
+      @keyframes pulse {
+        0%   { opacity: 1; }
+        50%  { opacity: 0.4; }
+        100% { opacity: 1; }
+      }
+      .pulse-dot {
+        display: inline-block;
+        width: 16px;
+        height: 16px;
+        background-color: #2266cc;
+        border-radius: 50%;
+        animation: pulse 1.5s ease-in-out infinite;
+        vertical-align: middle;
+      }
+
+      /* --- Respect reduced-motion preference --- */
+      @media (prefers-reduced-motion: reduce) {
+        .spinner,
+        .pulse-dot,
+        .button,
+        .card {
+          animation-duration: 0.01ms !important;
+          animation-iteration-count: 1 !important;
+          transition-duration: 0.01ms !important;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Transitions and Animations</h1>
+
+    <h2>Transition on hover/active</h2>
+    <p>Hover (and click) the button — background color and a slight lift animate over 0.2s.</p>
+    <button class="button">Hover me</button>
+
+    <h2>Card hover transition</h2>
+    <div class="card">
+      Hover this card — box-shadow and position animate over 0.3s.
+    </div>
+
+    <h2>@keyframes: spin (infinite loop)</h2>
+    <div class="spinner"></div> <span>Loading...</span>
+
+    <h2>@keyframes: pulse (infinite loop)</h2>
+    <div class="pulse-dot"></div> <span>Live indicator</span>
+
+    <p>
+      All animations/transitions above are disabled (reduced to near-zero
+      duration) if the OS "reduce motion" accessibility setting is enabled,
+      via <code>@media (prefers-reduced-motion: reduce)</code>.
+    </p>
+  </body>
+</html>

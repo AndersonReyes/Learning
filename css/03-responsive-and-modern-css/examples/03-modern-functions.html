@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>03. clamp(), min(), max(), aspect-ratio</title>
+    <style>
+      * { box-sizing: border-box; }
+      body {
+        font-family: sans-serif;
+        margin: 0;
+        padding: 16px;
+      }
+
+      /* clamp(MIN, PREFERRED, MAX) - fluid font size between bounds,
+         no media query needed. Resize the window to see it scale smoothly
+         between the min (1.5rem) and max (3rem). */
+      .fluid-heading {
+        font-size: clamp(1.5rem, 4vw + 1rem, 3rem);
+        margin: 0;
+      }
+
+      /* min(): never wider than 600px, but shrinks on narrow viewports
+         (100% - 32px leaves room for body padding) */
+      .constrained-box {
+        width: min(100% - 32px, 600px);
+        background-color: #e0ecff;
+        border: 1px solid #2266cc;
+        border-radius: 8px;
+        padding: 16px;
+        margin: 16px 0;
+      }
+
+      /* max(): sidebar is at least 150px, but grows with viewport width */
+      .demo-layout {
+        display: flex;
+        gap: 12px;
+      }
+      .demo-sidebar {
+        width: max(150px, 20vw);
+        background-color: #f0f0f0;
+        padding: 12px;
+        flex-shrink: 0;
+      }
+      .demo-main {
+        flex: 1;
+        background-color: #f9f9f9;
+        padding: 12px;
+      }
+
+      /* aspect-ratio: reserves space before content/image loads */
+      .video-placeholder {
+        aspect-ratio: 16 / 9;
+        width: 100%;
+        max-width: 480px;
+        background-color: #333;
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 8px;
+        margin: 16px 0;
+      }
+
+      .square-placeholder {
+        aspect-ratio: 1 / 1;
+        width: 120px;
+        background-color: #2266cc;
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 8px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1 class="fluid-heading">Fluid heading via clamp()</h1>
+    <p>
+      <code>font-size: clamp(1.5rem, 4vw + 1rem, 3rem)</code> — stays at
+      1.5rem on narrow viewports, scales with viewport width in the middle,
+      and caps at 3rem on wide viewports.
+    </p>
+
+    <div class="constrained-box">
+      <code>width: min(100% - 32px, 600px)</code> — never exceeds 600px, but
+      shrinks to fit narrow viewports (minus 32px for padding).
+    </div>
+
+    <h2>max() for a sidebar that grows with viewport</h2>
+    <div class="demo-layout">
+      <div class="demo-sidebar">
+        <code>width: max(150px, 20vw)</code> — at least 150px, but grows past
+        that on wide viewports.
+      </div>
+      <div class="demo-main">Main content fills the rest.</div>
+    </div>
+
+    <h2>aspect-ratio</h2>
+    <div class="video-placeholder">16 / 9 (video embed placeholder)</div>
+    <div class="square-placeholder">1 / 1</div>
+  </body>
+</html>

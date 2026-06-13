@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>06. Semantic Layout</title>
+  </head>
+  <body>
+    <header>
+      <h1>My Blog</h1>
+      <nav>
+        <ul>
+          <li><a href="#article-1">Article 1</a></li>
+          <li><a href="#article-2">Article 2</a></li>
+          <li><a href="#about">About</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <main>
+      <article id="article-1">
+        <h2>Understanding Semantic HTML</h2>
+        <p>
+          This <code>&lt;article&gt;</code> is self-contained, independently
+          distributable content — like a blog post or news story.
+        </p>
+        <section>
+          <h3>Why it matters</h3>
+          <p>
+            A <code>&lt;section&gt;</code> groups related content, usually
+            under its own heading. Screen readers and search engines use
+            these elements to understand the page's structure.
+          </p>
+        </section>
+      </article>
+
+      <article id="article-2">
+        <h2>Asides and Pull Quotes</h2>
+        <p>
+          The main text of the second article continues here, while related
+          but tangential content lives in an
+          <code>&lt;aside&gt;</code>.
+        </p>
+        <aside>
+          <p>
+            <strong>Tip:</strong> An <code>&lt;aside&gt;</code> can be a
+            sidebar, pull quote, or related-links box — content that's
+            separate from the main flow.
+          </p>
+        </aside>
+      </article>
+
+      <section id="about">
+        <h2>About this page</h2>
+        <p>
+          This page demonstrates how <code>&lt;header&gt;</code>,
+          <code>&lt;nav&gt;</code>, <code>&lt;main&gt;</code>,
+          <code>&lt;article&gt;</code>, <code>&lt;section&gt;</code>,
+          <code>&lt;aside&gt;</code>, and <code>&lt;footer&gt;</code> fit
+          together. There is exactly one <code>&lt;main&gt;</code> per page,
+          containing the page's unique content.
+        </p>
+      </section>
+    </main>
+
+    <footer>
+      <p>&copy; 2026 My Blog. All rights reserved.</p>
+    </footer>
+  </body>
+</html>

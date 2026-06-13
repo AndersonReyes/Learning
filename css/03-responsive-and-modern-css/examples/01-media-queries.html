@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>01. Media Queries (Mobile-First)</title>
+    <style>
+      * { box-sizing: border-box; }
+      body {
+        font-family: sans-serif;
+        margin: 0;
+        padding: 16px;
+      }
+
+      h1 { font-size: 1.5rem; }
+
+      /* --- Mobile-first base styles (apply to ALL widths) --- */
+      .layout {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+      .nav-links {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+      .card {
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        padding: 12px;
+        background-color: #f0f0f0;
+      }
+      .sidebar {
+        order: 2; /* sidebar appears AFTER main content on mobile */
+      }
+      .main {
+        order: 1;
+      }
+
+      /* --- Tablet and up (>= 768px): two-column layout --- */
+      @media (min-width: 768px) {
+        h1 { font-size: 2rem; }
+
+        .layout {
+          flex-direction: row;
+        }
+        .sidebar {
+          order: 0; /* sidebar moves back to first on wider screens */
+          flex: 0 0 200px;
+        }
+        .main {
+          flex: 1;
+        }
+        .nav-links {
+          flex-direction: row;
+        }
+      }
+
+      /* --- Desktop (>= 1200px): constrain max width, center page --- */
+      @media (min-width: 1200px) {
+        body {
+          max-width: 1140px;
+          margin: 0 auto;
+          padding: 32px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Media Queries (Mobile-First)</h1>
+    <p>
+      Resize the browser window. Below 768px: stacked single column, nav
+      links stack vertically, sidebar appears below main content. At 768px+:
+      two-column row layout with a fixed sidebar, nav links in a row. At
+      1200px+: the page is capped at 1140px and centered.
+    </p>
+
+    <nav class="nav-links">
+      <a href="#">Home</a>
+      <a href="#">About</a>
+      <a href="#">Contact</a>
+    </nav>
+
+    <div class="layout">
+      <aside class="sidebar card">
+        <h2>Sidebar</h2>
+        <p>Fixed 200px width on tablet+, full width and reordered after main on mobile.</p>
+      </aside>
+      <main class="main card">
+        <h2>Main content</h2>
+        <p>Fills remaining space on tablet+, full width and first on mobile.</p>
+      </main>
+    </div>
+  </body>
+</html>

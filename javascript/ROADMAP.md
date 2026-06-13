@@ -18,34 +18,73 @@ Each topic links to the matching MDN chapter for deeper reading.
 | 8 | Objects & Destructuring | [`fundamentals/08-objects-and-destructuring`](./fundamentals/08-objects-and-destructuring) | [Working with objects](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Working_with_objects), [Grammar and types (destructuring)](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Grammar_and_types#destructuring) |
 | 9 | Strings & Template Literals | [`fundamentals/09-strings-and-template-literals`](./fundamentals/09-strings-and-template-literals) | [Numbers and strings](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Numbers_and_strings) |
 
-## Intermediate (planned)
+## Intermediate
 
-| Topic | MDN reference |
-|-------|----------------|
-| Closures & Lexical Scope | [Closures](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Closures) |
-| `this` Keyword & Function Context | [`this`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/this) |
-| Prototypes, Inheritance & Classes (OOP in JS) | [Inheritance and the prototype chain](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Inheritance_and_the_prototype_chain), [Using classes](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Using_classes) |
-| Higher-Order Functions & Functional Programming | [Functions](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Functions), [Indexed collections](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Indexed_collections) |
-| Error Handling (`try/catch/finally`, custom errors) | [Control flow and error handling](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Control_flow_and_error_handling#error_handling) |
-| Promises & Async/Await | [Using promises](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Using_promises) |
-| ES Modules (`import`/`export`) in depth | [Modules](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Modules) |
-| Iterators, Generators & `Symbol.iterator` | [Iterators and generators](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Iterators_and_generators) |
-| `Map`, `Set` & Keyed Collections | [Keyed collections](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Keyed_collections) |
-| Enumerability & Property Descriptors | [Enumerability and ownership of properties](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Enumerability_and_ownership_of_properties) |
-| Dates & Internationalization | [Representing dates and times](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Representing_dates_times), [Internationalization](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Internationalization) |
+| # | Topic | Folder | MDN reference | Status |
+|---|-------|--------|----------------|--------|
+| 1 | Closures & Lexical Scope | [`intermediate/01-closures-and-lexical-scope`](./intermediate/01-closures-and-lexical-scope) | [Closures](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Closures) | done |
+| 2 | `this` Keyword & Function Context | [`intermediate/02-this-and-function-context`](./intermediate/02-this-and-function-context) | [`this`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/this) | done |
+| 3 | Prototypes, Inheritance & Classes (OOP in JS) | [`intermediate/03-prototypes-inheritance-and-classes`](./intermediate/03-prototypes-inheritance-and-classes) | [Inheritance and the prototype chain](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Inheritance_and_the_prototype_chain), [Using classes](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Using_classes) | done |
+| 4 | Higher-Order Functions & Functional Programming | [`intermediate/04-higher-order-functions-and-fp`](./intermediate/04-higher-order-functions-and-fp) | [Functions](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Functions), [Indexed collections](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Indexed_collections) | done |
+| 5 | Error Handling (`try/catch/finally`, custom errors) | [`intermediate/05-error-handling`](./intermediate/05-error-handling) | [Control flow and error handling](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Control_flow_and_error_handling#error_handling) | done |
+| 6 | Promises & Async/Await | [`intermediate/06-promises-and-async-await`](./intermediate/06-promises-and-async-await) | [Using promises](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Using_promises) | done |
+| 7 | ES Modules (`import`/`export`) in depth | [`intermediate/07-es-modules-in-depth`](./intermediate/07-es-modules-in-depth) | [Modules](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Modules) | done |
+| 8 | Iterators, Generators & `Symbol.iterator` | [`intermediate/08-iterators-generators-and-symbol-iterator`](./intermediate/08-iterators-generators-and-symbol-iterator) | [Iterators and generators](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Iterators_and_generators) | done |
+| 9 | `Map`, `Set` & Keyed Collections | [`intermediate/09-map-set-and-keyed-collections`](./intermediate/09-map-set-and-keyed-collections) | [Keyed collections](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Keyed_collections) | done |
+| 10 | Enumerability & Property Descriptors | [`intermediate/10-enumerability-and-property-descriptors`](./intermediate/10-enumerability-and-property-descriptors) | [Enumerability and ownership of properties](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Enumerability_and_ownership_of_properties) | done |
+| 11 | Dates & Internationalization | [`intermediate/11-dates-and-internationalization`](./intermediate/11-dates-and-internationalization) | [Representing dates and times](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Representing_dates_times), [Internationalization](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Internationalization) | done |
 
-## Advanced (planned)
+## Advanced
 
-| Topic | MDN reference |
-|-------|----------------|
-| Event Loop, Microtasks & Concurrency Model | [Event loop](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Event_loop) |
-| Design Patterns in JavaScript | - |
-| Regular Expressions | [Regular expressions](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_expressions) |
-| Proxy, Reflect & Metaprogramming | [Meta programming](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Meta_programming) |
-| Memory Management & Performance | [Memory management](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Memory_management) |
-| Resource Management (`using`/`await using`) | [Resource management](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Resource_management) |
-| Typed Arrays | [Typed arrays](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Typed_arrays) |
-| Browser APIs (DOM, Fetch, Events) | [Web APIs](https://developer.mozilla.org/en-US/docs/Web/API) |
-| Node.js Core (fs, streams, events, modules) | - |
-| Testing & Tooling (bundlers, linters, CI) | - |
-| TypeScript Basics (transition path) | - |
+| # | Topic | Folder | MDN reference | Status |
+|---|-------|--------|----------------|--------|
+| 1 | Event Loop, Microtasks & Concurrency Model | [`advanced/01-event-loop-and-concurrency`](./advanced/01-event-loop-and-concurrency) | [Event loop](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Event_loop) | done |
+| 2 | Design Patterns in JavaScript | [`advanced/02-design-patterns`](./advanced/02-design-patterns) | - | done |
+| 3 | Regular Expressions | [`advanced/03-regular-expressions`](./advanced/03-regular-expressions) | [Regular expressions](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_expressions) | done |
+| 4 | Proxy, Reflect & Metaprogramming | [`advanced/04-proxy-reflect-and-metaprogramming`](./advanced/04-proxy-reflect-and-metaprogramming) | [Meta programming](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Meta_programming) | done |
+| 5 | Memory Management & Performance | [`advanced/05-memory-management-and-performance`](./advanced/05-memory-management-and-performance) | [Memory management](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Memory_management) | done |
+| 6 | Resource Management (`using`/`await using`) | [`advanced/06-resource-management`](./advanced/06-resource-management) | [Resource management](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Resource_management) | done |
+| 7 | Typed Arrays | [`advanced/07-typed-arrays`](./advanced/07-typed-arrays) | [Typed arrays](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Typed_arrays) | done |
+| 8 | Browser APIs (DOM, Fetch, Events) | [`advanced/08-browser-apis`](./advanced/08-browser-apis) | [Web APIs](https://developer.mozilla.org/en-US/docs/Web/API) | done |
+| 9 | Node.js Core (fs, streams, events, modules) | [`advanced/09-nodejs-core`](./advanced/09-nodejs-core) | - | done |
+| 10 | Testing & Tooling (bundlers, linters, CI) | [`advanced/10-testing-and-tooling`](./advanced/10-testing-and-tooling) | - | done |
+| 11 | TypeScript Basics (transition path) | [`advanced/11-typescript-basics`](./advanced/11-typescript-basics) | - | done |
+
+Folder cells become links once a topic is built out (status changes to `done`),
+matching the Fundamentals table above.
+
+## Adapted topics — exercise scope notes
+
+Most topics follow the standard pattern (5 hard, pure-Node-testable exercise
+stubs). A few topics' textbook subject matter doesn't map directly onto
+`node:test`-able functions; their `exercise.js` scope is intentionally
+narrowed to a testable subset while `notes.md` still covers the full topic
+conceptually:
+
+- **Intermediate 7 (ES Modules in depth)** — exercises simulate
+  module-pattern concepts (lazy exports, namespace merging, plugin registries)
+  as plain functions/objects, since real `import`/`export` mechanics are
+  already exercised by every `exercise.test.js` importing `exercise.js`.
+- **Advanced 5 (Memory Management & Performance)** — exercises focus on
+  observable patterns (LRU caches, object pools, `WeakRef`-based caches,
+  bounded memoization) rather than GC internals, which aren't deterministically
+  testable.
+- **Advanced 6 (Resource Management)** — `using`/`await using` syntax is
+  **not supported in Node 22** (verified). `notes.md` documents the syntax
+  conceptually; `examples.js`/`exercise.js` use the manual
+  `Symbol.dispose`/`Symbol.asyncDispose` + try/finally pattern it desugars to.
+- **Advanced 8 (Browser APIs)** — no DOM without npm deps. Scope narrows to
+  Web APIs that ARE global in Node 22: `EventTarget`/`CustomEvent`, `URL`/
+  `URLSearchParams`, `fetch` (tested via injected fetch functions, no real
+  network), `structuredClone`. `notes.md` covers DOM conceptually and
+  cross-links the `html/`/`css/` tracks for visual DOM/CSS work.
+- **Advanced 10 (Testing & Tooling)** — exercises build small pieces of a
+  testing framework (custom assertions, a mini test runner, a `mockFn`)
+  rather than testing bundlers/linters/CI directly. `notes.md` covers
+  ESLint/bundlers/CI conceptually with links to their own docs (MDN doesn't
+  cover these — noted as an exception in that topic's notes).
+- **Advanced 11 (TypeScript Basics)** — `exercise.js`/`exercise.test.js` stay
+  plain `.js` (no TS toolchain dependency). Exercises implement
+  runtime type-guards and discriminated-union patterns that mirror what
+  TypeScript checks statically; `notes.md` shows the equivalent TS syntax in
+  snippets (not run).

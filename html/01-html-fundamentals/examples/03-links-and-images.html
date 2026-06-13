@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>03. Links and Images</title>
+  </head>
+  <body>
+    <h1>Links and Images</h1>
+
+    <h2>Link types</h2>
+    <ul>
+      <li>
+        <a href="https://developer.mozilla.org">Absolute URL</a> — full
+        address including protocol and domain.
+      </li>
+      <li>
+        <a href="/01-html-fundamentals/">Root-relative URL</a> — starts from
+        the domain root (a leading <code>/</code>).
+      </li>
+      <li>
+        <a href="01-document-structure.html">Relative URL</a> — resolved
+        relative to this file's directory.
+      </li>
+      <li>
+        <a href="#fig1">Same-page anchor</a> — jumps to the
+        <code>id="fig1"</code> element below.
+      </li>
+      <li>
+        <a
+          href="https://developer.mozilla.org"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Opens in a new tab
+        </a>
+        — paired with <code>rel="noopener noreferrer"</code> so the new page
+        can't access <code>window.opener</code>.
+      </li>
+    </ul>
+
+    <h2>Images</h2>
+    <p>
+      Every <code>&lt;img&gt;</code> needs an <code>alt</code> attribute
+      describing the image for screen readers and for when the image fails to
+      load. <code>width</code>/<code>height</code> let the browser reserve
+      space before the image loads, preventing layout shift.
+    </p>
+    <img
+      src="https://via.placeholder.com/400x300"
+      alt="Placeholder image, 400 by 300 pixels"
+      width="400"
+      height="300"
+    />
+
+    <h2>Figure with caption</h2>
+    <figure id="fig1">
+      <img
+        src="https://via.placeholder.com/300x200"
+        alt="Placeholder chart representing quarterly revenue"
+        width="300"
+        height="200"
+      />
+      <figcaption>Fig 1. Revenue by quarter (placeholder image)</figcaption>
+    </figure>
+
+    <h2>Decorative image</h2>
+    <p>
+      A purely decorative image (no informational content) uses an empty
+      <code>alt=""</code> so assistive tech skips it:
+    </p>
+    <img
+      src="https://via.placeholder.com/50"
+      alt=""
+      width="50"
+      height="50"
+    />
+  </body>
+</html>

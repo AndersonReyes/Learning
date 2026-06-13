@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>02. Text and Semantic Elements</title>
+  </head>
+  <body>
+    <h1>Text and Semantic Elements</h1>
+
+    <h2>Headings (h1-h6)</h2>
+    <p>
+      Headings describe the document's outline, not font size. Use them in
+      order (don't skip from <code>&lt;h1&gt;</code> to
+      <code>&lt;h3&gt;</code>) and have only one <code>&lt;h1&gt;</code> per
+      page.
+    </p>
+    <h3>This is an h3</h3>
+    <h4>This is an h4</h4>
+    <h5>This is an h5</h5>
+    <h6>This is an h6</h6>
+
+    <h2>Paragraphs and inline emphasis</h2>
+    <p>
+      This is a normal paragraph. It contains
+      <strong>strong text (bold + semantically important)</strong> and
+      <em>emphasized text (italic + stressed meaning)</em>.
+    </p>
+    <p>
+      Compare with <b>bold (b)</b> and <i>italic (i)</i> — these apply the
+      same visual style but carry no semantic meaning. Prefer
+      <code>&lt;strong&gt;</code>/<code>&lt;em&gt;</code> when the emphasis
+      matters to the meaning of the sentence.
+    </p>
+
+    <h2>Line breaks and thematic breaks</h2>
+    <p>
+      First line of a haiku<br />
+      Second line continues here<br />
+      Third line ends it now
+    </p>
+    <hr />
+    <p>
+      The <code>&lt;hr&gt;</code> above marks a thematic break between
+      unrelated sections of content.
+    </p>
+
+    <h2>Blockquote</h2>
+    <blockquote cite="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/blockquote">
+      <p>
+        The HTML &lt;blockquote&gt; Element indicates that the enclosed text
+        is an extended quotation.
+      </p>
+    </blockquote>
+
+    <h2>Code and preformatted text</h2>
+    <p>
+      Use <code>&lt;code&gt;</code> for short inline code snippets like
+      <code>const x = 1;</code>.
+    </p>
+    <pre>
+function greet(name) {
+  return `Hello, ${name}!`;
+}
+    </pre>
+    <p>
+      <code>&lt;pre&gt;</code> preserves whitespace and line breaks exactly as
+      written — useful for code blocks or ASCII art.
+    </p>
+  </body>
+</html>

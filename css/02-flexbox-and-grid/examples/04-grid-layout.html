@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>04. Grid Layout — Page Template + Responsive Cards</title>
+    <style>
+      * { box-sizing: border-box; }
+      body {
+        font-family: sans-serif;
+        margin: 0;
+        color: #1a1a1a;
+      }
+
+      /* --- Page layout via grid-template-areas --- */
+      .page {
+        display: grid;
+        grid-template-columns: 200px 1fr;
+        grid-template-rows: auto 1fr auto;
+        grid-template-areas:
+          "sidebar header"
+          "sidebar main"
+          "sidebar footer";
+        min-height: 100vh;
+        gap: 1px;
+        background-color: #ddd; /* shows as gridlines via the gaps */
+      }
+      .page > * {
+        background-color: white;
+        padding: 16px;
+      }
+      .header  { grid-area: header; background-color: #2266cc; color: white; }
+      .sidebar { grid-area: sidebar; background-color: #f0f0f0; }
+      .main    { grid-area: main; }
+      .footer  { grid-area: footer; text-align: center; color: #666; }
+
+      /* --- Responsive card grid: auto-fit + minmax --- */
+      .cards {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+        gap: 12px;
+        margin-top: 12px;
+      }
+      .card {
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        padding: 12px;
+        background-color: #e0ecff;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="page">
+      <header class="header">
+        <h1>Site Header</h1>
+      </header>
+      <aside class="sidebar">
+        <h2>Sidebar</h2>
+        <p>Fixed 200px column, defined once via <code>grid-template-columns: 200px 1fr</code>.</p>
+      </aside>
+      <main class="main">
+        <h2>Main content</h2>
+        <p>
+          Layout is defined with named areas:
+        </p>
+        <pre>grid-template-areas:
+  "sidebar header"
+  "sidebar main"
+  "sidebar footer";</pre>
+
+        <h3>Responsive card grid</h3>
+        <p>
+          <code>grid-template-columns: repeat(auto-fit, minmax(180px, 1fr))</code>
+          — resize the browser window to see the column count change without
+          any media queries. Each card is at least 180px wide and grows to
+          fill leftover space.
+        </p>
+        <div class="cards">
+          <div class="card">Card 1</div>
+          <div class="card">Card 2</div>
+          <div class="card">Card 3</div>
+          <div class="card">Card 4</div>
+          <div class="card">Card 5</div>
+        </div>
+      </main>
+      <footer class="footer">
+        <p>Site Footer</p>
+      </footer>
+    </div>
+  </body>
+</html>
