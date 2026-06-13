@@ -30,7 +30,7 @@ fewer new language features and more standard-library/networking depth.
 | 11 | `encoding/json` + JSON REST/RPC API Over the Network | [`fundamentals/11-json-rest-rpc-api`](./fundamentals/11-json-rest-rpc-api) | [`encoding/json`](https://pkg.go.dev/encoding/json) — [RFC 8259 (JSON)](https://www.rfc-editor.org/rfc/rfc8259) |
 | 12 | DNS Protocol + Minimal DNS Resolver Over UDP | [`fundamentals/12-dns-protocol-and-resolver`](./fundamentals/12-dns-protocol-and-resolver) | [`net`](https://pkg.go.dev/net), `encoding/binary` — [RFC 1035 (DNS)](https://www.rfc-editor.org/rfc/rfc1035) |
 
-## Intermediate (6/7 built — in progress)
+## Intermediate (7/7 built)
 
 | # | Topic (Go + Networking) | Folder | References |
 |---|--------------------------|--------|------------|
@@ -40,7 +40,7 @@ fewer new language features and more standard-library/networking depth.
 | 4 | Reverse Proxy / Load Balancer (`net/http/httputil`) | [`intermediate/04-reverse-proxy-and-load-balancer`](./intermediate/04-reverse-proxy-and-load-balancer) | [`net/http/httputil`](https://pkg.go.dev/net/http/httputil) |
 | 5 | Testing in Go (table-driven tests, `httptest`, fuzzing) + Protocol Parser Test Suites | [`intermediate/05-testing-fuzzing-and-protocol-parsers`](./intermediate/05-testing-fuzzing-and-protocol-parsers) | [`testing`](https://pkg.go.dev/testing), [`net/http/httptest`](https://pkg.go.dev/net/http/httptest) |
 | 6 | `container/heap` + Routing Algorithms (Dijkstra/Bellman-Ford) & Simulating OSPF/BGP Path Selection | [`intermediate/06-routing-algorithms-and-path-selection`](./intermediate/06-routing-algorithms-and-path-selection) | [`container/heap`](https://pkg.go.dev/container/heap) — [RFC 2328 (OSPF)](https://www.rfc-editor.org/rfc/rfc2328), [RFC 2453 (RIP)](https://www.rfc-editor.org/rfc/rfc2453), [RFC 4271 (BGP)](https://www.rfc-editor.org/rfc/rfc4271) |
-| 7 | Congestion Control + Simulating TCP Reno/CUBIC Window Growth | planned | [RFC 5681 (TCP Congestion Control)](https://www.rfc-editor.org/rfc/rfc5681), [RFC 8312 (CUBIC)](https://www.rfc-editor.org/rfc/rfc8312) |
+| 7 | The `math` Package + Simulating TCP Reno/CUBIC Congestion-Window Growth | [`intermediate/07-congestion-control-and-window-growth`](./intermediate/07-congestion-control-and-window-growth) | [`math`](https://pkg.go.dev/math) — [RFC 5681 (TCP Congestion Control)](https://www.rfc-editor.org/rfc/rfc5681), [RFC 8312 (CUBIC)](https://www.rfc-editor.org/rfc/rfc8312) |
 
 ## Advanced (planned)
 
