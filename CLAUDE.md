@@ -2,10 +2,11 @@
 
 This repo holds self-study tracks. Currently: `javascript/` (fundamentals
 done; intermediate/advanced in progress — see `javascript/ROADMAP.md` status
-column), `html/` and `css/` (notes + viewable examples, no exercises). Future
-language tracks should follow the same top-level pattern: a dedicated
-`<language>/` directory with its own README, ROADMAP, package manifest (if
-runnable), and numbered topic folders.
+column), `go/` (fundamentals/intermediate/advanced fully built — taught
+through computer networking, see `go/ROADMAP.md`), `html/` and `css/` (notes
++ viewable examples, no exercises). Future language tracks should follow the
+same top-level pattern: a dedicated `<language>/` directory with its own
+README, ROADMAP, package manifest (if runnable), and numbered topic folders.
 
 ## JavaScript track (`javascript/`)
 
@@ -85,6 +86,66 @@ good practices for the sake of brevity.
 `javascript/package.json`'s test script is `node --test` (no path argument —
 `node --test fundamentals` does NOT recurse in Node 22; omitting the path
 gives recursive `**/*.test.js` discovery from `javascript/`).
+
+## Go track (`go/`)
+
+Full curriculum lives in `go/ROADMAP.md` (fundamentals, intermediate, and
+advanced all fully built). Unlike the JS track, **every topic pairs a Go
+language concept with a networking concept** — Go is the implementation
+language for a computer-networking curriculum, basics through advanced. With
+Advanced complete, the roadmap's "Capstones" section lists follow-on
+projects (a network monitoring tool, a BitTorrent client, and a future
+`rust/` track building a TCP/IP stack from scratch, CS144/`smoltcp`-style).
+
+### Per-topic structure
+
+Each topic is a numbered folder, e.g.
+`fundamentals/01-go-basics-and-ip-addressing/`, with:
+
+- **`notes.md`** — concept explanation covering BOTH the Go concept(s) and
+  the networking concept(s) for the topic. Same terse style as the JS track:
+  syntax, rules, gotchas, short code snippets, self-contained. Ends with a
+  "Further Reading" section linking go.dev (Tour of Go / Effective Go /
+  pkg.go.dev) and the relevant RFC(s).
+- **`examples/main.go`** — `package main`, runnable via
+  `go run ./fundamentals/NN-topic/examples`. Demonstrates the concepts from
+  `notes.md` with `fmt.Println`/`fmt.Printf`, using illustrative examples
+  that are deliberately NOT the exercise problems (keeps exercises unspoiled).
+- **`exercise.go`** — `package <topicname>` (short, lowercase, e.g. `ipaddr`).
+  5 exported function stubs with Go doc comments (signature, behavior,
+  example I/O). Stub bodies return zero values / `errors.New("not
+  implemented")` — NOT `panic()` (a panic during a test re-panics after
+  `testing` recovers it, crashing the whole package's test binary and
+  preventing other tests from reporting).
+- **`exercise_test.go`** — `package <topicname>` (internal test package),
+  table-driven tests using `testing`. This IS the spec/answer key — no
+  separate solution files.
+
+### Exercise difficulty
+
+Same bar as JS: **hard, challenging algorithmic problems**, hand-verified
+before writing the test file — verify by temporarily implementing a reference
+solution in `exercise.go`, running `go test`, confirming all tests pass, then
+reverting to stubs.
+
+### Adding a new topic
+
+1. Pick the next topic from `go/ROADMAP.md` (fundamentals → intermediate →
+   advanced order), noting its Go + networking references.
+2. Write, in this order: `notes.md` → `exercise.go` → `exercise_test.go` →
+   `examples/main.go`.
+3. Verify:
+   - `go vet ./...` from `go/` passes.
+   - `go run ./fundamentals/NN-topic/examples` runs with no errors.
+   - `go test ./fundamentals/NN-topic/...` — ALL tests FAIL (stubs return
+     "not implemented"). This is the expected starting state for a learner.
+   - `go test ./...` from `go/` picks up the new topic's tests.
+4. Update `go/ROADMAP.md` to mark the topic as built (folder link).
+
+### go.mod
+
+Module path `github.com/andersonreyes/learning/go`, `go 1.24`. Test command
+`go test ./...` from `go/` (recursive by default, unlike `node --test`).
 
 ## HTML track (`html/`)
 

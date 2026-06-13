@@ -28,6 +28,11 @@ did the writing.
   and test-driven exercises. See [`javascript/README.md`](./javascript/README.md)
   to get started and [`javascript/ROADMAP.md`](./javascript/ROADMAP.md) for the
   full curriculum.
+- [`go/`](./go) — Go track, taught through computer networking: notes,
+  runnable examples, and test-driven exercises. See [`go/README.md`](./go/README.md)
+  to get started and [`go/ROADMAP.md`](./go/ROADMAP.md) for the full
+  curriculum (with capstone projects roadmapped once the core curriculum is
+  done).
 - [`html/`](./html) — HTML track: notes and viewable examples (open
   `.html` files directly in a browser). See [`html/README.md`](./html/README.md).
 - [`css/`](./css) — CSS track: notes and viewable examples (open `.html`
