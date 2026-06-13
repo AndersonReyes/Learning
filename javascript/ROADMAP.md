@@ -31,8 +31,8 @@ Each topic links to the matching MDN chapter for deeper reading.
 | 7 | ES Modules (`import`/`export`) in depth | [`intermediate/07-es-modules-in-depth`](./intermediate/07-es-modules-in-depth) | [Modules](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Modules) | done |
 | 8 | Iterators, Generators & `Symbol.iterator` | [`intermediate/08-iterators-generators-and-symbol-iterator`](./intermediate/08-iterators-generators-and-symbol-iterator) | [Iterators and generators](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Iterators_and_generators) | done |
 | 9 | `Map`, `Set` & Keyed Collections | [`intermediate/09-map-set-and-keyed-collections`](./intermediate/09-map-set-and-keyed-collections) | [Keyed collections](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Keyed_collections) | done |
-| 10 | Enumerability & Property Descriptors | `intermediate/10-enumerability-and-property-descriptors` | [Enumerability and ownership of properties](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Enumerability_and_ownership_of_properties) | planned |
-| 11 | Dates & Internationalization | `intermediate/11-dates-and-internationalization` | [Representing dates and times](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Representing_dates_times), [Internationalization](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Internationalization) | planned |
+| 10 | Enumerability & Property Descriptors | [`intermediate/10-enumerability-and-property-descriptors`](./intermediate/10-enumerability-and-property-descriptors) | [Enumerability and ownership of properties](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Enumerability_and_ownership_of_properties) | done |
+| 11 | Dates & Internationalization | [`intermediate/11-dates-and-internationalization`](./intermediate/11-dates-and-internationalization) | [Representing dates and times](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Representing_dates_times), [Internationalization](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Internationalization) | done |
 
 ## Advanced
 
