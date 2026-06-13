@@ -39,7 +39,7 @@ Each topic links to the matching MDN chapter for deeper reading.
 | # | Topic | Folder | MDN reference | Status |
 |---|-------|--------|----------------|--------|
 | 1 | Event Loop, Microtasks & Concurrency Model | [`advanced/01-event-loop-and-concurrency`](./advanced/01-event-loop-and-concurrency) | [Event loop](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Event_loop) | done |
-| 2 | Design Patterns in JavaScript | `advanced/02-design-patterns` | - | planned |
+| 2 | Design Patterns in JavaScript | [`advanced/02-design-patterns`](./advanced/02-design-patterns) | - | done |
 | 3 | Regular Expressions | `advanced/03-regular-expressions` | [Regular expressions](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_expressions) | planned |
 | 4 | Proxy, Reflect & Metaprogramming | `advanced/04-proxy-reflect-and-metaprogramming` | [Meta programming](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Meta_programming) | planned |
 | 5 | Memory Management & Performance | `advanced/05-memory-management-and-performance` | [Memory management](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Memory_management) | planned |
