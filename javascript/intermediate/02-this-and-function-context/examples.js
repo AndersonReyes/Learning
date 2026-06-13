@@ -40,11 +40,20 @@ const obj = {
     return this.value;
   },
   arrow: () => {
-    return this?.value; // `this` is whatever `this` is OUTSIDE obj
+    return this; // `this` is whatever `this` is OUTSIDE obj
   },
 };
 console.log("obj.regular():", obj.regular()); // 42
 console.log("obj.arrow():", obj.arrow()); // undefined -- captured module-level `this`
+
+// this.value (instead of just this) would THROW -- module-level `this` is
+// undefined, so reading a property off it is a TypeError, not `undefined`
+const throwingArrow = () => this.value;
+try {
+  throwingArrow();
+} catch (err) {
+  console.log("this.value on module-level this threw:", err.constructor.name);
+}
 
 // Arrows preserve enclosing `this` for nested callbacks
 const timer = {

@@ -22,9 +22,9 @@ Each topic links to the matching MDN chapter for deeper reading.
 
 | # | Topic | Folder | MDN reference | Status |
 |---|-------|--------|----------------|--------|
-| 1 | Closures & Lexical Scope | `intermediate/01-closures-and-lexical-scope` | [Closures](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Closures) | planned |
-| 2 | `this` Keyword & Function Context | `intermediate/02-this-and-function-context` | [`this`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/this) | planned |
-| 3 | Prototypes, Inheritance & Classes (OOP in JS) | `intermediate/03-prototypes-inheritance-and-classes` | [Inheritance and the prototype chain](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Inheritance_and_the_prototype_chain), [Using classes](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Using_classes) | planned |
+| 1 | Closures & Lexical Scope | [`intermediate/01-closures-and-lexical-scope`](./intermediate/01-closures-and-lexical-scope) | [Closures](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Closures) | done |
+| 2 | `this` Keyword & Function Context | [`intermediate/02-this-and-function-context`](./intermediate/02-this-and-function-context) | [`this`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/this) | done |
+| 3 | Prototypes, Inheritance & Classes (OOP in JS) | [`intermediate/03-prototypes-inheritance-and-classes`](./intermediate/03-prototypes-inheritance-and-classes) | [Inheritance and the prototype chain](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Inheritance_and_the_prototype_chain), [Using classes](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Using_classes) | done |
 | 4 | Higher-Order Functions & Functional Programming | `intermediate/04-higher-order-functions-and-fp` | [Functions](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Functions), [Indexed collections](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Indexed_collections) | planned |
 | 5 | Error Handling (`try/catch/finally`, custom errors) | `intermediate/05-error-handling` | [Control flow and error handling](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Control_flow_and_error_handling#error_handling) | planned |
 | 6 | Promises & Async/Await | `intermediate/06-promises-and-async-await` | [Using promises](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Using_promises) | planned |

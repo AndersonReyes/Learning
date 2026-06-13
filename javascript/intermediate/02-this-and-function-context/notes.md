@@ -70,13 +70,19 @@ const obj = {
     return this.value;
   },
   arrow: () => {
-    return this.value; // `this` is whatever `this` is OUTSIDE obj -- NOT obj
+    return this; // `this` is whatever `this` is OUTSIDE obj -- NOT obj
   },
 };
 
 obj.regular(); // 42
 obj.arrow();   // undefined -- arrow captured module-level `this` (undefined in ES modules)
 ```
+
+Note: since module-level `this` is `undefined`, `this.value` inside `arrow` would
+THROW (`TypeError: Cannot read properties of undefined`) -- it does not
+quietly evaluate to `undefined`. The arrow doesn't get `obj` as `this`
+either way; it just fails immediately instead of silently returning the
+wrong thing.
 
 **Classic gotcha**: an arrow function as an object property does NOT get the
 object as `this`. Use a regular method (shorthand `method() {}`) when you
