@@ -10,7 +10,7 @@ Go reference links point at [A Tour of Go](https://go.dev/tour/),
 reference links point at the relevant RFCs (or, where no single RFC fits,
 general background).
 
-## Fundamentals (2/12 built — in progress)
+## Fundamentals (3/12 built — in progress)
 
 Go's core syntax is front-loaded here; later fundamentals topics introduce
 fewer new language features and more standard-library/networking depth.
@@ -19,7 +19,7 @@ fewer new language features and more standard-library/networking depth.
 |---|--------------------------|--------|------------|
 | 1 | Variables, Types, Control Flow & Bitwise Ops + IPv4 Addressing & CIDR Subnetting | [`fundamentals/01-go-basics-and-ip-addressing`](./fundamentals/01-go-basics-and-ip-addressing) | [Tour: Basics](https://go.dev/tour/basics/1), [Effective Go: Control structures](https://go.dev/doc/effective_go#control-structures) — [RFC 791 (IPv4)](https://www.rfc-editor.org/rfc/rfc791), [RFC 4632 (CIDR)](https://www.rfc-editor.org/rfc/rfc4632), [RFC 3021 (/31)](https://www.rfc-editor.org/rfc/rfc3021) |
 | 2 | Functions, Multiple Returns & Error Handling + Transport-Layer Ports & Protocols (TCP vs UDP) | [`fundamentals/02-functions-errors-and-ports`](./fundamentals/02-functions-errors-and-ports) | [Tour: Basics (functions)](https://go.dev/tour/basics/4), [Effective Go: Errors](https://go.dev/doc/effective_go#errors) — [RFC 793 (TCP)](https://www.rfc-editor.org/rfc/rfc793), [RFC 768 (UDP)](https://www.rfc-editor.org/rfc/rfc768) |
-| 3 | Structs, Pointers & Methods + Packet Header Layouts (Ethernet/IPv4/TCP) | planned | [Tour: Structs & pointers](https://go.dev/tour/moretypes/1), [Tour: Methods](https://go.dev/tour/methods/1), [`encoding/binary`](https://pkg.go.dev/encoding/binary) — [RFC 791 §3.1](https://www.rfc-editor.org/rfc/rfc791), [RFC 793 §3.1](https://www.rfc-editor.org/rfc/rfc793) |
+| 3 | Structs, Pointers & Methods + Packet Header Layouts (Ethernet/IPv4/TCP) | [`fundamentals/03-structs-pointers-and-packet-headers`](./fundamentals/03-structs-pointers-and-packet-headers) | [Tour: Structs & pointers](https://go.dev/tour/moretypes/1), [Tour: Methods](https://go.dev/tour/methods/1), [`encoding/binary`](https://pkg.go.dev/encoding/binary) — [RFC 791 §3.1](https://www.rfc-editor.org/rfc/rfc791), [RFC 793 §3.1](https://www.rfc-editor.org/rfc/rfc793) |
 | 4 | Slices, Arrays & Maps + Routing Tables & Longest-Prefix-Match | planned | [Tour: Slices & maps](https://go.dev/tour/moretypes/7) — [RFC 4632 §3 (LPM)](https://www.rfc-editor.org/rfc/rfc4632) |
 | 5 | Interfaces & Error Wrapping + Abstracting Transports (`net.Conn`) | planned | [Tour: Interfaces](https://go.dev/tour/methods/9), [`errors`](https://pkg.go.dev/errors) — [`net.Conn`](https://pkg.go.dev/net#Conn) |
 | 6 | Goroutines & Channels + Concurrent TCP Echo Server | planned | [Tour: Concurrency](https://go.dev/tour/concurrency/1) — [RFC 862 (Echo)](https://www.rfc-editor.org/rfc/rfc862) |
