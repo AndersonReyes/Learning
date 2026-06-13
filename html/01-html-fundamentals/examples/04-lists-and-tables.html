@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>04. Lists and Tables</title>
+  </head>
+  <body>
+    <h1>Lists and Tables</h1>
+
+    <h2>Unordered list</h2>
+    <ul>
+      <li>Milk</li>
+      <li>Eggs</li>
+      <li>Bread</li>
+    </ul>
+
+    <h2>Ordered list</h2>
+    <ol>
+      <li>Preheat the oven</li>
+      <li>Mix the ingredients</li>
+      <li>Bake for 20 minutes</li>
+    </ol>
+
+    <h2>Description list</h2>
+    <dl>
+      <dt>HTML</dt>
+      <dd>HyperText Markup Language — describes structure and meaning.</dd>
+      <dt>CSS</dt>
+      <dd>Cascading Style Sheets — describes presentation.</dd>
+      <dt>JS</dt>
+      <dd>JavaScript — describes behavior.</dd>
+    </dl>
+
+    <h2>Table</h2>
+    <table border="1" cellpadding="6">
+      <caption>Monthly sales</caption>
+      <thead>
+        <tr>
+          <th scope="col">Month</th>
+          <th scope="col">Units sold</th>
+          <th scope="col">Revenue</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <th scope="row">January</th>
+          <td>120</td>
+          <td>$1,200</td>
+        </tr>
+        <tr>
+          <th scope="row">February</th>
+          <td>95</td>
+          <td>$950</td>
+        </tr>
+        <tr>
+          <th scope="row">March</th>
+          <td>140</td>
+          <td>$1,400</td>
+        </tr>
+      </tbody>
+    </table>
+    <p>
+      <code>scope="col"</code> associates a header cell with the column below
+      it; <code>scope="row"</code> associates a header cell with the row
+      beside it. This lets screen readers announce "January, Units sold: 120"
+      when reading cell-by-cell.
+    </p>
+  </body>
+</html>

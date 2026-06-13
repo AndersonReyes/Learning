@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>05. Forms</title>
+  </head>
+  <body>
+    <h1>Forms</h1>
+
+    <form action="/submit" method="post">
+      <p>
+        <label for="name">Name</label><br />
+        <input
+          type="text"
+          id="name"
+          name="name"
+          required
+          placeholder="Ada Lovelace"
+        />
+      </p>
+
+      <p>
+        <label for="email">Email</label><br />
+        <input type="email" id="email" name="email" required />
+      </p>
+
+      <fieldset>
+        <legend>Preferred contact method</legend>
+        <label>
+          <input type="radio" name="contact" value="email" checked />
+          Email
+        </label>
+        <br />
+        <label>
+          <input type="radio" name="contact" value="phone" />
+          Phone
+        </label>
+      </fieldset>
+
+      <p>
+        <label for="plan">Plan</label><br />
+        <select id="plan" name="plan">
+          <option value="free">Free</option>
+          <option value="pro" selected>Pro</option>
+          <option value="enterprise">Enterprise</option>
+        </select>
+      </p>
+
+      <p>
+        <label for="bio">Bio</label><br />
+        <textarea id="bio" name="bio" rows="3" placeholder="Tell us about yourself"></textarea>
+      </p>
+
+      <p>
+        <button type="submit">Submit</button>
+      </p>
+    </form>
+
+    <p>
+      <code>&lt;label for="..."&gt;</code> matches the input's
+      <code>id</code> — clicking the label focuses the input, and screen
+      readers announce the label when the input is focused.
+      <code>required</code>, <code>placeholder</code>, and
+      <code>type="email"</code> give free browser-side validation and the
+      right mobile keyboard. <code>&lt;fieldset&gt;</code>/<code>&lt;legend&gt;</code>
+      group the radio buttons with a shared label.
+      <code>method="post"</code> is used here because submitting this form
+      would change state on the server.
+    </p>
+  </body>
+</html>
