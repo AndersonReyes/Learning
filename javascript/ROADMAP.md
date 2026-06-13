@@ -48,7 +48,7 @@ Each topic links to the matching MDN chapter for deeper reading.
 | 8 | Browser APIs (DOM, Fetch, Events) | [`advanced/08-browser-apis`](./advanced/08-browser-apis) | [Web APIs](https://developer.mozilla.org/en-US/docs/Web/API) | done |
 | 9 | Node.js Core (fs, streams, events, modules) | [`advanced/09-nodejs-core`](./advanced/09-nodejs-core) | - | done |
 | 10 | Testing & Tooling (bundlers, linters, CI) | [`advanced/10-testing-and-tooling`](./advanced/10-testing-and-tooling) | - | done |
-| 11 | TypeScript Basics (transition path) | `advanced/11-typescript-basics` | - | planned |
+| 11 | TypeScript Basics (transition path) | [`advanced/11-typescript-basics`](./advanced/11-typescript-basics) | - | done |
 
 Folder cells become links once a topic is built out (status changes to `done`),
 matching the Fundamentals table above.
