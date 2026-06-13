@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>02. The Box Model</title>
+    <style>
+      .container {
+        display: flex;
+        gap: 24px;
+        flex-wrap: wrap;
+      }
+
+      .box {
+        width: 200px;
+        height: 100px;
+        padding: 16px;
+        border: 4px solid #2266cc;
+        margin: 8px;
+        background-color: #cfe2ff;
+      }
+
+      /* content-box (default): rendered size = width + padding*2 + border*2
+         = 200 + 32 + 8 = 240px wide */
+      .content-box {
+        box-sizing: content-box;
+      }
+
+      /* border-box: rendered size = exactly width/height = 200px wide */
+      .border-box {
+        box-sizing: border-box;
+      }
+
+      .label {
+        font-family: monospace;
+        font-weight: bold;
+        margin-bottom: 4px;
+      }
+
+      /* margin collapsing demo */
+      .stack p {
+        background-color: #ffe8cc;
+      }
+      .stack .margin-40 {
+        margin-bottom: 40px;
+      }
+      .stack .margin-20 {
+        margin-top: 20px;
+      }
+      /* the gap between these two paragraphs collapses to 40px (the LARGER
+         margin), not 60px (the sum) */
+
+      /* centering with margin: auto */
+      .centered {
+        width: 300px;
+        margin: 0 auto;
+        border: 2px dashed #999;
+        padding: 8px;
+        text-align: center;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>The Box Model</h1>
+
+    <p>Both boxes below have <code>width: 200px; padding: 16px; border: 4px;</code>.</p>
+
+    <div class="container">
+      <div>
+        <div class="label">content-box (default)</div>
+        <div class="box content-box">
+          Rendered width = 200 + 32 (padding) + 8 (border) = 240px
+        </div>
+      </div>
+
+      <div>
+        <div class="label">border-box</div>
+        <div class="box border-box">
+          Rendered width = exactly 200px (padding/border included)
+        </div>
+      </div>
+    </div>
+
+    <h2>Margin collapsing</h2>
+    <div class="stack">
+      <p class="margin-40">This paragraph has margin-bottom: 40px.</p>
+      <p class="margin-20">
+        This paragraph has margin-top: 20px. The gap between the two
+        paragraphs is 40px (the larger value), not 60px (the sum) —
+        adjacent vertical margins collapse.
+      </p>
+    </div>
+
+    <h2>Centering with margin: auto</h2>
+    <div class="centered">
+      This box has <code>width: 300px; margin: 0 auto;</code> — auto margins
+      split the remaining horizontal space evenly, centering the box.
+    </div>
+  </body>
+</html>

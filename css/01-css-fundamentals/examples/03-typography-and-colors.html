@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>03. Typography and Colors</title>
+    <style>
+      body {
+        font-family: "Helvetica Neue", Arial, sans-serif;
+        font-size: 1rem; /* 16px by default */
+        line-height: 1.5; /* unitless: 1.5x the element's own font-size */
+      }
+
+      .serif {
+        font-family: Georgia, "Times New Roman", serif;
+      }
+
+      .mono {
+        font-family: "Courier New", monospace;
+      }
+
+      .light { font-weight: 300; }
+      .normal { font-weight: 400; }
+      .bold { font-weight: 700; }
+
+      .align-left { text-align: left; }
+      .align-center { text-align: center; }
+      .align-right { text-align: right; }
+      .align-justify { text-align: justify; }
+
+      /* color formats - all represent the same dark blue */
+      .color-hex { color: #1a4d8f; }
+      .color-rgb { color: rgb(26 77 143); }
+      .color-hsl { color: hsl(211 69% 33%); }
+
+      /* alpha channel */
+      .bg-alpha {
+        background-color: rgb(26 77 143 / 0.15);
+        padding: 8px;
+      }
+
+      /* em compounding demo */
+      .em-outer {
+        font-size: 1.2em; /* relative to body's 1rem (16px) -> 19.2px */
+      }
+      .em-middle {
+        font-size: 1.2em; /* relative to .em-outer's 19.2px -> 23.04px */
+      }
+      .em-inner {
+        font-size: 1.2em; /* relative to .em-middle's 23.04px -> 27.65px */
+      }
+
+      /* rem does not compound - always relative to the root */
+      .rem-fixed {
+        font-size: 1.2rem; /* always 19.2px regardless of nesting */
+      }
+
+      /* font sizes via rem scale, independent of nesting */
+      h1 { font-size: 2rem; }
+      h2 { font-size: 1.5rem; }
+      h3 { font-size: 1.17rem; }
+    </style>
+  </head>
+  <body>
+    <h1>Typography and Colors</h1>
+
+    <h2>Font families (with fallback stacks)</h2>
+    <p>Default body font (sans-serif stack).</p>
+    <p class="serif">A serif font stack — Georgia, Times New Roman, serif.</p>
+    <p class="mono">A monospace font stack — Courier New, monospace.</p>
+
+    <h2>Font weights</h2>
+    <p class="light">font-weight: 300 (light)</p>
+    <p class="normal">font-weight: 400 (normal)</p>
+    <p class="bold">font-weight: 700 (bold)</p>
+
+    <h2>Text alignment</h2>
+    <p class="align-left">Left-aligned (default).</p>
+    <p class="align-center">Center-aligned.</p>
+    <p class="align-right">Right-aligned.</p>
+    <p class="align-justify">
+      Justified text stretches each line (except the last) so both edges
+      align — useful for newspaper-style columns of body text, fills the
+      available width on both sides evenly across multiple lines of text.
+    </p>
+
+    <h2>Color formats (same color, three syntaxes)</h2>
+    <p class="color-hex">color: #1a4d8f (hex)</p>
+    <p class="color-rgb">color: rgb(26 77 143) (rgb)</p>
+    <p class="color-hsl">color: hsl(211 69% 33%) (hsl)</p>
+    <p class="bg-alpha">background-color: rgb(26 77 143 / 0.15) — semi-transparent</p>
+
+    <h2>em vs rem (compounding)</h2>
+    <div class="em-outer">
+      1.2em here (19.2px, relative to body's 1rem)
+      <div class="em-middle">
+        1.2em here too (23.04px — relative to the PARENT's 19.2px, not the root)
+        <div class="em-inner">
+          1.2em again (27.65px — compounds further)
+          <div class="rem-fixed">
+            1.2rem here (always 19.2px — rem ignores nesting, relative to root only)
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

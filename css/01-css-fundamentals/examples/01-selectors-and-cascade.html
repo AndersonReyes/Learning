@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>01. Selectors and Cascade</title>
+    <style>
+      /* type selector */
+      p {
+        color: #333;
+      }
+
+      /* class selector */
+      .highlight {
+        background-color: yellow;
+      }
+
+      /* id selector */
+      #main-heading {
+        color: darkblue;
+      }
+
+      /* attribute selector */
+      input[type="email"] {
+        border: 2px solid teal;
+      }
+
+      /* pseudo-class: hover */
+      a:hover {
+        color: red;
+        text-decoration: underline wavy;
+      }
+
+      /* pseudo-class: nth-child (even items) */
+      li:nth-child(2n) {
+        background-color: #f0f0f0;
+      }
+
+      /* pseudo-element: ::before */
+      .quote::before {
+        content: "\201C"; /* opening curly quote */
+      }
+      .quote::after {
+        content: "\201D"; /* closing curly quote */
+      }
+
+      /* descendant combinator: any <em> inside .scope */
+      .scope em {
+        color: green;
+      }
+
+      /* child combinator: ONLY direct <em> children of .scope-direct */
+      .scope-direct > em {
+        color: orange;
+      }
+
+      /* adjacent sibling: <p> immediately after an <h2> */
+      h2 + p {
+        font-style: italic;
+      }
+
+      /* --- Cascade / specificity demo --- */
+      /* (0,0,0,1) type selector */
+      .specificity-demo {
+        color: black;
+      }
+      /* (0,0,1,0) class selector - wins over type above */
+      p.specificity-demo {
+        color: blue;
+      }
+      /* (0,1,0,0) id selector - wins over class above */
+      #specificity-winner {
+        color: purple;
+      }
+      /* inline style="" on the element below wins over everything except !important */
+    </style>
+  </head>
+  <body>
+    <h1 id="main-heading">Selectors and Cascade</h1>
+
+    <p>A normal paragraph styled by the <code>p</code> type selector.</p>
+    <p class="highlight">A paragraph with a highlighted background (class selector).</p>
+
+    <p>
+      <label for="email-demo">Email input (attribute selector adds a teal border):</label>
+      <input type="email" id="email-demo" />
+    </p>
+
+    <p>Hover this <a href="#">link</a> to see the pseudo-class rule.</p>
+
+    <ul>
+      <li>Item 1 (odd)</li>
+      <li>Item 2 (even, shaded)</li>
+      <li>Item 3 (odd)</li>
+      <li>Item 4 (even, shaded)</li>
+    </ul>
+
+    <p class="quote">This text gets curly quotes via ::before/::after</p>
+
+    <div class="scope">
+      <p>Inside .scope, <em>this em is green</em> via the descendant combinator.</p>
+    </div>
+
+    <div class="scope-direct">
+      <p><em>This em is NOT a direct child of .scope-direct, so it stays default color.</em></p>
+      <em>This em IS a direct child of .scope-direct, so it's orange.</em>
+    </div>
+
+    <h2>A heading</h2>
+    <p>This paragraph immediately follows the h2, so it's italic (adjacent sibling combinator).</p>
+    <p>This paragraph is NOT adjacent to the h2, so it's normal.</p>
+
+    <h2>Cascade / specificity</h2>
+    <p class="specificity-demo">
+      Class selector (0,0,1,0) beats type selector (0,0,0,1) — this text is blue, not black.
+    </p>
+    <p id="specificity-winner" class="specificity-demo">
+      Id selector (0,1,0,0) beats class selector — this text is purple.
+    </p>
+    <p id="specificity-winner" class="specificity-demo" style="color: maroon;">
+      Inline style (1,0,0,0) beats everything else — this text is maroon.
+    </p>
+  </body>
+</html>

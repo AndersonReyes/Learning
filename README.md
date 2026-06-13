@@ -8,3 +8,6 @@ Personal learning notes, examples, and exercises.
   full curriculum.
 - [`html/`](./html) — HTML track: notes and viewable examples (open
   `.html` files directly in a browser). See [`html/README.md`](./html/README.md).
+- [`css/`](./css) — CSS track: notes and viewable examples (open `.html`
+  files directly in a browser). See [`css/README.md`](./css/README.md) and
+  [`css/ROADMAP.md`](./css/ROADMAP.md).

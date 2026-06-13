@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>04. Linked Stylesheet</title>
+    <link rel="stylesheet" href="04-linked-stylesheet.css" />
+  </head>
+  <body>
+    <h1>Linked Stylesheet</h1>
+    <p>
+      This page's styles live entirely in
+      <code>04-linked-stylesheet.css</code>, loaded via
+      <code>&lt;link rel="stylesheet" href="..."&gt;</code> in the
+      <code>&lt;head&gt;</code> — the standard way to apply CSS: reusable
+      across multiple pages and cached separately by the browser.
+    </p>
+
+    <div class="card">
+      <h2 class="card-title">External CSS</h2>
+      <p>
+        <span class="tag">recommended</span>
+      </p>
+      <p>
+        Compare with the inline <code>style="..."</code> attribute and
+        internal <code>&lt;style&gt;</code> block used in the other examples
+        in this folder — both work, but neither scales to a multi-page site.
+      </p>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,45 @@
+/* External stylesheet — linked via <link rel="stylesheet" href="04-linked-stylesheet.css">
+   in 04-linked-stylesheet.html. Demonstrates the "external" linking method:
+   reusable across multiple pages, cacheable, and keeps markup/presentation
+   separate. */
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Helvetica Neue", Arial, sans-serif;
+  line-height: 1.5;
+  margin: 0;
+  padding: 24px;
+  background-color: #fafafa;
+  color: #1a1a1a;
+}
+
+h1 {
+  color: #2266cc;
+}
+
+.card {
+  background-color: white;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 16px;
+  max-width: 400px;
+  box-shadow: 0 1px 3px rgb(0 0 0 / 0.1);
+}
+
+.card-title {
+  margin-top: 0;
+  font-size: 1.25rem;
+}
+
+.tag {
+  display: inline-block;
+  background-color: #e0ecff;
+  color: #2266cc;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 0.875rem;
+  font-weight: 700;
+}
