@@ -43,12 +43,7 @@ export class AppError extends Error {
    * @returns {{ name: string, message: string, code: string|undefined, cause: string|undefined }}
    */
   toJSON() {
-    return {
-      name: this.name,
-      message: this.message,
-      code: this.code,
-      cause: this.cause?.message,
-    };
+    throw new Error("Not implemented");
   }
 }
 
@@ -90,11 +85,7 @@ export class NotFoundError extends AppError {
  * @returns {{ ok: true, value: * } | { ok: false, error: Error }}
  */
 export function safeJsonParse(text) {
-  try {
-    return { ok: true, value: JSON.parse(text) };
-  } catch (err) {
-    return { ok: false, error: err };
-  }
+  throw new Error("Not implemented");
 }
 
 /**
@@ -120,18 +111,7 @@ export function safeJsonParse(text) {
  * @returns {Promise<*>}
  */
 export async function retry(fn, { attempts = 3, delayMs = 0 } = {}) {
-  let lastError;
-  for (let attempt = 1; attempt <= attempts; attempt++) {
-    try {
-      return await fn();
-    } catch (err) {
-      lastError = err;
-      if (attempt < attempts) {
-        await new Promise((resolve) => setTimeout(resolve, delayMs));
-      }
-    }
-  }
-  throw lastError;
+  throw new Error("Not implemented");
 }
 
 /**
@@ -157,17 +137,7 @@ export async function retry(fn, { attempts = 3, delayMs = 0 } = {}) {
  * @returns {{ results: Array<*>, errors: Array<{ index: number, error: Error }> }}
  */
 export function aggregateErrors(fns) {
-  const results = [];
-  const errors = [];
-  fns.forEach((fn, index) => {
-    try {
-      results.push(fn());
-    } catch (error) {
-      results.push(undefined);
-      errors.push({ index, error });
-    }
-  });
-  return { results, errors };
+  throw new Error("Not implemented");
 }
 
 /**
@@ -196,13 +166,5 @@ export function aggregateErrors(fns) {
  * @returns {Array<{ name: string, message: string }>}
  */
 export function getErrorChain(error) {
-  const chain = [];
-  const seen = new Set();
-  let current = error;
-  while (current instanceof Error && !seen.has(current) && chain.length < 10) {
-    seen.add(current);
-    chain.push({ name: current.name, message: current.message });
-    current = current.cause;
-  }
-  return chain;
+  throw new Error("Not implemented");
 }

@@ -10,6 +10,14 @@ import {
   getErrorChain,
 } from "./exercise.js";
 
+// Drain pending microtasks (promise reaction queue) without advancing mock
+// timers — needed between `t.mock.timers.tick()` calls so `await`s inside
+// `retry` (e.g. `await fn()`, `await new Promise(...)`) settle before the
+// next tick.
+async function flushMicrotasks() {
+  for (let i = 0; i < 5; i++) await Promise.resolve();
+}
+
 describe("AppError", () => {
   test("sets name, message, and code", () => {
     const err = new AppError("boom", { code: "BOOM" });
@@ -165,8 +173,11 @@ describe("retry", () => {
     );
 
     // First call happens synchronously (fails), then waits delayMs.
-    await t.mock.timers.tickAsync(100); // -> 2nd call (fails), wait again
-    await t.mock.timers.tickAsync(100); // -> 3rd call (succeeds)
+    await flushMicrotasks();
+    t.mock.timers.tick(100); // -> 2nd call (fails), wait again
+    await flushMicrotasks();
+    t.mock.timers.tick(100); // -> 3rd call (succeeds)
+    await flushMicrotasks();
 
     assert.equal(await promise, "ok");
     assert.equal(calls, 3);
@@ -184,8 +195,11 @@ describe("retry", () => {
       { attempts: 3, delayMs: 50 },
     );
 
-    await t.mock.timers.tickAsync(50);
-    await t.mock.timers.tickAsync(50);
+    await flushMicrotasks();
+    t.mock.timers.tick(50);
+    await flushMicrotasks();
+    t.mock.timers.tick(50);
+    await flushMicrotasks();
 
     await assert.rejects(promise, (err) => {
       assert.equal(err.message, "fail 3");
@@ -207,7 +221,9 @@ describe("retry", () => {
       { attempts: 3, delayMs: 10 },
     );
 
-    await t.mock.timers.tickAsync(10);
+    await flushMicrotasks();
+    t.mock.timers.tick(10);
+    await flushMicrotasks();
 
     assert.equal(await promise, "recovered");
     assert.equal(calls, 2);
@@ -222,8 +238,11 @@ describe("retry", () => {
       throw new Error(`fail ${calls}`);
     });
 
-    await t.mock.timers.tickAsync(0);
-    await t.mock.timers.tickAsync(0);
+    await flushMicrotasks();
+    t.mock.timers.tick(0);
+    await flushMicrotasks();
+    t.mock.timers.tick(0);
+    await flushMicrotasks();
 
     await assert.rejects(promise, /fail 3/);
     assert.equal(calls, 3);
