@@ -10,7 +10,7 @@ Go reference links point at [A Tour of Go](https://go.dev/tour/),
 reference links point at the relevant RFCs (or, where no single RFC fits,
 general background).
 
-## Fundamentals (5/12 built — in progress)
+## Fundamentals (6/12 built — in progress)
 
 Go's core syntax is front-loaded here; later fundamentals topics introduce
 fewer new language features and more standard-library/networking depth.
@@ -22,7 +22,7 @@ fewer new language features and more standard-library/networking depth.
 | 3 | Structs, Pointers & Methods + Packet Header Layouts (Ethernet/IPv4/TCP) | [`fundamentals/03-structs-pointers-and-packet-headers`](./fundamentals/03-structs-pointers-and-packet-headers) | [Tour: Structs & pointers](https://go.dev/tour/moretypes/1), [Tour: Methods](https://go.dev/tour/methods/1), [`encoding/binary`](https://pkg.go.dev/encoding/binary) — [RFC 791 §3.1](https://www.rfc-editor.org/rfc/rfc791), [RFC 793 §3.1](https://www.rfc-editor.org/rfc/rfc793) |
 | 4 | Slices, Arrays & Maps + Routing Tables & Longest-Prefix-Match | [`fundamentals/04-slices-maps-and-routing-tables`](./fundamentals/04-slices-maps-and-routing-tables) | [Tour: Slices & maps](https://go.dev/tour/moretypes/7) — [RFC 4632 §3 (LPM)](https://www.rfc-editor.org/rfc/rfc4632) |
 | 5 | Interfaces & Error Wrapping + Abstracting Transports (`net.Conn`) | [`fundamentals/05-interfaces-and-net-conn`](./fundamentals/05-interfaces-and-net-conn) | [Tour: Interfaces](https://go.dev/tour/methods/9), [`errors`](https://pkg.go.dev/errors) — [`net.Conn`](https://pkg.go.dev/net#Conn) |
-| 6 | Goroutines & Channels + Concurrent TCP Echo Server | planned | [Tour: Concurrency](https://go.dev/tour/concurrency/1) — [RFC 862 (Echo)](https://www.rfc-editor.org/rfc/rfc862) |
+| 6 | Goroutines & Channels + Concurrent TCP Echo Server | [`fundamentals/06-goroutines-channels-and-echo-server`](./fundamentals/06-goroutines-channels-and-echo-server) | [Tour: Concurrency](https://go.dev/tour/concurrency/1) — [RFC 862 (Echo)](https://www.rfc-editor.org/rfc/rfc862) |
 | 7 | `select`, `sync` & `context` + Connection Timeouts & Cancellation | planned | [Tour: select](https://go.dev/tour/concurrency/5), [`context`](https://pkg.go.dev/context) — [`net.Conn.SetDeadline`](https://pkg.go.dev/net#Conn) |
 | 8 | The `net` Package (Dial/Listen) + TCP Chat Server & UDP Datagram Protocol | planned | [`net`](https://pkg.go.dev/net) — [RFC 793](https://www.rfc-editor.org/rfc/rfc793), [RFC 768](https://www.rfc-editor.org/rfc/rfc768) |
 | 9 | `bufio`/`io`/`encoding/binary` + Custom Length-Prefixed Binary Wire Protocol | planned | [`bufio`](https://pkg.go.dev/bufio), [`io`](https://pkg.go.dev/io) — framing concepts |
