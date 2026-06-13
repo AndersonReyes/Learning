@@ -1,15 +1,33 @@
 # Learning Repo — Project Memory
 
-This repo holds self-study tracks. Currently: `javascript/` (fundamentals done,
-intermediate/advanced roadmapped). Future language tracks should follow the
-same top-level pattern: a dedicated `<language>/` directory with its own
-README, ROADMAP, package manifest, and numbered topic folders.
+This repo holds self-study tracks. Currently: `javascript/` (fundamentals
+done; intermediate/advanced in progress — see `javascript/ROADMAP.md` status
+column), `html/` and `css/` (notes + viewable examples, no exercises). Future
+language tracks should follow the same top-level pattern: a dedicated
+`<language>/` directory with its own README, ROADMAP, package manifest (if
+runnable), and numbered topic folders.
 
 ## JavaScript track (`javascript/`)
 
-Full curriculum lives in `javascript/ROADMAP.md` (fundamentals built out,
-intermediate/advanced planned), each topic mapped to an MDN Guide chapter
+Full curriculum lives in `javascript/ROADMAP.md`. Each row has a `Status`
+column (`planned`/`done`) — **this is the checkpoint tracker**. A fresh
+session should `grep -n planned javascript/ROADMAP.md` to find the next topic
+to build, in table order (fundamentals → intermediate → advanced). Each topic
+maps to an MDN Guide chapter
 (https://github.com/mdn/content/tree/main/files/en-us/web/javascript/guide).
+
+Folders: `javascript/fundamentals/NN-*`, `javascript/intermediate/NN-*`,
+`javascript/advanced/NN-*` — same 4-file pattern for all tiers.
+
+### Adapted topics
+
+A handful of intermediate/advanced topics narrow `exercise.js`'s scope to a
+testable subset because their textbook subject matter doesn't map onto
+pure-Node `node:test` functions (e.g. ES Modules in depth, Memory Management,
+Resource Management, Browser APIs, Testing & Tooling, TypeScript Basics). See
+the "Adapted topics" section in `javascript/ROADMAP.md` for each one's scope
+— `notes.md` still covers the full topic conceptually; only `exercise.js`
+narrows.
 
 ### Per-topic structure
 
@@ -67,3 +85,29 @@ good practices for the sake of brevity.
 `javascript/package.json`'s test script is `node --test` (no path argument —
 `node --test fundamentals` does NOT recurse in Node 22; omitting the path
 gives recursive `**/*.test.js` discovery from `javascript/`).
+
+## HTML track (`html/`)
+
+Single-topic track (HTML is small enough to cover in one folder):
+`html/01-html-fundamentals/notes.md` + `examples/*.html`. No exercises.
+`html/README.md` explains these are opened directly in a browser (no test
+runner). Add more `NN-*` topic folders only if the single folder gets
+unwieldy.
+
+## CSS track (`css/`)
+
+3 topic folders: `01-css-fundamentals`, `02-flexbox-and-grid`,
+`03-responsive-and-modern-css` — each `notes.md` + `examples/*.html` with
+self-contained `<style>` blocks (one example pairs `.html`+`.css` to
+demonstrate `<link>`). No exercises. `css/README.md` explains the
+browser-viewing workflow; `css/ROADMAP.md` tracks the 3 topics plus a TODO
+for future full design projects (deferred — not part of this build-out).
+
+## Checkpointing & quota awareness
+
+This is a large, multi-session build-out. Work one topic at a time through
+its full verification (notes → exercise → test → examples, all checks pass),
+then immediately update its `Status` to `done` (with folder link) in the
+relevant ROADMAP.md, commit, and push. Never stop mid-topic — a clean stop
+boundary is always a fully-verified, committed, pushed topic. This bounds
+lost work to zero regardless of when a session ends.
