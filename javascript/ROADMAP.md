@@ -45,7 +45,7 @@ Each topic links to the matching MDN chapter for deeper reading.
 | 5 | Memory Management & Performance | [`advanced/05-memory-management-and-performance`](./advanced/05-memory-management-and-performance) | [Memory management](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Memory_management) | done |
 | 6 | Resource Management (`using`/`await using`) | [`advanced/06-resource-management`](./advanced/06-resource-management) | [Resource management](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Resource_management) | done |
 | 7 | Typed Arrays | [`advanced/07-typed-arrays`](./advanced/07-typed-arrays) | [Typed arrays](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Typed_arrays) | done |
-| 8 | Browser APIs (DOM, Fetch, Events) | `advanced/08-browser-apis` | [Web APIs](https://developer.mozilla.org/en-US/docs/Web/API) | planned |
+| 8 | Browser APIs (DOM, Fetch, Events) | [`advanced/08-browser-apis`](./advanced/08-browser-apis) | [Web APIs](https://developer.mozilla.org/en-US/docs/Web/API) | done |
 | 9 | Node.js Core (fs, streams, events, modules) | `advanced/09-nodejs-core` | - | planned |
 | 10 | Testing & Tooling (bundlers, linters, CI) | `advanced/10-testing-and-tooling` | - | planned |
 | 11 | TypeScript Basics (transition path) | `advanced/11-typescript-basics` | - | planned |
