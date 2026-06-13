@@ -29,27 +29,7 @@ export class TimeoutError extends Error {
  * @returns {Promise<Array<*>>}
  */
 export function myPromiseAll(promises) {
-  return new Promise((resolve, reject) => {
-    const items = Array.from(promises);
-    if (items.length === 0) {
-      resolve([]);
-      return;
-    }
-
-    const results = new Array(items.length);
-    let remaining = items.length;
-
-    items.forEach((item, index) => {
-      Promise.resolve(item).then(
-        (value) => {
-          results[index] = value;
-          remaining--;
-          if (remaining === 0) resolve(results);
-        },
-        (reason) => reject(reason),
-      );
-    });
-  });
+  throw new Error("Not implemented");
 }
 
 /**
@@ -69,11 +49,7 @@ export function myPromiseAll(promises) {
  * @returns {Promise<*>}
  */
 export function myPromiseRace(promises) {
-  return new Promise((resolve, reject) => {
-    for (const item of promises) {
-      Promise.resolve(item).then(resolve, reject);
-    }
-  });
+  throw new Error("Not implemented");
 }
 
 /**
@@ -96,11 +72,7 @@ export function myPromiseRace(promises) {
  * @returns {Promise<Array<*>>}
  */
 export async function sequence(asyncFns) {
-  const results = [];
-  for (const fn of asyncFns) {
-    results.push(await fn());
-  }
-  return results;
+  throw new Error("Not implemented");
 }
 
 /**
@@ -124,48 +96,7 @@ export async function sequence(asyncFns) {
  * @returns {Promise<Array<*>>}
  */
 export function asyncPool(limit, items, mapperFn) {
-  return new Promise((resolve, reject) => {
-    if (items.length === 0) {
-      resolve([]);
-      return;
-    }
-
-    const results = new Array(items.length);
-    let nextIndex = 0;
-    let completed = 0;
-    let rejected = false;
-    const effectiveLimit = Math.min(limit, items.length);
-
-    function startNext() {
-      if (rejected) return;
-      if (nextIndex >= items.length) return;
-
-      const index = nextIndex++;
-      const item = items[index];
-
-      Promise.resolve(mapperFn(item, index)).then(
-        (value) => {
-          results[index] = value;
-          completed++;
-          if (completed === items.length) {
-            resolve(results);
-          } else {
-            startNext();
-          }
-        },
-        (reason) => {
-          if (!rejected) {
-            rejected = true;
-            reject(reason);
-          }
-        },
-      );
-    }
-
-    for (let i = 0; i < effectiveLimit; i++) {
-      startNext();
-    }
-  });
+  throw new Error("Not implemented");
 }
 
 /**
@@ -189,23 +120,5 @@ export function asyncPool(limit, items, mapperFn) {
  * @returns {Promise<*>}
  */
 export function timeout(promiseOrFn, ms) {
-  const promise =
-    typeof promiseOrFn === "function" ? Promise.resolve(promiseOrFn()) : Promise.resolve(promiseOrFn);
-
-  return new Promise((resolve, reject) => {
-    const timer = setTimeout(() => {
-      reject(new TimeoutError(`timed out after ${ms}ms`));
-    }, ms);
-
-    promise.then(
-      (value) => {
-        clearTimeout(timer);
-        resolve(value);
-      },
-      (reason) => {
-        clearTimeout(timer);
-        reject(reason);
-      },
-    );
-  });
+  throw new Error("Not implemented");
 }
