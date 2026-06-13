@@ -30,17 +30,17 @@ fewer new language features and more standard-library/networking depth.
 | 11 | `encoding/json` + JSON REST/RPC API Over the Network | [`fundamentals/11-json-rest-rpc-api`](./fundamentals/11-json-rest-rpc-api) | [`encoding/json`](https://pkg.go.dev/encoding/json) — [RFC 8259 (JSON)](https://www.rfc-editor.org/rfc/rfc8259) |
 | 12 | DNS Protocol + Minimal DNS Resolver Over UDP | [`fundamentals/12-dns-protocol-and-resolver`](./fundamentals/12-dns-protocol-and-resolver) | [`net`](https://pkg.go.dev/net), `encoding/binary` — [RFC 1035 (DNS)](https://www.rfc-editor.org/rfc/rfc1035) |
 
-## Intermediate (planned)
+## Intermediate (1/7 built — in progress)
 
-| Topic (Go + Networking) | References |
-|--------------------------|------------|
-| Generics + Generic Connection Pool & DNS-Cache LRU | [Tour: Generics](https://go.dev/tour/generics/1) |
-| TLS (`crypto/tls`) + HTTPS Client/Server & the TLS 1.3 Handshake | [`crypto/tls`](https://pkg.go.dev/crypto/tls) — [RFC 8446 (TLS 1.3)](https://www.rfc-editor.org/rfc/rfc8446) |
-| WebSockets + Real-Time Chat Server | [RFC 6455 (WebSocket)](https://www.rfc-editor.org/rfc/rfc6455) |
-| Reverse Proxy / Load Balancer (`net/http/httputil`) | [`net/http/httputil`](https://pkg.go.dev/net/http/httputil) |
-| Testing in Go (table-driven tests, `httptest`, fuzzing) + Protocol Parser Test Suites | [`testing`](https://pkg.go.dev/testing), [`net/http/httptest`](https://pkg.go.dev/net/http/httptest) |
-| Routing Algorithms (Dijkstra/Bellman-Ford) + Simulating OSPF/BGP Path Selection | [RFC 2328 (OSPF)](https://www.rfc-editor.org/rfc/rfc2328), [RFC 4271 (BGP)](https://www.rfc-editor.org/rfc/rfc4271) |
-| Congestion Control + Simulating TCP Reno/CUBIC Window Growth | [RFC 5681 (TCP Congestion Control)](https://www.rfc-editor.org/rfc/rfc5681), [RFC 8312 (CUBIC)](https://www.rfc-editor.org/rfc/rfc8312) |
+| # | Topic (Go + Networking) | Folder | References |
+|---|--------------------------|--------|------------|
+| 1 | Generics + Generic Connection Pool & DNS-Cache LRU | [`intermediate/01-generics-pool-and-cache`](./intermediate/01-generics-pool-and-cache) | [Tour: Generics](https://go.dev/tour/generics/1) |
+| 2 | TLS (`crypto/tls`) + HTTPS Client/Server & the TLS 1.3 Handshake | planned | [`crypto/tls`](https://pkg.go.dev/crypto/tls) — [RFC 8446 (TLS 1.3)](https://www.rfc-editor.org/rfc/rfc8446) |
+| 3 | WebSockets + Real-Time Chat Server | planned | [RFC 6455 (WebSocket)](https://www.rfc-editor.org/rfc/rfc6455) |
+| 4 | Reverse Proxy / Load Balancer (`net/http/httputil`) | planned | [`net/http/httputil`](https://pkg.go.dev/net/http/httputil) |
+| 5 | Testing in Go (table-driven tests, `httptest`, fuzzing) + Protocol Parser Test Suites | planned | [`testing`](https://pkg.go.dev/testing), [`net/http/httptest`](https://pkg.go.dev/net/http/httptest) |
+| 6 | Routing Algorithms (Dijkstra/Bellman-Ford) + Simulating OSPF/BGP Path Selection | planned | [RFC 2328 (OSPF)](https://www.rfc-editor.org/rfc/rfc2328), [RFC 4271 (BGP)](https://www.rfc-editor.org/rfc/rfc4271) |
+| 7 | Congestion Control + Simulating TCP Reno/CUBIC Window Growth | planned | [RFC 5681 (TCP Congestion Control)](https://www.rfc-editor.org/rfc/rfc5681), [RFC 8312 (CUBIC)](https://www.rfc-editor.org/rfc/rfc8312) |
 
 ## Advanced (planned)
 
