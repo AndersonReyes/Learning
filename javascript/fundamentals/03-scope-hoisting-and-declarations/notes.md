@@ -64,6 +64,22 @@ counter.getValue();  // 1
 `count` is only reachable through the returned methods — there's no other
 way to access it from outside.
 
+### Closures and loops
+
+`var` is function-scoped, so every iteration shares **one** binding; `let`
+creates a **fresh** binding per iteration. This matters as soon as a loop body
+creates a closure (e.g. a callback):
+
+```js
+for (var i = 0; i < 3; i++) {
+  setTimeout(() => console.log(i), 0); // 3, 3, 3 — all see the final value
+}
+
+for (let j = 0; j < 3; j++) {
+  setTimeout(() => console.log(j), 0); // 0, 1, 2 — each callback gets its own j
+}
+```
+
 ## Further Reading (MDN)
 
 - [Grammar and types — Declarations](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Grammar_and_types#declarations)

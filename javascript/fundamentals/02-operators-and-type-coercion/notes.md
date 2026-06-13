@@ -50,6 +50,17 @@ user.address?.city    // undefined, no error
 settings?.save()      // undefined — save() never called if settings is null/undefined
 ```
 
+## Logical assignment
+
+Assign only when a condition holds — shorthand for `x = x || y` etc.:
+
+```js
+let count;
+count ??= 0;             // assign only if null/undefined -> 0
+config.timeout ||= 5000; // assign only if falsy
+isAdmin &&= hasPermission(); // assign only if currently truthy
+```
+
 ## Ternary
 
 `condition ? a : b` is an expression. Chains beyond two or three branches
@@ -82,3 +93,4 @@ where bit `i` (`1 << i`) represents flag `i`.
 - [Bitwise operators](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators#bitwise_operators)
 - [Nullish coalescing (`??`)](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Nullish_coalescing)
 - [Optional chaining (`?.`)](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Optional_chaining)
+- [Nullish coalescing assignment (`??=`)](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Logical_nullish_assignment)

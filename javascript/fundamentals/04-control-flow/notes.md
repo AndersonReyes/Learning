@@ -60,8 +60,30 @@ if (status === "admin" || status === "owner") { /* elevated access */ }
 
 `&&`/`||` short-circuit — see [Topic 02](../02-operators-and-type-coercion/notes.md).
 
+## Guard clauses
+
+Return early for edge cases instead of nesting the main logic inside `else`:
+
+```js
+// nested
+function classify(n) {
+  if (n !== null) {
+    if (n >= 0) return "non-negative";
+    else return "negative";
+  } else {
+    return "unknown";
+  }
+}
+
+// guard clauses — flatter, easier to follow
+function classify(n) {
+  if (n === null) return "unknown";
+  if (n < 0) return "negative";
+  return "non-negative";
+}
+```
+
 ## Further Reading (MDN)
 
-- [Control flow and error handling](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Control_flow_and_error_handling)
 - [`if...else`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/if...else)
 - [`switch`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/switch)
