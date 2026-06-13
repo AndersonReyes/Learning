@@ -10,7 +10,7 @@ Go reference links point at [A Tour of Go](https://go.dev/tour/),
 reference links point at the relevant RFCs (or, where no single RFC fits,
 general background).
 
-## Fundamentals (9/12 built — in progress)
+## Fundamentals (10/12 built — in progress)
 
 Go's core syntax is front-loaded here; later fundamentals topics introduce
 fewer new language features and more standard-library/networking depth.
@@ -26,7 +26,7 @@ fewer new language features and more standard-library/networking depth.
 | 7 | `select`, `sync` & `context` + Connection Timeouts & Cancellation | [`fundamentals/07-select-sync-context-and-timeouts`](./fundamentals/07-select-sync-context-and-timeouts) | [Tour: select](https://go.dev/tour/concurrency/5), [`context`](https://pkg.go.dev/context) — [`net.Conn.SetDeadline`](https://pkg.go.dev/net#Conn) |
 | 8 | The `net` Package (Dial/Listen) + TCP Chat Server & UDP Datagram Protocol | [`fundamentals/08-net-dial-listen-and-udp`](./fundamentals/08-net-dial-listen-and-udp) | [`net`](https://pkg.go.dev/net) — [RFC 793](https://www.rfc-editor.org/rfc/rfc793), [RFC 768](https://www.rfc-editor.org/rfc/rfc768) |
 | 9 | `bufio`/`io`/`encoding/binary` + Custom Length-Prefixed Binary Wire Protocol | [`fundamentals/09-bufio-io-binary-and-framing`](./fundamentals/09-bufio-io-binary-and-framing) | [`bufio`](https://pkg.go.dev/bufio), [`io`](https://pkg.go.dev/io) — framing concepts |
-| 10 | `net/http` Internals + HTTP/1.1 Server From Scratch (then `net/http`) | planned | [`net/http`](https://pkg.go.dev/net/http) — [RFC 9112 (HTTP/1.1)](https://www.rfc-editor.org/rfc/rfc9112) |
+| 10 | `net/http` Internals + HTTP/1.1 Server From Scratch (then `net/http`) | [`fundamentals/10-http11-from-scratch`](./fundamentals/10-http11-from-scratch) | [`net/http`](https://pkg.go.dev/net/http) — [RFC 9112 (HTTP/1.1)](https://www.rfc-editor.org/rfc/rfc9112) |
 | 11 | `encoding/json` + JSON REST/RPC API Over the Network | planned | [`encoding/json`](https://pkg.go.dev/encoding/json) — [RFC 8259 (JSON)](https://www.rfc-editor.org/rfc/rfc8259) |
 | 12 | DNS Protocol + Minimal DNS Resolver Over UDP | planned | [`net`](https://pkg.go.dev/net), `encoding/binary` — [RFC 1035 (DNS)](https://www.rfc-editor.org/rfc/rfc1035) |
 
