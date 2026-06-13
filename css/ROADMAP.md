@@ -8,7 +8,7 @@ for deeper reading.
 | # | Topic | Folder | Status |
 |---|-------|--------|--------|
 | 1 | CSS Fundamentals (selectors, cascade/specificity, box model, units, typography, display) | [`01-css-fundamentals`](./01-css-fundamentals) | done |
-| 2 | Flexbox and Grid | `02-flexbox-and-grid` | planned |
+| 2 | Flexbox and Grid | [`02-flexbox-and-grid`](./02-flexbox-and-grid) | done |
 | 3 | Responsive and Modern CSS (media queries, custom properties, clamp/min/max, transitions) | `03-responsive-and-modern-css` | planned |
 
 ## TODO

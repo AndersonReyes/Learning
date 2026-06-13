@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>01. Flexbox Basics</title>
+    <style>
+      * { box-sizing: border-box; }
+      body { font-family: sans-serif; }
+
+      .demo {
+        border: 2px dashed #999;
+        margin-bottom: 24px;
+        padding: 8px;
+        min-height: 80px;
+      }
+
+      .demo .item {
+        background-color: #cfe2ff;
+        border: 1px solid #2266cc;
+        padding: 12px;
+        margin: 4px;
+      }
+
+      /* flex-direction */
+      .row { display: flex; flex-direction: row; }
+      .column { display: flex; flex-direction: column; }
+
+      /* justify-content (main axis) */
+      .justify-start { display: flex; justify-content: flex-start; }
+      .justify-center { display: flex; justify-content: center; }
+      .justify-between { display: flex; justify-content: space-between; }
+      .justify-evenly { display: flex; justify-content: space-evenly; }
+
+      /* align-items (cross axis) */
+      .align-demo {
+        display: flex;
+        align-items: center; /* try flex-start, flex-end, stretch, baseline */
+        height: 120px;
+      }
+      .align-demo .item.tall { padding: 24px; }
+      .align-demo .item.short { padding: 4px; }
+
+      /* flex-wrap */
+      .nowrap { display: flex; flex-wrap: nowrap; overflow-x: auto; }
+      .wrap { display: flex; flex-wrap: wrap; }
+      .wrap .item, .nowrap .item { width: 150px; flex-shrink: 0; }
+    </style>
+  </head>
+  <body>
+    <h1>Flexbox Basics</h1>
+
+    <h2>flex-direction: row (default)</h2>
+    <div class="demo row">
+      <div class="item">1</div>
+      <div class="item">2</div>
+      <div class="item">3</div>
+    </div>
+
+    <h2>flex-direction: column</h2>
+    <div class="demo column">
+      <div class="item">1</div>
+      <div class="item">2</div>
+      <div class="item">3</div>
+    </div>
+
+    <h2>justify-content: flex-start (default)</h2>
+    <div class="demo justify-start">
+      <div class="item">A</div>
+      <div class="item">B</div>
+      <div class="item">C</div>
+    </div>
+
+    <h2>justify-content: center</h2>
+    <div class="demo justify-center">
+      <div class="item">A</div>
+      <div class="item">B</div>
+      <div class="item">C</div>
+    </div>
+
+    <h2>justify-content: space-between</h2>
+    <div class="demo justify-between">
+      <div class="item">A</div>
+      <div class="item">B</div>
+      <div class="item">C</div>
+    </div>
+
+    <h2>justify-content: space-evenly</h2>
+    <div class="demo justify-evenly">
+      <div class="item">A</div>
+      <div class="item">B</div>
+      <div class="item">C</div>
+    </div>
+
+    <h2>align-items: center (cross axis, edit CSS to try other values)</h2>
+    <div class="demo align-demo">
+      <div class="item tall">Tall item</div>
+      <div class="item short">Short</div>
+      <div class="item">Medium item</div>
+    </div>
+
+    <h2>flex-wrap: nowrap (items overflow, scroll horizontally)</h2>
+    <div class="demo nowrap">
+      <div class="item">1</div>
+      <div class="item">2</div>
+      <div class="item">3</div>
+      <div class="item">4</div>
+      <div class="item">5</div>
+    </div>
+
+    <h2>flex-wrap: wrap (items flow onto new lines)</h2>
+    <div class="demo wrap">
+      <div class="item">1</div>
+      <div class="item">2</div>
+      <div class="item">3</div>
+      <div class="item">4</div>
+      <div class="item">5</div>
+    </div>
+  </body>
+</html>

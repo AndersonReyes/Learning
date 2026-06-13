@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>02. Flexbox Layout — Navbar + Cards</title>
+    <style>
+      * { box-sizing: border-box; }
+      body {
+        font-family: sans-serif;
+        margin: 0;
+        color: #1a1a1a;
+      }
+
+      /* --- Navbar: flex row, space-between, gap --- */
+      .navbar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        background-color: #2266cc;
+        color: white;
+        padding: 12px 24px;
+      }
+      .navbar .brand {
+        font-weight: bold;
+        font-size: 1.25rem;
+        /* order: -1 would move this before preceding siblings in the flex
+           container's visual order without changing the HTML */
+      }
+      .navbar .links {
+        display: flex;
+        gap: 16px;
+        list-style: none;
+        margin: 0;
+        padding: 0;
+      }
+      .navbar .links a {
+        color: white;
+        text-decoration: none;
+      }
+      .navbar .links a:hover {
+        text-decoration: underline;
+      }
+      /* this link is reordered to appear first visually via `order`,
+         while staying last in the HTML/tab order */
+      .navbar .links .priority {
+        order: -1;
+      }
+
+      /* --- Page layout: sidebar (fixed) + main content (fills space) --- */
+      .layout {
+        display: flex;
+        min-height: 300px;
+      }
+      .sidebar {
+        flex: 0 0 200px; /* never grow or shrink: fixed 200px sidebar */
+        background-color: #f0f0f0;
+        padding: 16px;
+      }
+      .main-content {
+        flex: 1; /* = flex: 1 1 0% — fills all remaining space */
+        padding: 16px;
+      }
+
+      /* --- Card row: equal-width cards via flex-basis 0 + flex-grow 1 --- */
+      .cards {
+        display: flex;
+        gap: 16px;
+        margin-top: 16px;
+      }
+      .card {
+        flex: 1 1 0%; /* equal width regardless of content length */
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        padding: 12px;
+      }
+      .card.featured {
+        flex-grow: 2; /* takes 2x the extra space of its siblings (still flex-basis 0%) */
+        background-color: #e0ecff;
+      }
+    </style>
+  </head>
+  <body>
+    <nav class="navbar">
+      <div class="brand">MySite</div>
+      <ul class="links">
+        <li><a href="#">Home</a></li>
+        <li><a href="#">About</a></li>
+        <li><a href="#" class="priority">Sign In (reordered first)</a></li>
+      </ul>
+    </nav>
+
+    <div class="layout">
+      <aside class="sidebar">
+        <h2>Sidebar</h2>
+        <p>flex: 0 0 200px — fixed width, never grows or shrinks.</p>
+      </aside>
+      <main class="main-content">
+        <h2>Main content</h2>
+        <p>flex: 1 — fills all remaining horizontal space.</p>
+
+        <div class="cards">
+          <div class="card">Card A (flex: 1 1 0%)</div>
+          <div class="card featured">Featured card (flex-grow: 2 — gets 2x the extra space)</div>
+          <div class="card">Card C (flex: 1 1 0%)</div>
+        </div>
+      </main>
+    </div>
+  </body>
+</html>
