@@ -1,8 +1,9 @@
 # C++ Roadmap
 
 **Status: in progress.** Curriculum and reference are settled (see below).
-`fundamentals/01-setup-and-hello-world` is built. Next topic to build:
-`fundamentals/02-types-and-operators`.
+`fundamentals/01-setup-and-hello-world` and `fundamentals/02-types-and-operators`
+are built. Next topic to build:
+`fundamentals/03-integer-and-floating-point-arithmetic`.
 
 ## Reference
 
@@ -70,7 +71,7 @@ curriculum, once the language features it needs have been covered:
 | # | Topic | Folder | Reference | Status |
 |---|-------|--------|-----------|--------|
 | 1 | Setup, Compilation & Hello World | [`fundamentals/01-setup-and-hello-world`](./fundamentals/01-setup-and-hello-world) | MCPP ch. 2 (Preparation) | done |
-| 2 | Type System, Fundamental Types & Operators | `fundamentals/02-types-and-operators` | MCPP ch. 3 | planned |
+| 2 | Type System, Fundamental Types & Operators | [`fundamentals/02-types-and-operators`](./fundamentals/02-types-and-operators) | MCPP ch. 3 | done |
 | 3 | Integer & Floating-Point Arithmetic | `fundamentals/03-integer-and-floating-point-arithmetic` | MCPP ch. 4–5 | planned |
 | 4 | Control Flow, Enums, Structs & Namespaces | `fundamentals/04-control-flow-and-entities` | MCPP ch. 6 | planned |
 | 5 | Pointers, References, Memory & `const` | `fundamentals/05-pointers-references-and-memory` | MCPP ch. 7 | planned |
