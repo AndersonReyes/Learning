@@ -39,10 +39,33 @@ An Apple Health / Strava-style activity tracker:
 
 - Zero npm dependencies on the backend: `node:http`, `node:sqlite`,
   `node:fs`, `node:path`.
-- Frontend loads Leaflet + D3 from CDN `<script>` tags — no bundler, no npm,
-  consistent with how `html/`/`css/` examples are opened directly.
+- Frontend loads Leaflet + D3 (`<script>`) and **Pico.css** (`<link>`) from
+  CDN — no bundler, no npm, consistent with how `html/`/`css/` examples are
+  opened directly.
 - Single Node process serves both the static `public/` files and the
   `/api/*` JSON routes.
+
+## Design language
+
+Goal: Apple Health / Strava-quality polish without a component framework.
+
+- **Pico.css** (CDN `<link>`, classless) as the base — sane typography,
+  spacing, form controls, buttons, light/dark mode via CSS variables, for
+  free on plain semantic HTML.
+- **`public/css/style.css`** layers a small set of custom classes on top:
+  - **Activity cards**: dashboard is a card grid/feed (Strava-style), not a
+    table. Each card: type icon (emoji — 🏃🚶🥾🚴‍♀️⛰️🏊🚗🔧), name, date, and a
+    row of compact **stat tiles** (big number + small-caps label), e.g.
+    `5.2 km` / `DISTANCE`, `42:18` / `DURATION`, `+312 m` / `ELEV GAIN`.
+  - **Activity-type accent colors**: a CSS custom property per `type`
+    (`--accent-run`, `--accent-hike`, `--accent-roadtrip`, ...), used for the
+    card's icon badge background and a left-border accent stripe — quick
+    visual scanning like Apple Health's per-activity colors.
+  - **Detail-page stat row**: same stat-tile component, larger, in a
+    horizontal flex row above the map — mirrors Apple Health's workout
+    summary screen (distance / duration / pace / elevation gain+loss).
+- All custom CSS is hand-written (no Tailwind/utility framework) — keeps the
+  CSS itself readable/learnable, consistent with `css/` track conventions.
 
 ## Data model
 
@@ -177,15 +200,15 @@ unparseable GPX, both/neither of `gpx`/`coordinates`), `404` for unknown
 ## Frontend
 
 **`public/index.html`** — dashboard:
-- Table/list of activities: date, type, name, duration, distance, elevation
-  gain. Sorted by date desc.
+- Card grid/feed of activities (see Design language): icon, name, date, and
+  distance/duration/elevation stat tiles per card. Sorted by date desc.
 - "+ Log Activity" form: type (`<select>`), name, date, duration, notes,
   plus an optional GPX file `<input type="file">` (read via `FileReader`,
   send `.text()` as `gpx` in the POST body) OR a `<textarea>` for pasted
   coordinates.
 
 **`public/activity.html?id=N`** — detail view:
-- Stats summary: distance (km), duration (h:mm:ss), pace/speed
+- Stat-tile row: distance (km), duration (h:mm:ss), pace/speed
   (computed client-side from `distance_m`/`duration_s`), elevation gain/loss.
 - If `route` is non-null:
   - **Leaflet map**: OSM tile layer, `L.polyline(route.map(p => [p.lat,
@@ -216,7 +239,7 @@ javascript/capstone-activity-tracker/
   public/
     index.html
     activity.html
-    css/style.css
+    css/style.css        cards, stat tiles, type accent colors (atop Pico.css CDN)
     js/
       api.js             fetch wrapper
       dashboard.js
@@ -237,12 +260,14 @@ javascript/capstone-activity-tracker/
    in-memory (`:memory:`) database.
 4. **`server/index.js`** — HTTP routing wiring `db`/`gpx`/`geo` together;
    verify with `curl` against all 4 endpoints.
-5. **Dashboard UI** — activity list + manual logging form (no map yet);
-   verify by running the server and using the form in a browser.
+5. **Dashboard UI** — Pico.css base + activity card grid/feed + manual
+   logging form (no map yet); verify by running the server and using the
+   form in a browser.
 6. **Map + elevation chart** — Leaflet route polyline + D3 elevation profile
    on the detail page; verify visually with `sample-data/sample-hike.gpx`.
-7. **Polish** — pace/speed display, activity-type icons/filtering on the
-   dashboard, responsive CSS.
+7. **Polish** — stat tiles, activity-type accent colors/icons, pace/speed
+   display, dashboard filtering, responsive CSS, "Get driving directions"
+   link for roadtrips.
 
 ## Open questions / deferred decisions
 

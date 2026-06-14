@@ -115,11 +115,13 @@ stats.
   bodies (activity payloads, GPX uploads).
 - **Frontend**: static HTML/CSS/JS, `fetch` against the local API
   (`advanced/08-browser-apis`), Leaflet (route polyline on a real basemap)
-  + D3 (elevation-profile line chart) loaded via CDN `<script>` tags — the
-  first external runtime dependency in this repo (tile servers need internet
-  regardless). Roadtrip activities also get a "Get driving directions" link
-  (generated Google Maps URL from the route's start/end points) — no routing
-  engine needed.
+  + D3 (elevation-profile line chart) + Pico.css (minimalist base styling)
+  loaded via CDN tags — the first external runtime dependencies in this repo
+  (tile servers need internet regardless). Custom CSS on top gives an Apple
+  Health/Strava-style card UI: activity cards with type icons/accent colors
+  and stat tiles (distance, duration, elevation). Roadtrip activities also
+  get a "Get driving directions" link (generated Google Maps URL from the
+  route's start/end points) — no routing engine needed.
 
 Lives at `javascript/capstone-activity-tracker/`, with its own `notes.md`
 (design doc: data model, API spec, GPX format, calculation formulas, file
