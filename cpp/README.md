@@ -1,7 +1,8 @@
 # C++
 
-**Status: planning.** Curriculum is settled (see [`ROADMAP.md`](./ROADMAP.md));
-no topics are built out yet. First topic: `fundamentals/01-setup-and-hello-world`.
+**Status: in progress.** Curriculum is settled (see [`ROADMAP.md`](./ROADMAP.md)).
+`fundamentals/01-setup-and-hello-world` is built; see `ROADMAP.md` for status
+of the rest.
 
 ## How this track works
 
