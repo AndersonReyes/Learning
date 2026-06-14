@@ -13,6 +13,11 @@ An Apple Health / Strava-style activity tracker:
 - For GPS-based activities (hike, mountain bike, run, ...), import a **GPX
   file** or paste raw **coordinates** (`lat,lon[,ele]` per line) to attach a
   route.
+- **Roadtrips** are an activity type too, using the same GPX-import path —
+  the recorded route is traced on the map like any other route. Detail view
+  adds a **"Get driving directions"** link that opens an external map app
+  (Google Maps) for turn-by-turn navigation between the route's start and
+  end points — no new backend dependency, just a generated URL.
 - Routes get: total distance, elevation gain/loss, an **interactive map**
   with the route traced (Leaflet), and an **elevation profile chart** (D3).
 - Dashboard lists all activities with summary stats; clicking one opens its
@@ -46,7 +51,7 @@ An Apple Health / Strava-style activity tracker:
 | column | type | notes |
 |---|---|---|
 | `id` | INTEGER PK | autoincrement |
-| `type` | TEXT | `"run" \| "walk" \| "hike" \| "bike" \| "mountain_bike" \| "swim" \| "other"` |
+| `type` | TEXT | `"run" \| "walk" \| "hike" \| "bike" \| "mountain_bike" \| "swim" \| "roadtrip" \| "other"` |
 | `name` | TEXT | optional, user-given title |
 | `date` | TEXT | ISO 8601 start time |
 | `duration_s` | INTEGER | seconds |
@@ -187,6 +192,11 @@ unparseable GPX, both/neither of `gpx`/`coordinates`), `404` for unknown
     p.lon]))`, `map.fitBounds(polyline.getBounds())`.
   - **D3 elevation profile**: SVG line chart, x = cumulative distance (km),
     y = elevation (m). Skip this chart entirely if any `ele` is `null`.
+  - If `type === "roadtrip"`: render a **"Get driving directions"** `<a>`
+    link below the map, built client-side from the first/last route points —
+    `https://www.google.com/maps/dir/?api=1&origin={lat},{lon}&destination={lat},{lon}&travelmode=driving`
+    (`target="_blank"`). Opens Google Maps with the actual road route for
+    turn-by-turn navigation; no routing engine/API key needed on our side.
 
 ## File structure
 

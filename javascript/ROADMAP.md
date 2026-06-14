@@ -98,7 +98,7 @@ together into one real app.
 ### Capstone: Activity & Route Tracker (Apple Health / Strava-style)
 
 Full-stack activity-tracking app: log any activity (type + duration), and for
-GPS-based activities (hike/mountain bike), import a GPX file or raw
+GPS-based activities (hike/mountain bike/roadtrip), import a GPX file or raw
 coordinates to get a traced route, elevation profile, and distance/elevation
 stats.
 
@@ -117,7 +117,9 @@ stats.
   (`advanced/08-browser-apis`), Leaflet (route polyline on a real basemap)
   + D3 (elevation-profile line chart) loaded via CDN `<script>` tags — the
   first external runtime dependency in this repo (tile servers need internet
-  regardless).
+  regardless). Roadtrip activities also get a "Get driving directions" link
+  (generated Google Maps URL from the route's start/end points) — no routing
+  engine needed.
 
 Lives at `javascript/capstone-activity-tracker/`, with its own `notes.md`
 (design doc: data model, API spec, GPX format, calculation formulas, file
