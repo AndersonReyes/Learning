@@ -186,17 +186,33 @@ with:
 - **`examples.cpp`** — single translation unit, runnable via
   `g++ -std=c++20 -Wall -Wextra -o /tmp/ex examples.cpp && /tmp/ex`.
   Demonstrates `notes.md` concepts via `std::cout`/`printf`. No exercises.
-- **`exercise.h`** (+ `exercise.cpp` if out-of-line definitions are needed)
-  — 5 function/class stubs with doc comments (signature, behavior, example
-  I/O). Stub bodies `throw std::logic_error("not implemented")` (or
-  `static_assert(false, ...)` for template-only stubs).
-- **`exercise_test.cpp`** — uses `cpp/testing.h` (header-only
-  `TEST`/`CHECK`/`CHECK_EQ`/`TEST_MAIN`, zero deps). This IS the spec/answer
-  key — no separate solution files.
+- **`exercise.h`** + `exercise.cpp` — 5 function/class stubs with doc
+  comments (signature, behavior, example I/O).
+- **`exercise_test.cpp`** — this IS the spec/answer key — no separate
+  solution files. See "Testing strategy" below for how it's written.
 
 Plain compiler invocations until `intermediate/06` (Debugging, Testing &
 CMake), which introduces CMake; topics after that may add a
 `CMakeLists.txt` where a multi-file build helps.
+
+### Testing strategy: build the framework, don't start with one
+
+No pre-built test framework — building one is part of the curriculum (see
+`cpp/ROADMAP.md` for the full rationale):
+
+- **Fundamentals 1–5**: `exercise_test.cpp` is a plain `main()` using
+  `<cassert>` — `assert(expr == expected)` per check. Stub bodies return a
+  default/sentinel value (`""`, `{}`, `0`, ...), NOT `throw` (exceptions
+  aren't covered until `advanced/02`), so a failing assert points at a
+  specific line.
+- **`fundamentals/06`** (Functions, Lambdas & the Preprocessor) builds
+  `cpp/testing.h` — a header-only `TEST`/`CHECK`/`TEST_MAIN` framework — as
+  one of its own exercises.
+- **`fundamentals/07` onward**: `exercise_test.cpp` uses `cpp/testing.h`.
+  Stub bodies switch to `throw std::logic_error("not implemented")`, caught
+  by `TEST_MAIN()` and reported as a FAIL.
+- **`intermediate/01`** (Function Templates) extends `cpp/testing.h` with a
+  templated `CHECK_EQ(a, b)`.
 
 ### Exercise difficulty
 
@@ -211,12 +227,13 @@ template deduction, object lifetime), not just happy-path I/O.
 1. Pick the next `planned` topic from `cpp/ROADMAP.md` (Fundamentals →
    Intermediate → Advanced order), noting its Modern C++ Programming
    chapter(s).
-2. Write, in this order: `notes.md` → `exercise.h` (+ `exercise.cpp`) →
+2. Write, in this order: `notes.md` → `exercise.h` + `exercise.cpp` →
    `exercise_test.cpp` → `examples.cpp`.
 3. Verify:
    - `examples.cpp` builds and runs cleanly.
-   - The exercise test binary builds and **every test fails** (stubs throw
-     "not implemented") — the expected starting state for a learner.
+   - The exercise test binary builds, and **every check currently fails**
+     (per the testing strategy above) — the expected starting state for a
+     learner.
 4. Update `cpp/ROADMAP.md`: mark the topic `done` and link its folder.
 
 ### Capstone

@@ -20,17 +20,22 @@ topic's "Further Reading" section alongside cppreference.com.
 ## Building and testing
 
 No external dependencies (no vendored test framework, no package manager).
-Everything compiles with a plain `g++`/`clang++` invocation against
-[`testing.h`](./testing.h), a small header-only `TEST`/`CHECK`/`CHECK_EQ`/
-`TEST_MAIN` framework:
+Everything compiles with a plain `g++`/`clang++` invocation:
 
 ```sh
 # Run a topic's examples
 g++ -std=c++20 -Wall -Wextra -o /tmp/ex fundamentals/01-setup-and-hello-world/examples.cpp && /tmp/ex
 
 # Run a topic's exercise tests (spec)
-g++ -std=c++20 -Wall -Wextra -o /tmp/test fundamentals/01-setup-and-hello-world/exercise_test.cpp && /tmp/test
+g++ -std=c++20 -Wall -Wextra -o /tmp/test fundamentals/01-setup-and-hello-world/exercise_test.cpp fundamentals/01-setup-and-hello-world/exercise.cpp && /tmp/test
 ```
+
+There's no pre-built test framework — `exercise_test.cpp` for
+`fundamentals/01`–`05` is a plain `assert()`-based `main()`. `fundamentals/06`
+(Functions, Lambdas & the Preprocessor) builds `cpp/testing.h`, a small
+`TEST`/`CHECK`/`TEST_MAIN` framework, as one of its own exercises; every
+topic from `fundamentals/07` onward uses it. See "Testing strategy" in
+[`ROADMAP.md`](./ROADMAP.md).
 
 CMake is introduced as its own topic (`intermediate/06`) and used from then
 on where a multi-file build is useful, and throughout the capstone.
