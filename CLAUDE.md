@@ -4,9 +4,10 @@ This repo holds self-study tracks. Currently: `javascript/` (fundamentals
 done; intermediate/advanced in progress — see `javascript/ROADMAP.md` status
 column), `go/` (fundamentals/intermediate/advanced fully built — taught
 through computer networking, see `go/ROADMAP.md`), `html/` and `css/` (notes
-+ viewable examples, no exercises). Future language tracks should follow the
-same top-level pattern: a dedicated `<language>/` directory with its own
-README, ROADMAP, package manifest (if runnable), and numbered topic folders.
++ viewable examples, no exercises), `cpp/` (planning stage — see
+`cpp/ROADMAP.md`). Future language tracks should follow the same top-level
+pattern: a dedicated `<language>/` directory with its own README, ROADMAP,
+package manifest (if runnable), and numbered topic folders.
 
 ## JavaScript track (`javascript/`)
 
@@ -163,6 +164,29 @@ self-contained `<style>` blocks (one example pairs `.html`+`.css` to
 demonstrate `<link>`). No exercises. `css/README.md` explains the
 browser-viewing workflow; `css/ROADMAP.md` tracks the 3 topics plus a TODO
 for future full design projects (deferred — not part of this build-out).
+
+## C++ track (`cpp/`)
+
+**Status: planning.** Full outline lives in `cpp/ROADMAP.md`. This track
+does NOT follow the JS/Go 4-file-per-topic pattern — it's **one cumulative
+project**, a ray tracer built incrementally across three phases following
+the [_Ray Tracing in One Weekend_ series](https://github.com/RayTracing/raytracing.github.io)
+(one phase per book in that series). Each phase's code builds on the
+previous phase's; there is no test suite. "Done" for a phase means the
+program builds and renders the expected output image, verified by running it
+— similar to the JS capstone's "build it and verify by running" workflow,
+not the test-driven exercise pattern.
+
+Open TODOs (tracked in `cpp/ROADMAP.md`, not yet resolved):
+
+- The primary C++ reference for "Further Reading" citations is **not
+  chosen yet** — this was explicitly left as a TODO for the user to decide,
+  do not pick one unprompted.
+- Build system/project layout (CMake vs. plain compiler invocations) and
+  `notes.md` granularity are also undecided.
+
+Once these are settled, build Phase 1 (`notes.md` + project scaffold) and
+update `cpp/ROADMAP.md`'s status.
 
 ## Checkpointing & quota awareness
 
