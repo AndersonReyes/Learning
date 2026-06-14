@@ -1,88 +1,160 @@
 # C++ Roadmap
 
-**Status: planning.** The phase breakdown below is a rough outline. Build
-system, project layout, and "Further Reading" reference docs are not decided
-yet — see "Open TODOs" at the bottom.
+**Status: planning.** Curriculum and reference are now settled (see below);
+no topics are built yet. First topic to build:
+`fundamentals/01-setup-and-hello-world`.
 
-## Shape of this track
+## Reference
 
-This track is **one cumulative project**, not a set of independent topics:
-a ray tracer built incrementally across three phases, following the
-[_Ray Tracing in One Weekend_ series](https://github.com/RayTracing/raytracing.github.io)
-(Shirley et al. — three short books, each a direct sequel to the last).
-Each phase's code extends the previous phase's code. There's no
-`exercise.test.js`/`exercise_test.go`-style spec; "done" for a phase means
-the program builds and renders the expected output image, checked by running
-it and inspecting the result.
+Primary reference for this track is Federico Busato's
+[**Modern C++ Programming**](https://github.com/federico-busato/Modern-CPP-Programming)
+course (CC BY 4.0 course content, MIT-licensed code samples; 29 chapters,
+used at the University of Verona). Each topic below maps to one or more of
+its chapters, and each topic's `notes.md` links the matching chapter's HTML
+slides (`https://federico-busato.github.io/Modern-CPP-Programming/htmls/NN.Chapter.html`)
+plus relevant [cppreference.com](https://en.cppreference.com/) pages under
+"Further Reading" — the same role MDN plays for the JS track and
+go.dev/RFCs play for the Go track.
 
-## Phase 1 — foundational ray tracer
+## Per-topic structure
 
-Covers the first book. Builds a single-threaded CPU ray tracer that outputs
-a pixel image, starting from nothing and ending with a recognizable rendered
-scene:
+Each topic is a numbered folder, e.g. `fundamentals/02-types-and-operators/`,
+with 4 files (same role as the JS/Go pattern, adapted for C++ with zero
+external dependencies):
+
+- **`notes.md`** — concept explanation in the same terse style as JS/Go:
+  syntax, rules, gotchas, short snippets. Ends with "Further Reading" linking
+  the matching Modern C++ Programming chapter(s) and cppreference pages.
+- **`examples.cpp`** — single translation unit, compiled and run directly
+  (`g++ -std=c++20 -Wall -Wextra -o /tmp/ex examples.cpp && /tmp/ex`).
+  Demonstrates the topic's concepts with `std::cout`/`printf`. No exercises
+  here.
+- **`exercise.h`** (+ `exercise.cpp` if the topic needs out-of-line
+  definitions) — 5 function/class stubs with doc comments (signature,
+  behavior, example I/O). Stub bodies are `throw std::logic_error("not
+  implemented")` (or `static_assert(false, ...)` for template-only stubs that
+  must fail to compile until implemented).
+- **`exercise_test.cpp`** — uses [`cpp/testing.h`](./testing.h) (a ~70-line
+  header-only `TEST`/`CHECK`/`CHECK_EQ`/`TEST_MAIN` framework, committed
+  alongside this roadmap). This IS the spec/answer key. Compiled with
+  `g++ -std=c++20 -Wall -Wextra -o /tmp/test exercise_test.cpp [exercise.cpp] && /tmp/test`.
+
+Plain compiler invocations (no CMake) until `intermediate/06`, which covers
+CMake directly — from then on, topics that benefit from a multi-file build
+may include a `CMakeLists.txt`. The capstone (below) uses CMake throughout.
+
+## Fundamentals
+
+| # | Topic | Folder | Reference | Status |
+|---|-------|--------|-----------|--------|
+| 1 | Setup, Compilation & Hello World | `fundamentals/01-setup-and-hello-world` | MCPP ch. 2 (Preparation) | planned |
+| 2 | Type System, Fundamental Types & Operators | `fundamentals/02-types-and-operators` | MCPP ch. 3 | planned |
+| 3 | Integer & Floating-Point Arithmetic | `fundamentals/03-integer-and-floating-point-arithmetic` | MCPP ch. 4–5 | planned |
+| 4 | Control Flow, Enums, Structs & Namespaces | `fundamentals/04-control-flow-and-entities` | MCPP ch. 6 | planned |
+| 5 | Pointers, References, Memory & `const` | `fundamentals/05-pointers-references-and-memory` | MCPP ch. 7 | planned |
+| 6 | Functions, Lambdas & the Preprocessor | `fundamentals/06-functions-and-lambdas` | MCPP ch. 8 | planned |
+| 7 | Classes, Constructors, Destructors & RAII | `fundamentals/07-classes-and-raii` | MCPP ch. 9 | planned |
+| 8 | Polymorphism & Operator Overloading | `fundamentals/08-polymorphism-and-operator-overloading` | MCPP ch. 10 | planned |
+
+## Intermediate
+
+| # | Topic | Folder | Reference | Status |
+|---|-------|--------|-----------|--------|
+| 1 | Function Templates & Compile-Time Utilities | `intermediate/01-function-templates` | MCPP ch. 11 | planned |
+| 2 | Class Templates, CTAD, SFINAE & Concepts | `intermediate/02-class-templates-and-concepts` | MCPP ch. 12 | planned |
+| 3 | Translation Units, Linkage & the ODR | `intermediate/03-translation-units-and-odr` | MCPP ch. 13 | planned |
+| 4 | Multi-File Projects, `#include`, Modules & Libraries | `intermediate/04-modules-and-libraries` | MCPP ch. 14 | planned |
+| 5 | Project Organization & Code Conventions | `intermediate/05-code-conventions` | MCPP ch. 15–16 | planned |
+| 6 | Debugging, Sanitizers, Testing & CMake | `intermediate/06-debugging-testing-and-cmake` | MCPP ch. 17–18 | planned |
+| 7 | Standard Library Utilities (`string`, `optional`, `variant`, `<random>`, filesystem) | `intermediate/07-standard-library-utilities` | MCPP ch. 19 | planned |
+| 8 | Containers, Iterators, Algorithms & Ranges | `intermediate/08-containers-iterators-and-algorithms` | MCPP ch. 20 | planned |
+
+## Advanced
+
+| # | Topic | Folder | Reference | Status |
+|---|-------|--------|-----------|--------|
+| 1 | Move Semantics, Value Categories & Type Deduction | `advanced/01-move-semantics-and-type-deduction` | MCPP ch. 21 | planned |
+| 2 | Error Handling, Smart Pointers & Concurrency | `advanced/02-error-handling-smart-pointers-and-concurrency` | MCPP ch. 22 | planned |
+| 3 | Performance Fundamentals: Architecture & Memory Hierarchy | `advanced/03-performance-fundamentals` | MCPP ch. 23 | planned |
+| 4 | Code-Level Optimization Techniques | `advanced/04-code-optimization` | MCPP ch. 24 | planned |
+| 5 | Compiler Optimization, Profiling & Benchmarking | `advanced/05-profiling-and-benchmarking` | MCPP ch. 25 | planned |
+| 6 | Software Design Principles, Idioms & Patterns | `advanced/06-software-design-and-idioms` | MCPP ch. 26–27 | planned |
+| 7 | Binary Size & Build Time | `advanced/07-binary-size-and-build-time` | MCPP ch. 28–29 | planned |
+
+## Exercise difficulty
+
+Same bar as JS/Go: **hard, challenging problems**, hand-verified before
+writing `exercise_test.cpp` (temporarily implement a reference solution,
+compile + run the test binary, confirm all tests pass, then revert to
+stubs). Since C++ exercises often hinge on subtle language rules (UB,
+overload resolution, template deduction, object lifetime), tests should
+exercise those edge cases directly, not just "happy path" I/O.
+
+## Adding a new topic
+
+1. Pick the next `planned` topic from the tables above, in order
+   (Fundamentals → Intermediate → Advanced), noting its MCPP chapter(s).
+2. Write, in this order: `notes.md` → `exercise.h` (+ `exercise.cpp`) →
+   `exercise_test.cpp` → `examples.cpp`.
+3. Verify:
+   - `g++ -std=c++20 -Wall -Wextra -o /tmp/ex <topic>/examples.cpp && /tmp/ex`
+     runs cleanly.
+   - The exercise test binary builds and **every test fails** (stubs throw
+     "not implemented") — the expected starting state for a learner.
+4. Update this file: mark the topic `done` and turn its folder cell into a
+   link.
+
+## Capstone: Ray Tracing in One Weekend
+
+Once the core curriculum (or a substantial chunk of it — Fundamentals
+through at least `intermediate/04`) is built, the cumulative project from
+the previous version of this roadmap moves here as a capstone: a CPU ray
+tracer built across three phases, following the
+[_Ray Tracing in One Weekend_ series](https://github.com/RayTracing/raytracing.github.io).
+Unlike the topics above, this is **one growing CMake project** with no test
+suite — "done" for each phase means the program builds and renders the
+expected image, checked by running it and viewing the output (same
+"build it and verify by running" workflow as the JS capstone). Lives at
+`cpp/capstone-ray-tracer/`.
+
+### Phase 1 — foundational ray tracer
 
 - Image output (PPM format), pixel grid, viewport/camera basics
-- 3D vector math (point/direction/color all modeled as a vector type)
+- 3D vector math (point/direction/color as one vector type, with operator
+  overloading)
 - Rays, ray-sphere intersection, surface normals
 - Antialiasing via per-pixel multisampling
-- Diffuse (matte) materials and recursive ray bounces
-- Reflective (metal) materials, including fuzzy reflection
-- Refractive (glass/dielectric) materials
+- Diffuse (matte), reflective (metal, with fuzz), and refractive
+  (dielectric) materials via recursive ray bounces
 - A positionable camera: field of view, orientation, depth-of-field/defocus
   blur
-- Final scene: many randomly-placed spheres with mixed materials, rendered
-  together
+- Final scene: many randomly-placed spheres with mixed materials
 
-**C++ concepts introduced:** project/build setup, classes and operator
-overloading (vector/color/ray types), header organization, inheritance and
-virtual functions (a common "hittable" interface, a common "material"
-interface), `shared_ptr` for polymorphic ownership of scene objects,
-recursion (ray bounce depth + base case), `const`-correctness, `<random>`
-for sampling.
+Applies fundamentals + intermediate concepts directly: classes/operator
+overloading (vectors, colors, rays), inheritance and virtual functions
+(`hittable`/`material` interfaces), `shared_ptr` for polymorphic ownership,
+recursion with a depth limit, `const`-correctness, `<random>`.
 
-## Phase 2 — performance, textures, lighting, volumes
-
-Covers the second book. Extends the Phase 1 ray tracer with features needed
-for more complex, realistic scenes:
+### Phase 2 — performance, textures, lighting, volumes
 
 - Motion blur (time-dependent ray generation)
 - Bounding volume hierarchy (BVH) for fast ray-object intersection at scale
-- Textures: solid colors, procedural patterns (e.g. checkerboards, noise),
-  and image-based textures
+- Solid, procedural (e.g. checkerboard/noise), and image-based textures
 - Rectangular/quad primitives and emissive (light-source) materials
-- Instancing: translating and rotating objects without duplicating geometry
+- Instancing: translating/rotating objects without duplicating geometry
 - Participating media (fog/smoke-style volumes)
 
-**C++ concepts introduced:** recursive tree data structures (BVH
-construction and traversal), `std::vector` and STL algorithms (e.g. sorting
-for BVH construction), function objects/lambdas as comparators, file I/O
-(loading image textures from disk), deeper class composition.
+Adds: recursive tree structures (BVH), `std::vector` + STL algorithms (BVH
+construction), function objects/lambdas as comparators, image file I/O.
 
-## Phase 3 — physically-based sampling
+### Phase 3 — physically-based sampling
 
-Covers the third book. Reworks the renderer's sampling strategy for more
-accurate, less noisy images:
+- Monte Carlo integration fundamentals
+- Importance sampling and probability density functions (PDFs) for
+  scattering
+- Sampling light sources directly instead of relying on chance ray hits
+- Mixture densities combining multiple sampling strategies
 
-- Monte Carlo integration fundamentals (estimating an integral via random
-  sampling)
-- Importance sampling (sampling proportional to where the integrand is
-  large)
-- Probability density functions (PDFs) attached to materials/scattering
-- Sampling light sources directly, rather than relying on chance ray hits
-- Mixture densities that combine multiple sampling strategies
-
-**C++ concepts introduced:** numerical/probabilistic code organization,
-abstract base classes for swappable sampling strategies (strategy pattern),
-refactoring and extending the Phase 1–2 codebase without breaking it.
-
-## Open TODOs
-
-- [ ] Pick a primary C++ reference for each phase's "Further Reading"
-      section (candidates to evaluate later: cppreference.com, _A Tour of
-      C++_, learncpp.com — **not decided**, deferred per request)
-- [ ] Decide build system and project layout (CMake vs. plain
-      compiler invocations; one project for all phases vs. one per phase)
-- [ ] Decide `notes.md` granularity (one per phase vs. one per major
-      concept/chapter)
-- [ ] Write Phase 1 `notes.md` and initial project scaffold once the above
-      are settled
+Adds: numerical/probabilistic code organization, abstract base classes for
+swappable sampling strategies (strategy pattern), refactoring the Phase 1–2
+codebase without breaking it.

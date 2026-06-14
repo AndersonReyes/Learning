@@ -167,26 +167,68 @@ for future full design projects (deferred — not part of this build-out).
 
 ## C++ track (`cpp/`)
 
-**Status: planning.** Full outline lives in `cpp/ROADMAP.md`. This track
-does NOT follow the JS/Go 4-file-per-topic pattern — it's **one cumulative
-project**, a ray tracer built incrementally across three phases following
-the [_Ray Tracing in One Weekend_ series](https://github.com/RayTracing/raytracing.github.io)
-(one phase per book in that series). Each phase's code builds on the
-previous phase's; there is no test suite. "Done" for a phase means the
-program builds and renders the expected output image, verified by running it
-— similar to the JS capstone's "build it and verify by running" workflow,
-not the test-driven exercise pattern.
+**Status: planning.** Full curriculum lives in `cpp/ROADMAP.md` — 23 topics
+across Fundamentals/Intermediate/Advanced, mapped to the 29 chapters of
+Federico Busato's [Modern C++ Programming](https://github.com/federico-busato/Modern-CPP-Programming)
+course (the track's primary reference, cited in each topic's "Further
+Reading"). No topics are built yet; first one is
+`fundamentals/01-setup-and-hello-world`.
 
-Open TODOs (tracked in `cpp/ROADMAP.md`, not yet resolved):
+### Per-topic structure
 
-- The primary C++ reference for "Further Reading" citations is **not
-  chosen yet** — this was explicitly left as a TODO for the user to decide,
-  do not pick one unprompted.
-- Build system/project layout (CMake vs. plain compiler invocations) and
-  `notes.md` granularity are also undecided.
+Same shape as JS/Go, adapted for C++ with zero external dependencies. Each
+topic is a numbered folder, e.g. `fundamentals/02-types-and-operators/`,
+with:
 
-Once these are settled, build Phase 1 (`notes.md` + project scaffold) and
-update `cpp/ROADMAP.md`'s status.
+- **`notes.md`** — concept explanation, terse like JS/Go: syntax, rules,
+  gotchas, short snippets. Ends with "Further Reading" linking the matching
+  Modern C++ Programming chapter(s) and cppreference.com pages.
+- **`examples.cpp`** — single translation unit, runnable via
+  `g++ -std=c++20 -Wall -Wextra -o /tmp/ex examples.cpp && /tmp/ex`.
+  Demonstrates `notes.md` concepts via `std::cout`/`printf`. No exercises.
+- **`exercise.h`** (+ `exercise.cpp` if out-of-line definitions are needed)
+  — 5 function/class stubs with doc comments (signature, behavior, example
+  I/O). Stub bodies `throw std::logic_error("not implemented")` (or
+  `static_assert(false, ...)` for template-only stubs).
+- **`exercise_test.cpp`** — uses `cpp/testing.h` (header-only
+  `TEST`/`CHECK`/`CHECK_EQ`/`TEST_MAIN`, zero deps). This IS the spec/answer
+  key — no separate solution files.
+
+Plain compiler invocations until `intermediate/06` (Debugging, Testing &
+CMake), which introduces CMake; topics after that may add a
+`CMakeLists.txt` where a multi-file build helps.
+
+### Exercise difficulty
+
+Same bar as JS/Go: **hard, challenging problems**, hand-verified before
+writing `exercise_test.cpp` (temporarily implement a reference solution,
+build + run the test binary, confirm all pass, then revert to stubs). C++
+exercises should exercise language-rule edge cases (UB, overload resolution,
+template deduction, object lifetime), not just happy-path I/O.
+
+### Adding a new topic
+
+1. Pick the next `planned` topic from `cpp/ROADMAP.md` (Fundamentals →
+   Intermediate → Advanced order), noting its Modern C++ Programming
+   chapter(s).
+2. Write, in this order: `notes.md` → `exercise.h` (+ `exercise.cpp`) →
+   `exercise_test.cpp` → `examples.cpp`.
+3. Verify:
+   - `examples.cpp` builds and runs cleanly.
+   - The exercise test binary builds and **every test fails** (stubs throw
+     "not implemented") — the expected starting state for a learner.
+4. Update `cpp/ROADMAP.md`: mark the topic `done` and link its folder.
+
+### Capstone
+
+Once the core curriculum (or at least Fundamentals through
+`intermediate/04`) is built, `cpp/capstone-ray-tracer/` becomes a ray tracer
+built across three phases following the
+[_Ray Tracing in One Weekend_ series](https://github.com/RayTracing/raytracing.github.io)
+— one growing CMake project, no test suite. "Done" for a phase means it
+builds and renders the expected image, verified by running it — same
+"build it and verify by running" workflow as the JS capstone. Full
+phase breakdown is in the "Capstone" section of `cpp/ROADMAP.md`.
 
 ## Checkpointing & quota awareness
 

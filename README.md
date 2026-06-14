@@ -38,6 +38,7 @@ did the writing.
 - [`css/`](./css) — CSS track: notes and viewable examples (open `.html`
   files directly in a browser). See [`css/README.md`](./css/README.md) and
   [`css/ROADMAP.md`](./css/ROADMAP.md).
-- [`cpp/`](./cpp) — C++ track (planning): one cumulative ray-tracer project
-  based on the *Ray Tracing in One Weekend* series. See
+- [`cpp/`](./cpp) — C++ track (planning): notes, runnable examples, and
+  test-driven exercises based on the *Modern C++ Programming* course, plus a
+  *Ray Tracing in One Weekend* capstone. See
   [`cpp/README.md`](./cpp/README.md) and [`cpp/ROADMAP.md`](./cpp/ROADMAP.md).

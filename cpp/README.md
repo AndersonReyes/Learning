@@ -1,21 +1,45 @@
-# C++ — Ray Tracing in One Weekend
+# C++
 
-**Status: planning.** This track isn't built out yet — see
-[`ROADMAP.md`](./ROADMAP.md) for the phase outline and open TODOs (build
-system, project layout, and reference docs are all still TBD).
+**Status: planning.** Curriculum is settled (see [`ROADMAP.md`](./ROADMAP.md));
+no topics are built out yet. First topic: `fundamentals/01-setup-and-hello-world`.
 
 ## How this track works
 
-Unlike `javascript/` and `go/` (independent numbered topics, each with its
-own `node:test`/`go test` exercise spec), this track is **one cumulative
-project**: a ray tracer built up incrementally across three phases, based on
-the [_Ray Tracing in One Weekend_ series](https://github.com/RayTracing/raytracing.github.io).
-Each phase's code builds directly on the previous phase's.
+Same shape as `javascript/` and `go/`: numbered topic folders under
+`fundamentals/`, `intermediate/`, and `advanced/`, each with `notes.md`,
+`examples.cpp`, `exercise.h` (+ `exercise.cpp` where needed), and
+`exercise_test.cpp`. `exercise_test.cpp` is the spec/answer key — there are
+no separate solution files. See [`ROADMAP.md`](./ROADMAP.md) for the full
+curriculum, per-topic file pattern, and "Adding a new topic" workflow.
 
-There's no test suite here. Each phase's notes will explain the concepts and
-walk through the code for that phase; a phase is "done" when the program
-builds and renders the expected output image — checked by running it and
-viewing the result, similar to the capstone project's "build it and verify
-by running" workflow.
+The curriculum is built around Federico Busato's
+[**Modern C++ Programming**](https://github.com/federico-busato/Modern-CPP-Programming)
+course — each topic maps to one or more of its 29 chapters, linked from that
+topic's "Further Reading" section alongside cppreference.com.
 
-See [`ROADMAP.md`](./ROADMAP.md) for the phase-by-phase breakdown.
+## Building and testing
+
+No external dependencies (no vendored test framework, no package manager).
+Everything compiles with a plain `g++`/`clang++` invocation against
+[`testing.h`](./testing.h), a small header-only `TEST`/`CHECK`/`CHECK_EQ`/
+`TEST_MAIN` framework:
+
+```sh
+# Run a topic's examples
+g++ -std=c++20 -Wall -Wextra -o /tmp/ex fundamentals/01-setup-and-hello-world/examples.cpp && /tmp/ex
+
+# Run a topic's exercise tests (spec)
+g++ -std=c++20 -Wall -Wextra -o /tmp/test fundamentals/01-setup-and-hello-world/exercise_test.cpp && /tmp/test
+```
+
+CMake is introduced as its own topic (`intermediate/06`) and used from then
+on where a multi-file build is useful, and throughout the capstone.
+
+## Capstone
+
+Once the core curriculum is far enough along, `cpp/capstone-ray-tracer/`
+builds a CPU ray tracer across three phases, following the
+[_Ray Tracing in One Weekend_ series](https://github.com/RayTracing/raytracing.github.io).
+Unlike the topics above, it's one growing CMake project with no test suite —
+each phase is "done" when it builds and renders the expected image. See the
+"Capstone" section of [`ROADMAP.md`](./ROADMAP.md).
