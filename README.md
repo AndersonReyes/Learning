@@ -19,6 +19,11 @@ adapt the exercises to your level, swap in your own topics — hopefully it's
 a fun reference, or at least a good starting point for a version that fits
 how you learn.
 
+**Full disclosure:** this whole repo — notes, examples, exercises, and
+tests — was built with [Claude Code](https://claude.com/product/claude-code).
+I directed it (topics, style, difficulty, what "done" looks like), Claude
+did the writing.
+
 - [`javascript/`](./javascript) — JavaScript track: notes, runnable examples,
   and test-driven exercises. See [`javascript/README.md`](./javascript/README.md)
   to get started and [`javascript/ROADMAP.md`](./javascript/ROADMAP.md) for the
