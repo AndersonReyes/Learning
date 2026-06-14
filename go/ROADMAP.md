@@ -54,9 +54,9 @@ fewer new language features and more standard-library/networking depth.
 
 ## Capstones (future)
 
-The Advanced section above is now built out, so both capstones below are
+The Advanced section above is now built out, so all capstones below are
 unblocked. Each is a standalone project that ties multiple topics together
-into one real tool — pick either (or both), in either order.
+into one real tool — pick any (or all), in any order.
 
 ### Capstone A: Network Monitoring Tool (Go)
 
@@ -82,7 +82,33 @@ with its own README documenting the architecture and how to run it
 (needs raw-socket privileges, per the "personal computer with root access"
 note for the Advanced section).
 
-### Capstone B: TCP/IP Stack From Scratch (Rust)
+### Capstone B: Peer-to-Peer Protocol (Go)
+
+Build a decentralized P2P node — a BitTorrent/Kademlia-style mini protocol —
+that ties together the distributed-systems side of this Go track:
+
+- **Transport & framing**: TCP connections between peers
+  (`fundamentals/08-net-dial-listen-and-udp`) with length-prefixed message
+  framing (`fundamentals/09-bufio-io-binary-and-framing`) or the protobuf
+  wire format (`advanced/04-protobuf-wire-format`) for peer messages.
+- **Peer discovery & routing**: a Kademlia-style DHT — XOR distance metric,
+  k-buckets, iterative lookups — reusing the routing/shortest-path thinking
+  from `intermediate/06-routing-algorithms-and-path-selection`.
+- **Gossip / message propagation**: flood or gossip-based broadcast across
+  peers using goroutines and channels (`fundamentals/06`, `fundamentals/07`),
+  with `context` for per-request cancellation/timeouts.
+- **Content exchange**: chunked file transfer with a piece bitfield and
+  request pipelining (BitTorrent-style), encoded with
+  `advanced/04-protobuf-wire-format` and optionally encrypted with
+  `intermediate/02-tls-https-and-handshake`.
+- **Optional**: NAT traversal / hole punching using the raw-socket techniques
+  from `advanced/01-raw-sockets-and-tun-tap`.
+
+Lives alongside the existing `go/` topics, e.g. `go/capstone-p2p-protocol/`,
+with its own README documenting the protocol's message types and how to run
+a multi-node demo (e.g. several local processes on different ports).
+
+### Capstone C: TCP/IP Stack From Scratch (Rust)
 
 Add a `rust/` track and build a **TCP/IP stack from scratch in Rust**
 (Stanford CS144-style, `smoltcp`-inspired): IP, ARP, TCP handshake,
