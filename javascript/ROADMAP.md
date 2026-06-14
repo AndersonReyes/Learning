@@ -88,3 +88,40 @@ conceptually:
   runtime type-guards and discriminated-union patterns that mirror what
   TypeScript checks statically; `notes.md` shows the equivalent TS syntax in
   snippets (not run).
+
+## Capstones (future)
+
+The Fundamentals/Intermediate/Advanced curriculum above is now built out, so
+this capstone is unblocked — a standalone project tying multiple topics
+together into one real app.
+
+### Capstone: Activity & Route Tracker (Apple Health / Strava-style)
+
+Full-stack activity-tracking app: log any activity (type + duration), and for
+GPS-based activities (hike/mountain bike), import a GPX file or raw
+coordinates to get a traced route, elevation profile, and distance/elevation
+stats.
+
+- **GPX/coordinate parsing**: hand-rolled regex-based GPX parser (no XML
+  library) — builds on `advanced/03-regular-expressions`.
+- **Geo math**: haversine distance, cumulative distance, elevation
+  gain/loss — pure functions, `node:test`-spec'd like every other topic
+  (assertion/test-runner patterns from `advanced/10-testing-and-tooling`).
+- **Backend**: `node:http` + `node:sqlite` (zero npm deps) — extends
+  `advanced/09-nodejs-core` (fs/streams/modules) with an HTTP server and the
+  newer, still-experimental `node:sqlite`.
+- **Request validation**: reuses the `validate(schema, value)` /
+  type-guard patterns from `advanced/11-typescript-basics` to validate POST
+  bodies (activity payloads, GPX uploads).
+- **Frontend**: static HTML/CSS/JS, `fetch` against the local API
+  (`advanced/08-browser-apis`), Leaflet (route polyline on a real basemap)
+  + D3 (elevation-profile line chart) loaded via CDN `<script>` tags — the
+  first external runtime dependency in this repo (tile servers need internet
+  regardless).
+
+Lives at `javascript/capstone-activity-tracker/`, with its own `notes.md`
+(design doc: data model, API spec, GPX format, calculation formulas, file
+layout, build phases) and `README.md` (how to run it). Doesn't follow the
+4-file topic pattern — `geo.js`/`gpx.js` get `node:test` spec files (same
+exercise pattern as every topic), but the HTTP server/frontend are "build it
+and verify by running" (`run`/`verify` workflow), not test-driven.
