@@ -52,10 +52,39 @@ fewer new language features and more standard-library/networking depth.
 | 4 | Varint Encoding & Type Switches + the Protocol Buffers Wire Format (gRPC, by Hand) | [`advanced/04-protobuf-wire-format`](./advanced/04-protobuf-wire-format) | [Protocol Buffers Encoding](https://protobuf.dev/programming-guides/encoding/), [`sort`](https://pkg.go.dev/sort), [`encoding/binary`](https://pkg.go.dev/encoding/binary) — gRPC's HTTP/2 framing, `fundamentals/09-bufio-io-binary-and-framing` |
 | 5 | `net/rpc` + Raft Consensus: Leader Election, Log Replication & Service Discovery | [`advanced/05-raft-and-service-discovery`](./advanced/05-raft-and-service-discovery) | [`net/rpc`](https://pkg.go.dev/net/rpc), [`encoding/gob`](https://pkg.go.dev/encoding/gob) — [Raft paper, extended version](https://raft.github.io/raft.pdf) (Figure 2, §5.2, §5.3, §5.4.1) |
 
-## Capstone (future — new `rust/` track)
+## Capstones (future)
 
-Once the Advanced section above is built out (especially raw sockets/TUN),
-add a `rust/` track and build a **TCP/IP stack from scratch in Rust**
+The Advanced section above is now built out, so both capstones below are
+unblocked. Each is a standalone project that ties multiple topics together
+into one real tool — pick either (or both), in either order.
+
+### Capstone A: Network Monitoring Tool (Go)
+
+Build a CLI/daemon that combines most of this Go track into one real tool —
+roughly "build your own `tcpdump`/`iftop`/`nethogs`", with no new
+dependencies beyond what's already used:
+
+- **Packet capture**: cBPF-filtered raw sockets (`advanced/01-raw-sockets-and-tun-tap`,
+  `advanced/03-cbpf-packet-filters`) to capture and pre-filter live traffic.
+- **Protocol parsing**: Ethernet/IPv4/TCP/UDP header decoding
+  (`fundamentals/03-structs-pointers-and-packet-headers`), DNS message parsing
+  (`fundamentals/12-dns-protocol-and-resolver`).
+- **Flow tracking & stats**: per-connection (5-tuple) state in a
+  `container/heap`/map-based table (`intermediate/01`, `intermediate/06`),
+  bandwidth/packet counters, and simple RTT/congestion-window estimation
+  (`intermediate/07-congestion-control-and-window-growth`).
+- **Live view**: an HTTP/JSON or WebSocket dashboard serving real-time
+  traffic stats (`fundamentals/11-json-rest-rpc-api`,
+  `intermediate/03-websockets-and-chat-server`).
+
+Lives alongside the existing `go/` topics, e.g. `go/capstone-network-monitor/`,
+with its own README documenting the architecture and how to run it
+(needs raw-socket privileges, per the "personal computer with root access"
+note for the Advanced section).
+
+### Capstone B: TCP/IP Stack From Scratch (Rust)
+
+Add a `rust/` track and build a **TCP/IP stack from scratch in Rust**
 (Stanford CS144-style, `smoltcp`-inspired): IP, ARP, TCP handshake,
 retransmission and flow control over a TUN device. This is the "go all the
 way to advanced, in Rust" project discussed alongside this Go track — roadmap
