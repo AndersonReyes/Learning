@@ -42,7 +42,7 @@ fewer new language features and more standard-library/networking depth.
 | 6 | `container/heap` + Routing Algorithms (Dijkstra/Bellman-Ford) & Simulating OSPF/BGP Path Selection | [`intermediate/06-routing-algorithms-and-path-selection`](./intermediate/06-routing-algorithms-and-path-selection) | [`container/heap`](https://pkg.go.dev/container/heap) — [RFC 2328 (OSPF)](https://www.rfc-editor.org/rfc/rfc2328), [RFC 2453 (RIP)](https://www.rfc-editor.org/rfc/rfc2453), [RFC 4271 (BGP)](https://www.rfc-editor.org/rfc/rfc4271) |
 | 7 | The `math` Package + Simulating TCP Reno/CUBIC Congestion-Window Growth | [`intermediate/07-congestion-control-and-window-growth`](./intermediate/07-congestion-control-and-window-growth) | [`math`](https://pkg.go.dev/math) — [RFC 5681 (TCP Congestion Control)](https://www.rfc-editor.org/rfc/rfc5681), [RFC 8312 (CUBIC)](https://www.rfc-editor.org/rfc/rfc8312) |
 
-## Advanced (2/5 built)
+## Advanced (3/5 built)
 
 | # | Topic (Go + Networking) | Folder | References |
 |---|--------------------------|--------|------------|
@@ -50,7 +50,7 @@ fewer new language features and more standard-library/networking depth.
 | 2 | Bit-Twiddling & Event-Driven State Machines + QUIC Varints, CRYPTO Frames & the TLS 1.3 Handshake | [`advanced/02-quic-and-http3`](./advanced/02-quic-and-http3) | [`crypto/tls`](https://pkg.go.dev/crypto/tls) (`QUICConn`), [`encoding/binary`](https://pkg.go.dev/encoding/binary) — [RFC 9000 (QUIC)](https://www.rfc-editor.org/rfc/rfc9000) §16, §19.6, [RFC 9001 (TLS for QUIC)](https://www.rfc-editor.org/rfc/rfc9001), [RFC 9114 (HTTP/3)](https://www.rfc-editor.org/rfc/rfc9114) |
 | 3 | eBPF/XDP Packet Filtering Basics | _planned_ | [cilium/ebpf](https://github.com/cilium/ebpf) |
 | 4 | gRPC & Protocol Buffers + Service-to-Service Networking | _planned_ | [grpc-go](https://github.com/grpc/grpc-go) |
-| 5 | Distributed Systems Networking: Consensus (Raft sketch) & Service Discovery | _planned_ | [Raft paper](https://raft.github.io/) |
+| 5 | `net/rpc` + Raft Consensus: Leader Election, Log Replication & Service Discovery | [`advanced/05-raft-and-service-discovery`](./advanced/05-raft-and-service-discovery) | [`net/rpc`](https://pkg.go.dev/net/rpc), [`encoding/gob`](https://pkg.go.dev/encoding/gob) — [Raft paper, extended version](https://raft.github.io/raft.pdf) (Figure 2, §5.2, §5.3, §5.4.1) |
 
 ## Capstone (future — new `rust/` track)
 
