@@ -42,12 +42,12 @@ fewer new language features and more standard-library/networking depth.
 | 6 | `container/heap` + Routing Algorithms (Dijkstra/Bellman-Ford) & Simulating OSPF/BGP Path Selection | [`intermediate/06-routing-algorithms-and-path-selection`](./intermediate/06-routing-algorithms-and-path-selection) | [`container/heap`](https://pkg.go.dev/container/heap) — [RFC 2328 (OSPF)](https://www.rfc-editor.org/rfc/rfc2328), [RFC 2453 (RIP)](https://www.rfc-editor.org/rfc/rfc2453), [RFC 4271 (BGP)](https://www.rfc-editor.org/rfc/rfc4271) |
 | 7 | The `math` Package + Simulating TCP Reno/CUBIC Congestion-Window Growth | [`intermediate/07-congestion-control-and-window-growth`](./intermediate/07-congestion-control-and-window-growth) | [`math`](https://pkg.go.dev/math) — [RFC 5681 (TCP Congestion Control)](https://www.rfc-editor.org/rfc/rfc5681), [RFC 8312 (CUBIC)](https://www.rfc-editor.org/rfc/rfc8312) |
 
-## Advanced (1/5 built)
+## Advanced (2/5 built)
 
 | # | Topic (Go + Networking) | Folder | References |
 |---|--------------------------|--------|------------|
 | 1 | `syscall`, `unsafe` & ioctl + Raw Sockets, TUN/TAP & Reading/Writing Raw IP Packets | [`advanced/01-raw-sockets-and-tun-tap`](./advanced/01-raw-sockets-and-tun-tap) | [`syscall`](https://pkg.go.dev/syscall), [`unsafe`](https://pkg.go.dev/unsafe) — [Linux TUN/TAP docs](https://www.kernel.org/doc/html/latest/networking/tuntap.html), [RFC 1071 (checksum)](https://www.rfc-editor.org/rfc/rfc1071), [RFC 791 (IPv4)](https://www.rfc-editor.org/rfc/rfc791), [RFC 792 (ICMP)](https://www.rfc-editor.org/rfc/rfc792) |
-| 2 | QUIC / HTTP/3 | _planned_ | [RFC 9000 (QUIC)](https://www.rfc-editor.org/rfc/rfc9000), [RFC 9114 (HTTP/3)](https://www.rfc-editor.org/rfc/rfc9114) |
+| 2 | Bit-Twiddling & Event-Driven State Machines + QUIC Varints, CRYPTO Frames & the TLS 1.3 Handshake | [`advanced/02-quic-and-http3`](./advanced/02-quic-and-http3) | [`crypto/tls`](https://pkg.go.dev/crypto/tls) (`QUICConn`), [`encoding/binary`](https://pkg.go.dev/encoding/binary) — [RFC 9000 (QUIC)](https://www.rfc-editor.org/rfc/rfc9000) §16, §19.6, [RFC 9001 (TLS for QUIC)](https://www.rfc-editor.org/rfc/rfc9001), [RFC 9114 (HTTP/3)](https://www.rfc-editor.org/rfc/rfc9114) |
 | 3 | eBPF/XDP Packet Filtering Basics | _planned_ | [cilium/ebpf](https://github.com/cilium/ebpf) |
 | 4 | gRPC & Protocol Buffers + Service-to-Service Networking | _planned_ | [grpc-go](https://github.com/grpc/grpc-go) |
 | 5 | Distributed Systems Networking: Consensus (Raft sketch) & Service Discovery | _planned_ | [Raft paper](https://raft.github.io/) |
