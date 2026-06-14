@@ -82,31 +82,38 @@ with its own README documenting the architecture and how to run it
 (needs raw-socket privileges, per the "personal computer with root access"
 note for the Advanced section).
 
-### Capstone B: Peer-to-Peer Protocol (Go)
+### Capstone B: BitTorrent Client (Go)
 
-Build a decentralized P2P node — a BitTorrent/Kademlia-style mini protocol —
-that ties together the distributed-systems side of this Go track:
+Build a real, working BitTorrent client (BEP 3) — a concrete P2P protocol
+implementation, end to end:
 
-- **Transport & framing**: TCP connections between peers
-  (`fundamentals/08-net-dial-listen-and-udp`) with length-prefixed message
-  framing (`fundamentals/09-bufio-io-binary-and-framing`) or the protobuf
-  wire format (`advanced/04-protobuf-wire-format`) for peer messages.
-- **Peer discovery & routing**: a Kademlia-style DHT — XOR distance metric,
-  k-buckets, iterative lookups — reusing the routing/shortest-path thinking
-  from `intermediate/06-routing-algorithms-and-path-selection`.
-- **Gossip / message propagation**: flood or gossip-based broadcast across
-  peers using goroutines and channels (`fundamentals/06`, `fundamentals/07`),
-  with `context` for per-request cancellation/timeouts.
-- **Content exchange**: chunked file transfer with a piece bitfield and
-  request pipelining (BitTorrent-style), encoded with
-  `advanced/04-protobuf-wire-format` and optionally encrypted with
-  `intermediate/02-tls-https-and-handshake`.
-- **Optional**: NAT traversal / hole punching using the raw-socket techniques
-  from `advanced/01-raw-sockets-and-tun-tap`.
+- **Bencoding**: parse `.torrent` files and tracker responses, a new
+  serialization-format-from-scratch in the spirit of
+  `advanced/04-protobuf-wire-format` (dicts/lists/ints/byte strings instead
+  of varints/tags), plus `crypto/sha1` to compute the info hash and verify
+  downloaded pieces.
+- **Tracker protocol**: an HTTP client (`fundamentals/10`,
+  `fundamentals/11-json-rest-rpc-api`) that announces to the tracker and
+  parses the returned compact peer list; optionally the UDP tracker protocol
+  (`fundamentals/08-net-dial-listen-and-udp`).
+- **Peer wire protocol**: TCP connections to peers
+  (`fundamentals/08-net-dial-listen-and-udp`) with the BitTorrent
+  handshake and length-prefixed message framing — directly reusing the
+  framing approach from `fundamentals/09-bufio-io-binary-and-framing`
+  (`choke`/`unchoke`/`interested`/`have`/`bitfield`/`request`/`piece`/`cancel`).
+- **Piece management**: a bitfield of have/missing pieces, a piece-picker
+  (e.g. rarest-first), and concurrent downloads from multiple peers using
+  goroutines/channels and `context` for cancellation
+  (`fundamentals/06`, `fundamentals/07`).
+- **Optional**: a Kademlia DHT (BEP 5) for trackerless peer discovery —
+  XOR-distance routing table, reusing the routing/shortest-path thinking from
+  `intermediate/06-routing-algorithms-and-path-selection`; and/or seeding
+  (uploading pieces back to other peers).
 
-Lives alongside the existing `go/` topics, e.g. `go/capstone-p2p-protocol/`,
-with its own README documenting the protocol's message types and how to run
-a multi-node demo (e.g. several local processes on different ports).
+Lives alongside the existing `go/` topics, e.g. `go/capstone-bittorrent-client/`,
+with its own README documenting how to run it against a real `.torrent` file
+(e.g. a Linux distro ISO with a public tracker) and verify the downloaded
+file's hash.
 
 ### Capstone C: TCP/IP Stack From Scratch (Rust)
 
