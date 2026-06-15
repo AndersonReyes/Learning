@@ -315,13 +315,13 @@ Two capstones, detailed in the "Capstones" section of `rust/ROADMAP.md`:
 
 - **`rust/capstone-embedded/`** — embedded Rust on the BBC micro:bit v2
   (Nordic nRF52833, Cortex-M4F, `thumbv7em-none-eabihf`), **real hardware via
-  `probe-rs` end to end — no QEMU/emulation**. Phase 1
-  (`phase1-from-scratch/`) applies the Embedonomicon's from-scratch
-  `#![no_std]`/`#![no_main]` approach to the nRF52833; Phase 2
-  (`phase2-discovery/`) is the Discovery (micro:bit v2 edition) curriculum
-  using `cortex-m-rt` + `microbit-v2`. Code is written/cross-compiled in this
-  sandbox; flashing and running on the board happens on the user's machine —
-  "done" means it builds here and the user confirms it runs on hardware.
+  `probe-rs` end to end — no QEMU/emulation**. Built from the Embedonomicon
+  (from-scratch `#![no_std]`/`#![no_main]`, applied to the nRF52833) followed
+  by Discovery (micro:bit v2 edition)'s full curriculum. Code is
+  written/cross-compiled in this sandbox; flashing and running on the board
+  happens on the user's machine — "done" means it builds here and the user
+  confirms it runs on hardware. Detailed phase/exercise breakdown is deferred
+  until the capstone is actually started.
 - **`rust/capstone-message-queue/`** — a concurrent, networked "mini-Kafka"
   built in phases (storage engine → topics/partitions → concurrency → async
   network protocol → consumer groups → replication), exercising

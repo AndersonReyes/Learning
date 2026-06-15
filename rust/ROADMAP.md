@@ -205,52 +205,20 @@ repo's sandbox (`cargo build --target thumbv7em-none-eabihf` needs no
 attached device — already verified to install via `rustup target add
 thumbv7em-none-eabihf`); flashing, running, and debugging (`probe-rs
 run`/`probe-rs attach`, RTT logging) happens on a machine with the board
-plugged in. "Done" for each phase means it builds here *and* runs correctly
-on the board, confirmed by the user.
+plugged in. "Done" means it builds here *and* runs correctly on the board,
+confirmed by the user.
 
-**Phase 1 — `phase1-from-scratch/`**: apply the Embedonomicon's "build a
-`#![no_std]` `#![no_main]` program from scratch" approach directly to the
-nRF52833 (instead of QEMU's `lm3s6965evb`):
+Built from two guides, worked through in order:
 
-- A custom linker script for the nRF52833's real flash/RAM memory map, a
-  hand-written `.vector_table` and reset handler — the smallest possible
-  program, blinking an LED via raw memory-mapped GPIO register writes (no
-  HAL yet).
-- Exception handling: the exception vector table and a default exception
-  handler.
-- Inline assembly on stable (`asm!`) for the reset/startup sequence.
-- A `#[panic_handler]` (Nomicon's "Beneath `std`") and logging over RTT
-  (`probe-rs`'s real-time transfer — the on-hardware equivalent of
-  Embedonomicon's QEMU semihosting).
-- Global singletons (`Mutex<RefCell<Option<T>>>` + `cortex_m::interrupt`),
-  the pattern every later interrupt-driven exercise builds on.
-- DMA, conceptually (Embedonomicon's DMA chapter).
+- [**The Embedonomicon**](https://doc.rust-lang.org/embedonomicon/) —
+  building a `#![no_std]`/`#![no_main]` program from scratch, applied to the
+  nRF52833 instead of its QEMU target.
+- [**Discovery (micro:bit v2 edition)**](https://docs.rust-embedded.org/discovery-mb2/)
+  — the full board curriculum (Hello World through the Snake game) on real
+  hardware via `probe-rs`.
 
-By the end of Phase 1 you've hand-built the scaffolding that `cortex-m-rt`
-and the `microbit-v2` board support crate provide for you from Phase 2 on —
-so none of it is "magic".
-
-**Phase 2 — `phase2-discovery/`**: Discovery (micro:bit v2 edition) on real
-hardware via `probe-rs`, using `cortex-m-rt` + the `microbit-v2` board
-support crate:
-
-- Hello World: toggle an LED via PAC/HAL GPIO registers; spin-wait and timer
-  delays; the board support crate.
-- LED roulette (the book's first real challenge).
-- Polling-based input (buttons) → a "turn signaller".
-- Registers: reading the RTRM, type-safe register manipulation, the
-  "spooky action at a distance" / volatile-access lessons.
-- UART: send/receive a byte, an echo server, reverse-a-string over serial.
-- I2C: talk to the LSM303AGR accelerometer/magnetometer; build an LED
-  compass and a "punch-o-meter".
-- Interrupts: NVIC priorities, debouncing, sharing data with globals
-  (building on Phase 1's singleton pattern), the MB2 speaker, PWM.
-- Final assembly: the Snake game (LED matrix display, button controls,
-  non-blocking rendering).
-
-This phase deliberately follows discovery-mb2's existing
-challenge-then-solution structure rather than inventing new exercises — it's
-already a well-designed progression for this exact board.
+Detailed phase/exercise breakdown is deferred until the capstone is actually
+started — no need to scope it out this far ahead.
 
 ### Capstone B: Distributed Message Queue (`rust/capstone-message-queue/`)
 
