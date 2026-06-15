@@ -17,3 +17,7 @@ version = "0.1.0"
 [[package]]
 name = "fundamentals-04-ownership-and-borrowing"
 version = "0.1.0"
+
+[[package]]
+name = "fundamentals-05-the-slice-type-and-str"
+version = "0.1.0"

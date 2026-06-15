@@ -1,34 +1,9 @@
 # Rust Roadmap
 
-**Status: planning.** Curriculum and reference are settled (below). 29
+**Status: in progress.** Curriculum and reference are settled (below). 29
 topics total: 10 Fundamentals + 9 Intermediate + 10 Advanced, plus two
-capstones. Fundamentals topic 1,
-`fundamentals/01-toolchain-cargo-and-hello-world`, is built — its 5
-exercises are "first real Rust programs" algorithmic problems
-(`collatz_steps`, `is_prime`, `longest_run`, `caesar_cipher`,
-`matrix_transpose`) that only need variables, loops, `if`/`match`, and basic
-types, while `notes.md` covers the toolchain/Cargo/Hello-World/Guessing-Game
-material conceptually. Fundamentals topic 2,
-`fundamentals/02-variables-data-types-and-functions`, is also built — its 5
-exercises drill the scalar/compound types and `as`-cast rules from
-`notes.md`: fixed-size array rotation (`rotate_array_left`), bit packing/
-unpacking with `as` casts (`pack_rgb`/`unpack_rgb`), overflow-detecting
-factorial (`overflowing_factorial`), and widening arithmetic with
-truncating division (`fixed_point_divide`). Fundamentals topic 3,
-`fundamentals/03-control-flow`, is also built — its 5 exercises drill
-`if`/`else`-as-expression, `loop`/`while`/`for`, `break`/`continue`, and loop
-labels: nested-loop grid search with a labeled break (`find_in_grid`), digit
-extraction with `if`/`else` (`is_armstrong_number`), early-exit accumulation
-(`sum_of_multiples_below`), nested `while` reduction (`digital_root`), and
-direction-aware `loop` termination (`count_steps_to_reach`). Fundamentals
-topic 4, `fundamentals/04-ownership-and-borrowing`, is also built — its 5
-exercises drill move/`Clone`/`Copy` and `&T`/`&mut T` borrowing: stable
-3-way in-place partition (`partition_in_place`), merging a borrowed slice
-into a `&mut Vec` (`merge_sorted_into`), consuming a `Vec` by value and
-redistributing it (`take_ownership_and_split`), in-place removal returning a
-new owned `Vec` (`drain_below_threshold`), and building an owned `String`
-from a borrowed `&[String]` (`longest_common_prefix_owned`). Everything else
-is `planned`.
+capstones. Fundamentals topics 1-5 are built (see "Build Log" below for what
+each one's 5 exercises cover); everything else is `planned`.
 
 ## Reference
 
@@ -150,6 +125,29 @@ map onto plain testable functions:
    link, with a one-paragraph summary of what the 5 exercises cover (see the
    style of `cpp/ROADMAP.md`'s status banner).
 
+## Build Log
+
+Short summary of what each built topic's 5 exercises cover, for picking up
+across sessions without re-reading every file.
+
+- **01 — Toolchain, Cargo & Hello World**: first real Rust programs —
+  `collatz_steps`, `is_prime`, `longest_run`, `caesar_cipher`,
+  `matrix_transpose`.
+- **02 — Variables, Data Types & Functions**: scalar/compound types and `as`
+  cast rules — `rotate_array_left`, `pack_rgb`/`unpack_rgb`,
+  `overflowing_factorial`, `fixed_point_divide`.
+- **03 — Control Flow**: `if`/`else` as an expression, `loop`/`while`/`for`,
+  loop labels — `find_in_grid`, `is_armstrong_number`,
+  `sum_of_multiples_below`, `digital_root`, `count_steps_to_reach`.
+- **04 — Ownership & Borrowing**: move/`Clone`/`Copy` and `&T`/`&mut T`
+  borrowing — `partition_in_place`, `merge_sorted_into`,
+  `take_ownership_and_split`, `drain_below_threshold`,
+  `longest_common_prefix_owned`.
+- **05 — The Slice Type & `&str`**: `&[T]`/`&str` slicing, range syntax,
+  UTF-8 byte-vs-char — `split_on_whitespace_runs`, `first_n_chars`,
+  `longest_palindromic_substring_slice`, `max_subarray_slice`,
+  `chunk_slices`.
+
 ## Fundamentals
 
 Covers Book ch. 1-9: the language core, ownership, and the standard
@@ -161,7 +159,7 @@ library's basic data structures.
 | 2 | Variables, Data Types & Functions | [`fundamentals/02-variables-data-types-and-functions`](./fundamentals/02-variables-data-types-and-functions) | Book ch. 3.1-3.3 | done |
 | 3 | Control Flow | [`fundamentals/03-control-flow`](./fundamentals/03-control-flow) | Book ch. 3.4-3.5 | done |
 | 4 | Ownership & Borrowing | [`fundamentals/04-ownership-and-borrowing`](./fundamentals/04-ownership-and-borrowing) | Book ch. 4.1-4.2 | done |
-| 5 | The Slice Type & `&str` | `fundamentals/05-the-slice-type-and-str` | Book ch. 4.3 | planned |
+| 5 | The Slice Type & `&str` | [`fundamentals/05-the-slice-type-and-str`](./fundamentals/05-the-slice-type-and-str) | Book ch. 4.3 | done |
 | 6 | Structs & Methods | `fundamentals/06-structs-and-methods` | Book ch. 5 | planned |
 | 7 | Enums & Pattern Matching | `fundamentals/07-enums-and-pattern-matching` | Book ch. 6 | planned |
 | 8 | Packages, Crates & Modules | `fundamentals/08-packages-crates-and-modules` | Book ch. 7 | planned |
