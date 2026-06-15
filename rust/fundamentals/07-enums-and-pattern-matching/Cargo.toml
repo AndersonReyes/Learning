@@ -1,0 +1,6 @@
+[package]
+name = "fundamentals-07-enums-and-pattern-matching"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]

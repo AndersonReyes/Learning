@@ -25,3 +25,7 @@ version = "0.1.0"
 [[package]]
 name = "fundamentals-06-structs-and-methods"
 version = "0.1.0"
+
+[[package]]
+name = "fundamentals-07-enums-and-pattern-matching"
+version = "0.1.0"

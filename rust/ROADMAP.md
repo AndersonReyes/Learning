@@ -2,7 +2,7 @@
 
 **Status: in progress.** Curriculum and reference are settled (below). 29
 topics total: 10 Fundamentals + 9 Intermediate + 10 Advanced, plus two
-capstones. Fundamentals topics 1-6 are built (see "Build Log" below for what
+capstones. Fundamentals topics 1-7 are built (see "Build Log" below for what
 each one's exercises cover); everything else is `planned`.
 
 ## Reference
@@ -151,6 +151,12 @@ across sessions without re-reading every file.
   `Vec<f64>` coefficient form, trailing zeros trimmed) with an associated
   `new` constructor and `&self` methods — `evaluate` (Horner's method),
   `derivative`, `add`, `multiply` (convolution).
+- **07 — Enums & Pattern Matching**: a recursive `Expr` AST (`Box`-based)
+  with `eval -> Option<f64>` (`?` on `Option`, division-by-zero ->
+  `None`); `TriangleKind` enum + `classify_triangle` (tuple-pattern
+  matching with `|`); `Direction` enum + `from_token -> Option<Direction>`
+  and `walk` (exhaustive match over variants); `first_non_repeating_char ->
+  Option<char>`.
 
 ## Fundamentals
 
@@ -165,7 +171,7 @@ library's basic data structures.
 | 4 | Ownership & Borrowing | [`fundamentals/04-ownership-and-borrowing`](./fundamentals/04-ownership-and-borrowing) | Book ch. 4.1-4.2 | done |
 | 5 | The Slice Type & `&str` | [`fundamentals/05-the-slice-type-and-str`](./fundamentals/05-the-slice-type-and-str) | Book ch. 4.3 | done |
 | 6 | Structs & Methods | [`fundamentals/06-structs-and-methods`](./fundamentals/06-structs-and-methods) | Book ch. 5 | done |
-| 7 | Enums & Pattern Matching | `fundamentals/07-enums-and-pattern-matching` | Book ch. 6 | planned |
+| 7 | Enums & Pattern Matching | [`fundamentals/07-enums-and-pattern-matching`](./fundamentals/07-enums-and-pattern-matching) | Book ch. 6 | done |
 | 8 | Packages, Crates & Modules | `fundamentals/08-packages-crates-and-modules` | Book ch. 7 | planned |
 | 9 | Common Collections (`Vec`, `String`, `HashMap`) | `fundamentals/09-common-collections` | Book ch. 8 | planned |
 | 10 | Error Handling (`panic!`, `Result`, `?`) | `fundamentals/10-error-handling` | Book ch. 9 | planned |
