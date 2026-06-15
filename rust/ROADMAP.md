@@ -2,7 +2,7 @@
 
 **Status: in progress.** Curriculum and reference are settled (below). 29
 topics total: 10 Fundamentals + 9 Intermediate + 10 Advanced, plus two
-capstones. Fundamentals (all 10) are built, and Intermediate topics 1-3 are
+capstones. Fundamentals (all 10) are built, and Intermediate topics 1-4 are
 built (see "Build Log" below for what each one's exercises cover); everything
 else is `planned`.
 
@@ -200,6 +200,13 @@ across sessions without re-reading every file.
   original-case output, UTF-8-safe), `grep_report` (combines the above into a
   formatted report with line numbers and singular/plural match-count
   summary), `resolve_ignore_case` (ch.12.5's CLI-flag-vs-env-var precedence).
+- **Intermediate 04 — Closures & Iterators**: `Memoizer<F: Fn(u64) -> u64>`
+  (generalized `Cacher` keyed by a `HashMap`, `new` provided, `value` caches
+  per-`arg`), `compose` (boxed function composition, `Box<dyn Fn(A) -> C>`),
+  `retry` (`FnMut`-based retry-until-`Ok`, `"no attempts allowed"` for
+  `max_attempts == 0`), `top_n_by<T, K: Ord>` (generic stable top-N-by-key
+  sort, `Reverse` for bottom-N), `running_stats` (`.scan()`-based running
+  min/max per prefix).
 
 ## Fundamentals
 
@@ -230,7 +237,7 @@ pointers, and concurrency.
 | 1 | Generics, Traits & Lifetimes | [`intermediate/01-generics-traits-and-lifetimes`](./intermediate/01-generics-traits-and-lifetimes) | Book ch. 10 | done |
 | 2 | Writing Tests & Project Organization | [`intermediate/02-testing-and-project-organization`](./intermediate/02-testing-and-project-organization) | Book ch. 11 | done |
 | 3 | CLI I/O Project (args, files, env, stderr) | [`intermediate/03-cli-io-project`](./intermediate/03-cli-io-project) | Book ch. 12 | done |
-| 4 | Closures & Iterators | `intermediate/04-closures-and-iterators` | Book ch. 13.1-13.2 | planned |
+| 4 | Closures & Iterators | [`intermediate/04-closures-and-iterators`](./intermediate/04-closures-and-iterators) | Book ch. 13.1-13.2 | done |
 | 5 | Custom Iterators & Adapters | `intermediate/05-custom-iterators-and-adapters` | Book ch. 13.2 (deepening) | planned |
 | 6 | Error Handling Deep Dive (`From`, `Box<dyn Error>`) | `intermediate/06-error-handling-deep-dive` | Book ch. 9 (deepening) | planned |
 | 7 | Cargo Workspaces, Profiles & Performance | `intermediate/07-cargo-workspaces-and-profiles` | Book ch. 13.4, 14 (adapted) | planned |
