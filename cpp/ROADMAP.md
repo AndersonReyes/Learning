@@ -56,7 +56,20 @@ each end before averaging), `amdahlSpeedup`/`gustafsonSpeedup` (fixed-size
 vs scaled-problem parallel speedup predictions), and `isSignificantSpeedup`
 (95%-confidence-interval-overlap significance test); `notes.md` separately
 covers compiler optimization flags, PGO, and profilers (`perf`, `gprof`,
-`callgrind`) conceptually). Next: `advanced/06-software-design-and-idioms`.
+`callgrind`) conceptually). Advanced topic 6,
+`advanced/06-software-design-and-idioms`, is now built (one idiom/pattern
+per exercise: `MaxStack` -- the PIMPL idiom plus Rule of Five with an
+incomplete `Impl` type, hiding an O(1)-max-tracking stack behind a
+single-pointer-sized class; `IdRegistry` -- a Meyer's Singleton issuing
+memoized sequential ids, with `constructionCount()` proving lazy
+single-construction; the `Validator`/`EmailValidator`/
+`PositiveIntegerValidator` hierarchy -- the Non-Virtual Interface/Template
+Method pattern, a non-virtual `validate()` driving overridable
+`checkNotEmpty`/`checkContent` hooks; `EventBus` -- the Observer/
+publish-subscribe pattern with `std::function` handlers, subscription ids,
+and unsubscribe; and `Comparable<Derived>`/`Version` -- CRTP providing six
+comparison operators from one `compareTo` method, with zero vtable
+overhead). Next: `advanced/07-binary-size-and-build-time`.
 
 ## Reference
 
@@ -158,7 +171,7 @@ curriculum, once the language features it needs have been covered:
 | 3 | Performance Fundamentals: Architecture & Memory Hierarchy | [`advanced/03-performance-fundamentals`](./advanced/03-performance-fundamentals) | MCPP ch. 23 | done |
 | 4 | Code-Level Optimization Techniques | [`advanced/04-code-optimization`](./advanced/04-code-optimization) | MCPP ch. 24 | done |
 | 5 | Compiler Optimization, Profiling & Benchmarking | [`advanced/05-profiling-and-benchmarking`](./advanced/05-profiling-and-benchmarking) | MCPP ch. 25 | done |
-| 6 | Software Design Principles, Idioms & Patterns | `advanced/06-software-design-and-idioms` | MCPP ch. 26–27 | planned |
+| 6 | Software Design Principles, Idioms & Patterns | [`advanced/06-software-design-and-idioms`](./advanced/06-software-design-and-idioms) | MCPP ch. 26–27 | done |
 | 7 | Binary Size & Build Time | `advanced/07-binary-size-and-build-time` | MCPP ch. 28–29 | planned |
 
 ## Exercise difficulty
