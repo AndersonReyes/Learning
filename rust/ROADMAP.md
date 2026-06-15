@@ -2,7 +2,7 @@
 
 **Status: in progress.** Curriculum and reference are settled (below). 29
 topics total: 10 Fundamentals + 9 Intermediate + 10 Advanced, plus two
-capstones. Fundamentals (all 10) are built, and Intermediate topics 1-4 are
+capstones. Fundamentals (all 10) are built, and Intermediate topics 1-5 are
 built (see "Build Log" below for what each one's exercises cover); everything
 else is `planned`.
 
@@ -207,6 +207,14 @@ across sessions without re-reading every file.
   `max_attempts == 0`), `top_n_by<T, K: Ord>` (generic stable top-N-by-key
   sort, `Reverse` for bottom-N), `running_stats` (`.scan()`-based running
   min/max per prefix).
+- **Intermediate 05 — Custom Iterators & Adapters**: `Fibonacci` (infinite
+  `Iterator<Item = u64>`, `0,1,1,2,3,...`), `Pairwise<I>` (adapter yielding
+  consecutive `(prev, curr)` pairs), `RunLength<I>` (adapter doing run-length
+  encoding via a `peeked: Option<I::Item>` lookahead field),
+  `ChunksIterator<I>` (adapter yielding fixed-size `Vec<I::Item>` chunks,
+  final chunk possibly shorter, `size == 0` yields nothing), `Grid` +
+  `GridIntoIter` (custom `IntoIterator` impl flattening `Vec<Vec<i32>>` in
+  row-major order, skipping empty rows).
 
 ## Fundamentals
 
@@ -238,7 +246,7 @@ pointers, and concurrency.
 | 2 | Writing Tests & Project Organization | [`intermediate/02-testing-and-project-organization`](./intermediate/02-testing-and-project-organization) | Book ch. 11 | done |
 | 3 | CLI I/O Project (args, files, env, stderr) | [`intermediate/03-cli-io-project`](./intermediate/03-cli-io-project) | Book ch. 12 | done |
 | 4 | Closures & Iterators | [`intermediate/04-closures-and-iterators`](./intermediate/04-closures-and-iterators) | Book ch. 13.1-13.2 | done |
-| 5 | Custom Iterators & Adapters | `intermediate/05-custom-iterators-and-adapters` | Book ch. 13.2 (deepening) | planned |
+| 5 | Custom Iterators & Adapters | [`intermediate/05-custom-iterators-and-adapters`](./intermediate/05-custom-iterators-and-adapters) | Book ch. 13.2 (deepening) | done |
 | 6 | Error Handling Deep Dive (`From`, `Box<dyn Error>`) | `intermediate/06-error-handling-deep-dive` | Book ch. 9 (deepening) | planned |
 | 7 | Cargo Workspaces, Profiles & Performance | `intermediate/07-cargo-workspaces-and-profiles` | Book ch. 13.4, 14 (adapted) | planned |
 | 8 | Smart Pointers (`Box`, `Deref`, `Drop`, `Rc`, `RefCell`) | `intermediate/08-smart-pointers` | Book ch. 15 | planned |
