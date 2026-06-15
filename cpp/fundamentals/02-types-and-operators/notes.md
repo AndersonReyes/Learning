@@ -154,7 +154,7 @@ the right operand. Rarely needed outside a `for` loop's increment clause
 
 ## Further Reading (Modern C++ Programming)
 
-- [Chapter 3 — The Basics](https://federico-busato.github.io/Modern-CPP-Programming/htmls/03.Basic.html)
+- [Chapter 3 — Basic Concepts I](https://federico-busato.github.io/Modern-CPP-Programming/htmls/03.Basic_Concepts_I.html)
   (fundamental types, conversions, operators)
 - [Fundamental types](https://en.cppreference.com/w/cpp/language/types)
 - [Implicit conversions](https://en.cppreference.com/w/cpp/language/implicit_conversion)

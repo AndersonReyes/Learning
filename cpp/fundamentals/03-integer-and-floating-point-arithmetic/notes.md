@@ -166,8 +166,8 @@ similar-magnitude terms it's a large, cheap accuracy win.
 
 ## Further Reading (Modern C++ Programming)
 
-- [Chapter 4 — Numbers](https://federico-busato.github.io/Modern-CPP-Programming/htmls/04.Numbers.html)
-- [Chapter 5 — Floating-Point Numbers](https://federico-busato.github.io/Modern-CPP-Programming/htmls/05.FloatingPoint.html)
+- [Chapter 4 — Basic Concepts II](https://federico-busato.github.io/Modern-CPP-Programming/htmls/04.Basic_Concepts_II.html)
+- [Chapter 5 — Basic Concepts III](https://federico-busato.github.io/Modern-CPP-Programming/htmls/05.Basic_Concepts_III.html)
 - [`std::numeric_limits`](https://en.cppreference.com/w/cpp/types/numeric_limits)
 - [`<cmath>` classification functions](https://en.cppreference.com/w/cpp/numeric/math#Classification)
 - [Floating-point arithmetic on cppreference](https://en.cppreference.com/w/cpp/language/floating_literal)

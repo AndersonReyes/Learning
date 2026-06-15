@@ -153,7 +153,7 @@ using namespace geometry;        // import everything (avoid in headers --
 
 ## Further Reading (Modern C++ Programming)
 
-- [Chapter 6 — Control Flow and Entities](https://federico-busato.github.io/Modern-CPP-Programming/htmls/06.ControlFlow.html)
+- [Chapter 6 — Basic Concepts IV](https://federico-busato.github.io/Modern-CPP-Programming/htmls/06.Basic_Concepts_IV.html)
 - [`if`/`else`](https://en.cppreference.com/w/cpp/language/if)
 - [`switch`](https://en.cppreference.com/w/cpp/language/switch)
 - [`enum`/`enum class`](https://en.cppreference.com/w/cpp/language/enum)
