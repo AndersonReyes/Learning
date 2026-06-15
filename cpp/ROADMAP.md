@@ -21,12 +21,21 @@ distribution reproducibility, `std::filesystem::path::lexically_normal`, and
 (container categories, `<deque>`-based monotonic-deque algorithms, custom
 sort comparators, writing a custom forward iterator, and C++20 `<ranges>`
 filter/transform/take pipelines). Advanced topic 1,
-`advanced/01-move-semantics-and-type-deduction`, is now built (value
+`advanced/01-move-semantics-and-type-deduction`, is built (value
 categories, `std::move`/`std::forward`, forwarding references & reference
 collapsing, `auto`/`decltype`/`decltype(auto)`, trailing return types, the
 Rule of 5 via a heap-owning `IntBuffer`, and a juggling-algorithm in-place
 array rotation verified to use moves not copies via a `Tracked` counter
-type). Next: `advanced/02-error-handling-smart-pointers-and-concurrency`.
+type). Advanced topic 2,
+`advanced/02-error-handling-smart-pointers-and-concurrency`, is now built
+(custom exception hierarchy + strong exception guarantee via `BankAccount`,
+`std::unique_ptr` + polymorphism via a `Shape` hierarchy, `std::shared_ptr`/
+`std::weak_ptr` lifetime via `WeakCache`, `std::thread` +
+`std::atomic`/`std::mutex` via `parallelSum`, and `std::async`/`std::future`
+cross-thread exception propagation via `firstSuccessfulResult`) -- **its
+`exercise.cpp`/`exercise_test.cpp`/`examples.cpp` need `-pthread`** added to
+the usual `g++` invocation. Next:
+`advanced/03-performance-fundamentals`.
 
 ## Reference
 
@@ -124,7 +133,7 @@ curriculum, once the language features it needs have been covered:
 | # | Topic | Folder | Reference | Status |
 |---|-------|--------|-----------|--------|
 | 1 | Move Semantics, Value Categories & Type Deduction | [`advanced/01-move-semantics-and-type-deduction`](./advanced/01-move-semantics-and-type-deduction) | MCPP ch. 21 | done |
-| 2 | Error Handling, Smart Pointers & Concurrency | `advanced/02-error-handling-smart-pointers-and-concurrency` | MCPP ch. 22 | planned |
+| 2 | Error Handling, Smart Pointers & Concurrency | [`advanced/02-error-handling-smart-pointers-and-concurrency`](./advanced/02-error-handling-smart-pointers-and-concurrency) | MCPP ch. 22 | done |
 | 3 | Performance Fundamentals: Architecture & Memory Hierarchy | `advanced/03-performance-fundamentals` | MCPP ch. 23 | planned |
 | 4 | Code-Level Optimization Techniques | `advanced/04-code-optimization` | MCPP ch. 24 | planned |
 | 5 | Compiler Optimization, Profiling & Benchmarking | `advanced/05-profiling-and-benchmarking` | MCPP ch. 25 | planned |
