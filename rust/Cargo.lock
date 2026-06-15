@@ -5,3 +5,7 @@ version = 4
 [[package]]
 name = "fundamentals-01-toolchain-cargo-and-hello-world"
 version = "0.1.0"
+
+[[package]]
+name = "fundamentals-02-variables-data-types-and-functions"
+version = "0.1.0"

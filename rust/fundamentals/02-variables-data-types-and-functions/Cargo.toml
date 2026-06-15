@@ -1,0 +1,6 @@
+[package]
+name = "fundamentals-02-variables-data-types-and-functions"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]

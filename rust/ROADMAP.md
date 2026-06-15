@@ -8,7 +8,13 @@ exercises are "first real Rust programs" algorithmic problems
 (`collatz_steps`, `is_prime`, `longest_run`, `caesar_cipher`,
 `matrix_transpose`) that only need variables, loops, `if`/`match`, and basic
 types, while `notes.md` covers the toolchain/Cargo/Hello-World/Guessing-Game
-material conceptually. Everything else is `planned`.
+material conceptually. Fundamentals topic 2,
+`fundamentals/02-variables-data-types-and-functions`, is also built — its 5
+exercises drill the scalar/compound types and `as`-cast rules from
+`notes.md`: fixed-size array rotation (`rotate_array_left`), bit packing/
+unpacking with `as` casts (`pack_rgb`/`unpack_rgb`), overflow-detecting
+factorial (`overflowing_factorial`), and widening arithmetic with
+truncating division (`fixed_point_divide`). Everything else is `planned`.
 
 ## Reference
 
@@ -138,7 +144,7 @@ library's basic data structures.
 | # | Topic | Folder | Reference | Status |
 |---|-------|--------|-----------|--------|
 | 1 | Toolchain, Cargo & Hello World | [`fundamentals/01-toolchain-cargo-and-hello-world`](./fundamentals/01-toolchain-cargo-and-hello-world) | Book ch. 1-2 | done |
-| 2 | Variables, Data Types & Functions | `fundamentals/02-variables-data-types-and-functions` | Book ch. 3.1-3.3 | planned |
+| 2 | Variables, Data Types & Functions | [`fundamentals/02-variables-data-types-and-functions`](./fundamentals/02-variables-data-types-and-functions) | Book ch. 3.1-3.3 | done |
 | 3 | Control Flow | `fundamentals/03-control-flow` | Book ch. 3.4-3.5 | planned |
 | 4 | Ownership & Borrowing | `fundamentals/04-ownership-and-borrowing` | Book ch. 4.1-4.2 | planned |
 | 5 | The Slice Type & `&str` | `fundamentals/05-the-slice-type-and-str` | Book ch. 4.3 | planned |
