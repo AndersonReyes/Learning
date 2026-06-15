@@ -2,7 +2,7 @@
 
 **Status: in progress.** Curriculum and reference are settled (below). 29
 topics total: 10 Fundamentals + 9 Intermediate + 10 Advanced, plus two
-capstones. Fundamentals (all 10) are built, and Intermediate topics 1-5 are
+capstones. Fundamentals (all 10) are built, and Intermediate topics 1-6 are
 built (see "Build Log" below for what each one's exercises cover); everything
 else is `planned`.
 
@@ -215,6 +215,17 @@ across sessions without re-reading every file.
   final chunk possibly shorter, `size == 0` yields nothing), `Grid` +
   `GridIntoIter` (custom `IntoIterator` impl flattening `Vec<Vec<i32>>` in
   row-major order, skipping empty rows).
+- **Intermediate 06 — Error Handling Deep Dive**: `parse_duration_ms`
+  (`<digits><unit>` segment parser summing to total ms, `ParseDurationError`
+  with `From<ParseIntError>` for `?`-based conversion and a `source()` impl),
+  `error_chain_messages` (walks an `&dyn Error`'s `source()` chain collecting
+  `Display` messages outermost-first, over a `WrappedError` wrapper type),
+  `describe_error` (`downcast_ref` dispatch over `&(dyn Error + 'static)` for
+  `NotFoundError`/`PermissionError`/fallback), `process_record` (`"name:age"`
+  parser returning `Box<dyn Error>`, combining a custom `RecordError` enum
+  with a propagated `ParseIntError`), `first_valid_port` (`Box<dyn Error>`
+  port picker distinguishing "no candidate in range" from "no candidate
+  parsed" via downcasting to `NoValidPortError` vs `ParseIntError`).
 
 ## Fundamentals
 
@@ -247,7 +258,7 @@ pointers, and concurrency.
 | 3 | CLI I/O Project (args, files, env, stderr) | [`intermediate/03-cli-io-project`](./intermediate/03-cli-io-project) | Book ch. 12 | done |
 | 4 | Closures & Iterators | [`intermediate/04-closures-and-iterators`](./intermediate/04-closures-and-iterators) | Book ch. 13.1-13.2 | done |
 | 5 | Custom Iterators & Adapters | [`intermediate/05-custom-iterators-and-adapters`](./intermediate/05-custom-iterators-and-adapters) | Book ch. 13.2 (deepening) | done |
-| 6 | Error Handling Deep Dive (`From`, `Box<dyn Error>`) | `intermediate/06-error-handling-deep-dive` | Book ch. 9 (deepening) | planned |
+| 6 | Error Handling Deep Dive (`From`, `Box<dyn Error>`) | [`intermediate/06-error-handling-deep-dive`](./intermediate/06-error-handling-deep-dive) | Book ch. 9 (deepening) | done |
 | 7 | Cargo Workspaces, Profiles & Performance | `intermediate/07-cargo-workspaces-and-profiles` | Book ch. 13.4, 14 (adapted) | planned |
 | 8 | Smart Pointers (`Box`, `Deref`, `Drop`, `Rc`, `RefCell`) | `intermediate/08-smart-pointers` | Book ch. 15 | planned |
 | 9 | Fearless Concurrency (threads, channels, `Mutex`/`Arc`) | `intermediate/09-fearless-concurrency` | Book ch. 16 | planned |
