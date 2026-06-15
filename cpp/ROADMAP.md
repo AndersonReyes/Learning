@@ -40,8 +40,14 @@ simulator exercising block-number/line-index/tag addressing, a bump-pointer
 `Arena` allocator with alignment-aware `allocate`/`reset`, AoS -> SoA
 particle layout conversion + `totalKineticEnergy`, and two cache-blocking
 ("tiling") algorithms -- `transposeBlocked` and `multiplyBlocked`, both
-hand-verified to be independent of `blockSize`). Next:
-`advanced/04-code-optimization`.
+hand-verified to be independent of `blockSize`). Advanced topic 4,
+`advanced/04-code-optimization`, is now built (branchless arithmetic --
+`branchlessAbs`/`branchlessMin`/`branchlessMax`, including the
+unsigned-wraparound trick for `branchlessAbs(INT_MIN)`; bit-manipulation
+tricks via `countSetBits`/`reverseBits`; single-pass "loop fusion"
+`computeStats`; memoization with cache-miss counting via `StepCounter`; and
+a fixed 5-comparator branchless sorting network, `sortNetwork4`). Next:
+`advanced/05-profiling-and-benchmarking`.
 
 ## Reference
 
@@ -141,7 +147,7 @@ curriculum, once the language features it needs have been covered:
 | 1 | Move Semantics, Value Categories & Type Deduction | [`advanced/01-move-semantics-and-type-deduction`](./advanced/01-move-semantics-and-type-deduction) | MCPP ch. 21 | done |
 | 2 | Error Handling, Smart Pointers & Concurrency | [`advanced/02-error-handling-smart-pointers-and-concurrency`](./advanced/02-error-handling-smart-pointers-and-concurrency) | MCPP ch. 22 | done |
 | 3 | Performance Fundamentals: Architecture & Memory Hierarchy | [`advanced/03-performance-fundamentals`](./advanced/03-performance-fundamentals) | MCPP ch. 23 | done |
-| 4 | Code-Level Optimization Techniques | `advanced/04-code-optimization` | MCPP ch. 24 | planned |
+| 4 | Code-Level Optimization Techniques | [`advanced/04-code-optimization`](./advanced/04-code-optimization) | MCPP ch. 24 | done |
 | 5 | Compiler Optimization, Profiling & Benchmarking | `advanced/05-profiling-and-benchmarking` | MCPP ch. 25 | planned |
 | 6 | Software Design Principles, Idioms & Patterns | `advanced/06-software-design-and-idioms` | MCPP ch. 26–27 | planned |
 | 7 | Binary Size & Build Time | `advanced/07-binary-size-and-build-time` | MCPP ch. 28–29 | planned |
