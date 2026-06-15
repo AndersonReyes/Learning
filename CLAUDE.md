@@ -4,10 +4,11 @@ This repo holds self-study tracks. Currently: `javascript/` (fundamentals
 done; intermediate/advanced in progress — see `javascript/ROADMAP.md` status
 column), `go/` (fundamentals/intermediate/advanced fully built — taught
 through computer networking, see `go/ROADMAP.md`), `html/` and `css/` (notes
-+ viewable examples, no exercises), `cpp/` (planning stage — see
-`cpp/ROADMAP.md`). Future language tracks should follow the same top-level
-pattern: a dedicated `<language>/` directory with its own README, ROADMAP,
-package manifest (if runnable), and numbered topic folders.
++ viewable examples, no exercises), `cpp/` (fundamentals/intermediate/advanced
+fully built, capstone next — see `cpp/ROADMAP.md`), `rust/` (planning stage —
+see `rust/ROADMAP.md`). Future language tracks should follow the same
+top-level pattern: a dedicated `<language>/` directory with its own README,
+ROADMAP, package manifest (if runnable), and numbered topic folders.
 
 ## JavaScript track (`javascript/`)
 
@@ -246,6 +247,86 @@ built across three phases following the
 builds and renders the expected image, verified by running it — same
 "build it and verify by running" workflow as the JS capstone. Full
 phase breakdown is in the "Capstone" section of `cpp/ROADMAP.md`.
+
+## Rust track (`rust/`)
+
+**Status: planning.** Full curriculum lives in `rust/ROADMAP.md` — 29 topics
+(10 Fundamentals, 9 Intermediate, 10 Advanced) plus two capstones, built
+around [The Rust Programming Language](https://doc.rust-lang.org/book/) (the
+Book, for Fundamentals through most of Intermediate/Advanced) and
+[The Rustonomicon](https://doc.rust-lang.org/nomicon/) (unsafe, data layout,
+and from-scratch `Vec`/`Arc`/`Mutex` at the end of Advanced). First topic,
+`fundamentals/01-toolchain-cargo-and-hello-world`, is built.
+
+### Per-topic structure
+
+Same shape as JS/Go/C++, adapted for Rust. Each topic is its own Cargo
+package under `fundamentals/NN-*`, `intermediate/NN-*`, or `advanced/NN-*`,
+named `<tier>-<NN>-<slug>` (a workspace member of `rust/Cargo.toml`), with:
+
+- **`notes.md`** — concept explanation, terse like JS/Go/C++: syntax, rules,
+  gotchas, short snippets, self-contained. Ends with "Further Reading" linking
+  the matching Book/Nomicon chapter(s) and `std`/Reference pages.
+- **`Cargo.toml`** — `edition = "2021"`, no dependencies unless the concept
+  genuinely needs one (see "Adapted topics" in `rust/ROADMAP.md`).
+- **`src/lib.rs`** — 5 exported function/type stubs with full rustdoc `///`
+  comments (signature, behavior, hand-verified example I/O). Every stub body
+  is `todo!()`.
+- **`examples/examples.rs`** — runnable via
+  `cargo run --example examples -p <name>`. Demonstrates `notes.md`
+  concepts via `println!`. No exercises.
+- **`tests/exercise_test.rs`** — `#[test]` fns + `assert_eq!`/`assert!`.
+  This IS the spec/answer key — no separate solution files.
+
+### Testing strategy
+
+`cargo test` works from day one — `todo!()` panics and is reported as a
+failing test, so unlike the C++ track there's no framework to bootstrap.
+
+### Exercise difficulty
+
+Same bar as JS/Go/C++: **hard, challenging algorithmic problems**,
+hand-verified before writing `tests/exercise_test.rs` (temporarily implement
+a reference solution, `cargo test -p <name>` until all pass, then revert to
+`todo!()` and confirm all fail). Topics on ownership/lifetimes/traits/unsafe
+should exercise the language rules themselves (borrow-checker edge cases,
+`Send`/`Sync`, layout/alignment), not just happy-path I/O.
+
+### Adding a new topic
+
+1. Pick the next `planned` topic from `rust/ROADMAP.md` (Fundamentals →
+   Intermediate → Advanced order), noting its Book/Nomicon chapter(s).
+2. Write, in this order: `notes.md` → `Cargo.toml` → `src/lib.rs` →
+   `tests/exercise_test.rs` → `examples/examples.rs`. If this is the first
+   topic in `intermediate/` or `advanced/`, also add that tier's glob to
+   `members` in `rust/Cargo.toml` (a zero-match glob errors).
+3. Verify, from `rust/`:
+   - `cargo build -p <name>` succeeds.
+   - `cargo test -p <name>` — **every test currently fails** (`todo!()`
+     stubs), the expected starting state for a learner.
+   - `cargo run --example examples -p <name>` runs cleanly.
+   - `cargo test` (from `rust/`, no args) discovers the new package.
+4. Update `rust/ROADMAP.md`: mark the topic `done`, link its folder, and add
+   a one-line summary of what the 5 exercises cover.
+
+### Capstones
+
+Two capstones, detailed in the "Capstones" section of `rust/ROADMAP.md`:
+
+- **`rust/capstone-embedded/`** — embedded Rust on the BBC micro:bit v2.
+  Phase 1 (Embedonomicon, QEMU `lm3s6965evb`, `thumbv7m-none-eabi`) is
+  buildable and verifiable in-sandbox now. Phase 2 (Discovery micro:bit v2
+  edition, real nRF52833 hardware + `probe-rs`) is scaffolded once physical
+  hardware is available — don't design host-simulated workarounds for it.
+- **`rust/capstone-message-queue/`** — a concurrent, networked "mini-Kafka"
+  built in phases (storage engine → topics/partitions → concurrency → async
+  network protocol → consumer groups → replication), exercising
+  Intermediate's concurrency topic and Advanced's async topic.
+
+A third future project — a TCP/IP stack from scratch in Rust — is
+cross-referenced from `go/ROADMAP.md`'s Capstones section and recorded as a
+"someday" follow-on in `rust/ROADMAP.md`, not part of the two active
+capstones.
 
 ## Checkpointing & quota awareness
 
