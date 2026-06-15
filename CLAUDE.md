@@ -313,11 +313,15 @@ should exercise the language rules themselves (borrow-checker edge cases,
 
 Two capstones, detailed in the "Capstones" section of `rust/ROADMAP.md`:
 
-- **`rust/capstone-embedded/`** — embedded Rust on the BBC micro:bit v2.
-  Phase 1 (Embedonomicon, QEMU `lm3s6965evb`, `thumbv7m-none-eabi`) is
-  buildable and verifiable in-sandbox now. Phase 2 (Discovery micro:bit v2
-  edition, real nRF52833 hardware + `probe-rs`) is scaffolded once physical
-  hardware is available — don't design host-simulated workarounds for it.
+- **`rust/capstone-embedded/`** — embedded Rust on the BBC micro:bit v2
+  (Nordic nRF52833, Cortex-M4F, `thumbv7em-none-eabihf`), **real hardware via
+  `probe-rs` end to end — no QEMU/emulation**. Phase 1
+  (`phase1-from-scratch/`) applies the Embedonomicon's from-scratch
+  `#![no_std]`/`#![no_main]` approach to the nRF52833; Phase 2
+  (`phase2-discovery/`) is the Discovery (micro:bit v2 edition) curriculum
+  using `cortex-m-rt` + `microbit-v2`. Code is written/cross-compiled in this
+  sandbox; flashing and running on the board happens on the user's machine —
+  "done" means it builds here and the user confirms it runs on hardware.
 - **`rust/capstone-message-queue/`** — a concurrent, networked "mini-Kafka"
   built in phases (storage engine → topics/partitions → concurrency → async
   network protocol → consumer groups → replication), exercising

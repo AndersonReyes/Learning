@@ -52,9 +52,10 @@ runtime for `advanced/09`, `tokio` for the message-queue capstone) — see
 Two capstones, unlocked progressively as the curriculum builds out — see the
 "Capstones" section of [`ROADMAP.md`](./ROADMAP.md):
 
-- **`rust/capstone-embedded/`** — embedded Rust on the BBC micro:bit v2,
-  following the Embedonomicon (QEMU-buildable now) and Discovery
-  (micro:bit v2 edition, once physical hardware is available).
+- **`rust/capstone-embedded/`** — embedded Rust on the BBC micro:bit v2, on
+  real hardware via `probe-rs` end to end (no QEMU): a from-scratch
+  `#![no_std]`/`#![no_main]` phase (Embedonomicon, applied to the nRF52833)
+  followed by the full Discovery (micro:bit v2 edition) curriculum.
 - **`rust/capstone-message-queue/`** — a "mini-Kafka": a concurrent,
   networked, distributed message queue built in phases (storage engine →
   topics/partitions → concurrency → async network protocol → consumer
