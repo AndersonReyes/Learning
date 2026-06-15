@@ -2,9 +2,9 @@
 
 **Status: in progress.** Curriculum and reference are settled (below). 29
 topics total: 10 Fundamentals + 9 Intermediate + 10 Advanced, plus two
-capstones. Fundamentals (all 10) are built, and Intermediate topics 1-8 are
-built (see "Build Log" below for what each one's exercises cover); everything
-else is `planned`.
+capstones. Fundamentals (all 10) and Intermediate (all 9) are built (see
+"Build Log" below for what each one's exercises cover); everything else is
+`planned`.
 
 ## Reference
 
@@ -248,6 +248,19 @@ across sessions without re-reading every file.
   coercion vs. explicit `*x`), `Pool`/`PoolGuard` (an RAII object pool:
   `acquire` pops an item into a guard, `Drop` pushes it back via
   `RefCell::borrow_mut`).
+- **Intermediate 09 — Fearless Concurrency**: `sum_with_threads` (splits a
+  `Vec<i64>` into `ceil(len/num_threads)`-sized chunks, sums each on its own
+  `thread::spawn`, joins and adds the partial sums), `merge_sort_parallel`
+  (recursive merge sort that spawns a thread for the right half while
+  `max_depth > 0`, sorts the left half on the current thread, joins and
+  merges), `collect_messages` (spawns `num_producers` threads each sending
+  `"producer-{p}-msg-{m}"` over a cloned `mpsc::Sender`, drops the original
+  sender so the receiver's iterator terminates, then sorts the collected
+  messages), `concurrent_word_count` (each thread builds a local `HashMap` for
+  its chunk, then merges into a shared `Arc<Mutex<HashMap<String, usize>>>`),
+  `run_in_parallel` (runs a `Vec<Box<dyn FnOnce() -> T + Send + 'static>>` on
+  one thread each via `thread::spawn`, joins in order to preserve result
+  order regardless of completion order).
 
 ## Fundamentals
 
@@ -283,7 +296,7 @@ pointers, and concurrency.
 | 6 | Error Handling Deep Dive (`From`, `Box<dyn Error>`) | [`intermediate/06-error-handling-deep-dive`](./intermediate/06-error-handling-deep-dive) | Book ch. 9 (deepening) | done |
 | 7 | Cargo Workspaces, Profiles & Performance | [`intermediate/07-cargo-workspaces-and-profiles`](./intermediate/07-cargo-workspaces-and-profiles) | Book ch. 13.4, 14 (adapted) | done |
 | 8 | Smart Pointers (`Box`, `Deref`, `Drop`, `Rc`, `RefCell`) | [`intermediate/08-smart-pointers`](./intermediate/08-smart-pointers) | Book ch. 15 | done |
-| 9 | Fearless Concurrency (threads, channels, `Mutex`/`Arc`) | `intermediate/09-fearless-concurrency` | Book ch. 16 | planned |
+| 9 | Fearless Concurrency (threads, channels, `Mutex`/`Arc`) | [`intermediate/09-fearless-concurrency`](./intermediate/09-fearless-concurrency) | Book ch. 16 | done |
 
 ## Advanced
 

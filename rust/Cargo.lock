@@ -73,3 +73,7 @@ version = "0.1.0"
 [[package]]
 name = "intermediate-08-smart-pointers"
 version = "0.1.0"
+
+[[package]]
+name = "intermediate-09-fearless-concurrency"
+version = "0.1.0"
