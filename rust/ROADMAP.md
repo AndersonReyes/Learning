@@ -2,7 +2,7 @@
 
 **Status: in progress.** Curriculum and reference are settled (below). 29
 topics total: 10 Fundamentals + 9 Intermediate + 10 Advanced, plus two
-capstones. Fundamentals (all 10) are built, and Intermediate topics 1-7 are
+capstones. Fundamentals (all 10) are built, and Intermediate topics 1-8 are
 built (see "Build Log" below for what each one's exercises cover); everything
 else is `planned`.
 
@@ -237,6 +237,17 @@ across sessions without re-reading every file.
   elements, direct comparisons for the two endpoints), `exponential_moving_average`
   (`.scan()` carrying the running EMA, seeded via `std::iter::once` +
   `.chain()`).
+- **Intermediate 08 — Smart Pointers**: `LruCache::get`/`put` (`Rc<RefCell<VecDeque<(K,V)>>>`-style
+  interior mutability for a fixed-capacity LRU cache, ordering entries
+  most- to least-recently-used), `tree_depth`/`lowest_common_ancestor` (a
+  `Node` with owning `Rc` links down to children and a non-owning `Weak` link
+  up to its parent; depth via repeated `.parent.borrow().upgrade()`, LCA by
+  collecting one node's ancestor chain and walking the other's, comparing
+  with `Rc::ptr_eq`), `CountedRef`'s `Deref`/`DerefMut` (a smart pointer that
+  counts reads via `Cell` and writes via a plain field, demonstrating deref
+  coercion vs. explicit `*x`), `Pool`/`PoolGuard` (an RAII object pool:
+  `acquire` pops an item into a guard, `Drop` pushes it back via
+  `RefCell::borrow_mut`).
 
 ## Fundamentals
 
@@ -271,7 +282,7 @@ pointers, and concurrency.
 | 5 | Custom Iterators & Adapters | [`intermediate/05-custom-iterators-and-adapters`](./intermediate/05-custom-iterators-and-adapters) | Book ch. 13.2 (deepening) | done |
 | 6 | Error Handling Deep Dive (`From`, `Box<dyn Error>`) | [`intermediate/06-error-handling-deep-dive`](./intermediate/06-error-handling-deep-dive) | Book ch. 9 (deepening) | done |
 | 7 | Cargo Workspaces, Profiles & Performance | [`intermediate/07-cargo-workspaces-and-profiles`](./intermediate/07-cargo-workspaces-and-profiles) | Book ch. 13.4, 14 (adapted) | done |
-| 8 | Smart Pointers (`Box`, `Deref`, `Drop`, `Rc`, `RefCell`) | `intermediate/08-smart-pointers` | Book ch. 15 | planned |
+| 8 | Smart Pointers (`Box`, `Deref`, `Drop`, `Rc`, `RefCell`) | [`intermediate/08-smart-pointers`](./intermediate/08-smart-pointers) | Book ch. 15 | done |
 | 9 | Fearless Concurrency (threads, channels, `Mutex`/`Arc`) | `intermediate/09-fearless-concurrency` | Book ch. 16 | planned |
 
 ## Advanced

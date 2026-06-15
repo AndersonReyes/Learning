@@ -69,3 +69,7 @@ version = "0.1.0"
 [[package]]
 name = "intermediate-07-cargo-workspaces-and-profiles"
 version = "0.1.0"
+
+[[package]]
+name = "intermediate-08-smart-pointers"
+version = "0.1.0"
