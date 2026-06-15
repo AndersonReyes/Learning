@@ -3,7 +3,8 @@
 // A minimal header-only test framework, built in fundamentals/06 as an
 // application of that topic's concepts (function pointers, std::function,
 // lambdas, closures, and the preprocessor). Used by exercise_test.cpp from
-// fundamentals/07 onward.
+// fundamentals/07 onward. intermediate/01 added CHECK_EQ, a template that
+// prints both sides of a failed equality check.
 //
 // Usage:
 //
@@ -11,6 +12,7 @@
 //
 //   TEST(AdditionWorks) {
 //       CHECK(1 + 1 == 2);
+//       CHECK_EQ(2 + 2, 4);     // on failure, prints both operands' values
 //   }
 //
 //   TEST(StubThrows) {
@@ -29,6 +31,7 @@
 #include <exception>
 #include <functional>
 #include <iostream>
+#include <sstream>
 #include <string>
 #include <vector>
 
@@ -67,6 +70,24 @@ struct CheckFailure : std::exception {
     const char* what() const noexcept override { return message.c_str(); }
 };
 
+// Checks that `a == b`; if not, throws CheckFailure with both expressions'
+// source text (`aExpr`/`bExpr`) AND their printed values, plus
+// __FILE__:__LINE__. A function template -- rather than a macro that
+// stringifies the whole `a == b` expression -- so `a` and `b` are each
+// evaluated exactly once and their *values* (via operator<<) end up in the
+// failure message, not just their source text. Requires A and B to support
+// `==` and `operator<<(std::ostream&, ...)`.
+template <typename A, typename B>
+void checkEq(const A& a, const B& b, const char* aExpr, const char* bExpr, const char* file,
+              int line) {
+    if (!(a == b)) {
+        std::ostringstream oss;
+        oss << file << ":" << line << ": CHECK_EQ failed: " << aExpr << " == " << bExpr
+            << " (left = " << a << ", right = " << b << ")";
+        throw CheckFailure(oss.str());
+    }
+}
+
 }  // namespace testing
 
 // Defines one test named `name`. Expands to a forward declaration, a static
@@ -95,6 +116,13 @@ struct CheckFailure : std::exception {
                 ": CHECK failed: " #cond);                            \
         }                                                             \
     } while (false)
+
+// Checks that `a == b`; if not, throws testing::CheckFailure via
+// testing::checkEq(), which embeds both operands' printed values (in
+// addition to their source text and __FILE__:__LINE__) in the failure
+// message -- more diagnostic than CHECK(a == b), which only has the source
+// text. `(a)`/`(b)` are each passed once, stringified via `#a`/`#b`.
+#define CHECK_EQ(a, b) ::testing::checkEq((a), (b), #a, #b, __FILE__, __LINE__)
 
 // Expands to a main() that runs every test registered via TEST(...), in
 // registration order. A test that throws any exception derived from

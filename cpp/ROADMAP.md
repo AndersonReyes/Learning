@@ -1,12 +1,13 @@
 # C++ Roadmap
 
-**Status: Fundamentals complete.** Curriculum and reference are settled (see
-below). All 8 Fundamentals topics
+**Status: Fundamentals complete, Intermediate in progress.** Curriculum and
+reference are settled (see below). All 8 Fundamentals topics
 (`fundamentals/01-setup-and-hello-world` through
 `fundamentals/08-polymorphism-and-operator-overloading`) are built --
 `fundamentals/06-functions-and-lambdas` also built `cpp/testing.h`, used by
-every topic from `fundamentals/07` on. Next topic to build:
-`intermediate/01-function-templates`.
+every topic from `fundamentals/07` on. `intermediate/01-function-templates`
+is built (and extended `cpp/testing.h` with `CHECK_EQ`). Next topic to build:
+`intermediate/02-class-templates-and-concepts`.
 
 ## Reference
 
@@ -90,7 +91,7 @@ curriculum, once the language features it needs have been covered:
 
 | # | Topic | Folder | Reference | Status |
 |---|-------|--------|-----------|--------|
-| 1 | Function Templates & Compile-Time Utilities | `intermediate/01-function-templates` | MCPP ch. 11 | planned |
+| 1 | Function Templates & Compile-Time Utilities | [`intermediate/01-function-templates`](./intermediate/01-function-templates) | MCPP ch. 11 | done |
 | 2 | Class Templates, CTAD, SFINAE & Concepts | `intermediate/02-class-templates-and-concepts` | MCPP ch. 12 | planned |
 | 3 | Translation Units, Linkage & the ODR | `intermediate/03-translation-units-and-odr` | MCPP ch. 13 | planned |
 | 4 | Multi-File Projects, `#include`, Modules & Libraries | `intermediate/04-modules-and-libraries` | MCPP ch. 14 | planned |
