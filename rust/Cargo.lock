@@ -49,3 +49,7 @@ version = "0.1.0"
 [[package]]
 name = "intermediate-02-testing-and-project-organization"
 version = "0.1.0"
+
+[[package]]
+name = "intermediate-03-cli-io-project"
+version = "0.1.0"

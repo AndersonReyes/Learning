@@ -2,7 +2,7 @@
 
 **Status: in progress.** Curriculum and reference are settled (below). 29
 topics total: 10 Fundamentals + 9 Intermediate + 10 Advanced, plus two
-capstones. Fundamentals (all 10) are built, and Intermediate topics 1-2 are
+capstones. Fundamentals (all 10) are built, and Intermediate topics 1-3 are
 built (see "Build Log" below for what each one's exercises cover); everything
 else is `planned`.
 
@@ -191,6 +191,15 @@ across sessions without re-reading every file.
   overlapping/touching ranges, with one test using the `-> Result<(), String>`
   pattern), `longest_increasing_subsequence` (O(n²) DP), `min_coins` (coin
   change DP, `Option<u32>`).
+- **Intermediate 03 — CLI I/O Project**: pieces of a `minigrep`-style tool as
+  pure, testable functions — `parse_args` (flag/positional parsing into a
+  `Config`, with `-i`/`--ignore-case`, `-n`/`--line-numbers`, and exact error
+  messages for too-few/too-many args and unknown flags), `search_lines`
+  (ch.12.4's TDD'd line search, case-(in)sensitive), `highlight_matches`
+  (non-overlapping `**match**` wrapping, case-folded matching with
+  original-case output, UTF-8-safe), `grep_report` (combines the above into a
+  formatted report with line numbers and singular/plural match-count
+  summary), `resolve_ignore_case` (ch.12.5's CLI-flag-vs-env-var precedence).
 
 ## Fundamentals
 
@@ -220,7 +229,7 @@ pointers, and concurrency.
 |---|-------|--------|-----------|--------|
 | 1 | Generics, Traits & Lifetimes | [`intermediate/01-generics-traits-and-lifetimes`](./intermediate/01-generics-traits-and-lifetimes) | Book ch. 10 | done |
 | 2 | Writing Tests & Project Organization | [`intermediate/02-testing-and-project-organization`](./intermediate/02-testing-and-project-organization) | Book ch. 11 | done |
-| 3 | CLI I/O Project (args, files, env, stderr) | `intermediate/03-cli-io-project` | Book ch. 12 | planned |
+| 3 | CLI I/O Project (args, files, env, stderr) | [`intermediate/03-cli-io-project`](./intermediate/03-cli-io-project) | Book ch. 12 | done |
 | 4 | Closures & Iterators | `intermediate/04-closures-and-iterators` | Book ch. 13.1-13.2 | planned |
 | 5 | Custom Iterators & Adapters | `intermediate/05-custom-iterators-and-adapters` | Book ch. 13.2 (deepening) | planned |
 | 6 | Error Handling Deep Dive (`From`, `Box<dyn Error>`) | `intermediate/06-error-handling-deep-dive` | Book ch. 9 (deepening) | planned |
