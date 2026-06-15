@@ -2,7 +2,7 @@
 
 **Status: in progress.** Curriculum and reference are settled (below). 29
 topics total: 10 Fundamentals + 9 Intermediate + 10 Advanced, plus two
-capstones. Fundamentals topics 1-7 are built (see "Build Log" below for what
+capstones. Fundamentals topics 1-8 are built (see "Build Log" below for what
 each one's exercises cover); everything else is `planned`.
 
 ## Reference
@@ -157,6 +157,11 @@ across sessions without re-reading every file.
   matching with `|`); `Direction` enum + `from_token -> Option<Direction>`
   and `walk` (exhaustive match over variants); `first_non_repeating_char ->
   Option<char>`.
+- **08 — Packages, Crates & Modules**: the module system itself is the
+  exercise — `src/geometry.rs` (`polygon_area` via the shoelace formula,
+  `closest_pair_distance` brute force) and `src/stats.rs` (`median`,
+  `standard_deviation`, `mode`), both declared as `pub mod` in `lib.rs`,
+  with `stats::median` re-exported at the crate root via `pub use`.
 
 ## Fundamentals
 
@@ -172,7 +177,7 @@ library's basic data structures.
 | 5 | The Slice Type & `&str` | [`fundamentals/05-the-slice-type-and-str`](./fundamentals/05-the-slice-type-and-str) | Book ch. 4.3 | done |
 | 6 | Structs & Methods | [`fundamentals/06-structs-and-methods`](./fundamentals/06-structs-and-methods) | Book ch. 5 | done |
 | 7 | Enums & Pattern Matching | [`fundamentals/07-enums-and-pattern-matching`](./fundamentals/07-enums-and-pattern-matching) | Book ch. 6 | done |
-| 8 | Packages, Crates & Modules | `fundamentals/08-packages-crates-and-modules` | Book ch. 7 | planned |
+| 8 | Packages, Crates & Modules | [`fundamentals/08-packages-crates-and-modules`](./fundamentals/08-packages-crates-and-modules) | Book ch. 7 | done |
 | 9 | Common Collections (`Vec`, `String`, `HashMap`) | `fundamentals/09-common-collections` | Book ch. 8 | planned |
 | 10 | Error Handling (`panic!`, `Result`, `?`) | `fundamentals/10-error-handling` | Book ch. 9 | planned |
 

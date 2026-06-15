@@ -29,3 +29,7 @@ version = "0.1.0"
 [[package]]
 name = "fundamentals-07-enums-and-pattern-matching"
 version = "0.1.0"
+
+[[package]]
+name = "fundamentals-08-packages-crates-and-modules"
+version = "0.1.0"
