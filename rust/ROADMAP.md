@@ -2,8 +2,8 @@
 
 **Status: in progress.** Curriculum and reference are settled (below). 29
 topics total: 10 Fundamentals + 9 Intermediate + 10 Advanced, plus two
-capstones. Fundamentals topics 1-5 are built (see "Build Log" below for what
-each one's 5 exercises cover); everything else is `planned`.
+capstones. Fundamentals topics 1-6 are built (see "Build Log" below for what
+each one's exercises cover); everything else is `planned`.
 
 ## Reference
 
@@ -147,6 +147,10 @@ across sessions without re-reading every file.
   UTF-8 byte-vs-char — `split_on_whitespace_runs`, `first_n_chars`,
   `longest_palindromic_substring_slice`, `max_subarray_slice`,
   `chunk_slices`.
+- **06 — Structs & Methods**: a single `Polynomial` struct (canonical
+  `Vec<f64>` coefficient form, trailing zeros trimmed) with an associated
+  `new` constructor and `&self` methods — `evaluate` (Horner's method),
+  `derivative`, `add`, `multiply` (convolution).
 
 ## Fundamentals
 
@@ -160,7 +164,7 @@ library's basic data structures.
 | 3 | Control Flow | [`fundamentals/03-control-flow`](./fundamentals/03-control-flow) | Book ch. 3.4-3.5 | done |
 | 4 | Ownership & Borrowing | [`fundamentals/04-ownership-and-borrowing`](./fundamentals/04-ownership-and-borrowing) | Book ch. 4.1-4.2 | done |
 | 5 | The Slice Type & `&str` | [`fundamentals/05-the-slice-type-and-str`](./fundamentals/05-the-slice-type-and-str) | Book ch. 4.3 | done |
-| 6 | Structs & Methods | `fundamentals/06-structs-and-methods` | Book ch. 5 | planned |
+| 6 | Structs & Methods | [`fundamentals/06-structs-and-methods`](./fundamentals/06-structs-and-methods) | Book ch. 5 | done |
 | 7 | Enums & Pattern Matching | `fundamentals/07-enums-and-pattern-matching` | Book ch. 6 | planned |
 | 8 | Packages, Crates & Modules | `fundamentals/08-packages-crates-and-modules` | Book ch. 7 | planned |
 | 9 | Common Collections (`Vec`, `String`, `HashMap`) | `fundamentals/09-common-collections` | Book ch. 8 | planned |

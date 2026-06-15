@@ -1,0 +1,6 @@
+[package]
+name = "fundamentals-06-structs-and-methods"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
