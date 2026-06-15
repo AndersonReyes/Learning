@@ -34,8 +34,14 @@ type). Advanced topic 2,
 `std::atomic`/`std::mutex` via `parallelSum`, and `std::async`/`std::future`
 cross-thread exception propagation via `firstSuccessfulResult`) -- **its
 `exercise.cpp`/`exercise_test.cpp`/`examples.cpp` need `-pthread`** added to
-the usual `g++` invocation. Next:
-`advanced/03-performance-fundamentals`.
+the usual `g++` invocation. Advanced topic 3,
+`advanced/03-performance-fundamentals`, is now built (a direct-mapped cache
+simulator exercising block-number/line-index/tag addressing, a bump-pointer
+`Arena` allocator with alignment-aware `allocate`/`reset`, AoS -> SoA
+particle layout conversion + `totalKineticEnergy`, and two cache-blocking
+("tiling") algorithms -- `transposeBlocked` and `multiplyBlocked`, both
+hand-verified to be independent of `blockSize`). Next:
+`advanced/04-code-optimization`.
 
 ## Reference
 
@@ -134,7 +140,7 @@ curriculum, once the language features it needs have been covered:
 |---|-------|--------|-----------|--------|
 | 1 | Move Semantics, Value Categories & Type Deduction | [`advanced/01-move-semantics-and-type-deduction`](./advanced/01-move-semantics-and-type-deduction) | MCPP ch. 21 | done |
 | 2 | Error Handling, Smart Pointers & Concurrency | [`advanced/02-error-handling-smart-pointers-and-concurrency`](./advanced/02-error-handling-smart-pointers-and-concurrency) | MCPP ch. 22 | done |
-| 3 | Performance Fundamentals: Architecture & Memory Hierarchy | `advanced/03-performance-fundamentals` | MCPP ch. 23 | planned |
+| 3 | Performance Fundamentals: Architecture & Memory Hierarchy | [`advanced/03-performance-fundamentals`](./advanced/03-performance-fundamentals) | MCPP ch. 23 | done |
 | 4 | Code-Level Optimization Techniques | `advanced/04-code-optimization` | MCPP ch. 24 | planned |
 | 5 | Compiler Optimization, Profiling & Benchmarking | `advanced/05-profiling-and-benchmarking` | MCPP ch. 25 | planned |
 | 6 | Software Design Principles, Idioms & Patterns | `advanced/06-software-design-and-idioms` | MCPP ch. 26–27 | planned |
