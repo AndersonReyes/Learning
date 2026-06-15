@@ -10,9 +10,12 @@ is built (and extended `cpp/testing.h` with `CHECK_EQ`), as are
 `intermediate/02-class-templates-and-concepts`,
 `intermediate/03-translation-units-and-odr`,
 `intermediate/04-modules-and-libraries` (also added a small `lib/` "library"
-subdirectory, demonstrating a real multi-file/`-I` build), and
-`intermediate/05-code-conventions`. Next topic to build:
-`intermediate/06-debugging-testing-and-cmake`.
+subdirectory, demonstrating a real multi-file/`-I` build),
+`intermediate/05-code-conventions`, and
+`intermediate/06-debugging-testing-and-cmake` (the first topic with a
+`CMakeLists.txt`, plus a `-DENABLE_SANITIZERS=ON` build verified clean under
+ASan+UBSan). Next topic to build:
+`intermediate/07-standard-library-utilities`.
 
 ## Reference
 
@@ -101,7 +104,7 @@ curriculum, once the language features it needs have been covered:
 | 3 | Translation Units, Linkage & the ODR | [`intermediate/03-translation-units-and-odr`](./intermediate/03-translation-units-and-odr) | MCPP ch. 13 | done |
 | 4 | Multi-File Projects, `#include`, Modules & Libraries | [`intermediate/04-modules-and-libraries`](./intermediate/04-modules-and-libraries) | MCPP ch. 14 | done |
 | 5 | Project Organization & Code Conventions | [`intermediate/05-code-conventions`](./intermediate/05-code-conventions) | MCPP ch. 15–16 | done |
-| 6 | Debugging, Sanitizers, Testing & CMake | `intermediate/06-debugging-testing-and-cmake` | MCPP ch. 17–18 | planned |
+| 6 | Debugging, Sanitizers, Testing & CMake | [`intermediate/06-debugging-testing-and-cmake`](./intermediate/06-debugging-testing-and-cmake) | MCPP ch. 17–18 | done |
 | 7 | Standard Library Utilities (`string`, `optional`, `variant`, `<random>`, filesystem) | `intermediate/07-standard-library-utilities` | MCPP ch. 19 | planned |
 | 8 | Containers, Iterators, Algorithms & Ranges | `intermediate/08-containers-iterators-and-algorithms` | MCPP ch. 20 | planned |
 
