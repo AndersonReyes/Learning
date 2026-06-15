@@ -4,10 +4,11 @@
 `fundamentals/01-setup-and-hello-world`, `fundamentals/02-types-and-operators`,
 `fundamentals/03-integer-and-floating-point-arithmetic`,
 `fundamentals/04-control-flow-and-entities`,
-`fundamentals/05-pointers-references-and-memory`, and
+`fundamentals/05-pointers-references-and-memory`,
 `fundamentals/06-functions-and-lambdas` (which also built `cpp/testing.h`,
-used by every topic from `fundamentals/07` on) are built. Next topic to
-build: `fundamentals/07-classes-and-raii`.
+used by every topic from `fundamentals/07` on), and
+`fundamentals/07-classes-and-raii` are built. Next topic to build:
+`fundamentals/08-polymorphism-and-operator-overloading`.
 
 ## Reference
 
@@ -84,7 +85,7 @@ curriculum, once the language features it needs have been covered:
 | 4 | Control Flow, Enums, Structs & Namespaces | [`fundamentals/04-control-flow-and-entities`](./fundamentals/04-control-flow-and-entities) | MCPP ch. 6 | done |
 | 5 | Pointers, References, Memory & `const` | [`fundamentals/05-pointers-references-and-memory`](./fundamentals/05-pointers-references-and-memory) | MCPP ch. 7 | done |
 | 6 | Functions, Lambdas & the Preprocessor (+ build `cpp/testing.h`) | [`fundamentals/06-functions-and-lambdas`](./fundamentals/06-functions-and-lambdas) | MCPP ch. 8 | done |
-| 7 | Classes, Constructors, Destructors & RAII | `fundamentals/07-classes-and-raii` | MCPP ch. 9 | planned |
+| 7 | Classes, Constructors, Destructors & RAII | [`fundamentals/07-classes-and-raii`](./fundamentals/07-classes-and-raii) | MCPP ch. 9 | done |
 | 8 | Polymorphism & Operator Overloading | `fundamentals/08-polymorphism-and-operator-overloading` | MCPP ch. 10 | planned |
 
 ## Intermediate
