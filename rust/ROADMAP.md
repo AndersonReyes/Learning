@@ -2,7 +2,7 @@
 
 **Status: in progress.** Curriculum and reference are settled (below). 29
 topics total: 10 Fundamentals + 9 Intermediate + 10 Advanced, plus two
-capstones. Fundamentals topics 1-8 are built (see "Build Log" below for what
+capstones. Fundamentals topics 1-9 are built (see "Build Log" below for what
 each one's exercises cover); everything else is `planned`.
 
 ## Reference
@@ -162,6 +162,12 @@ across sessions without re-reading every file.
   `closest_pair_distance` brute force) and `src/stats.rs` (`median`,
   `standard_deviation`, `mode`), both declared as `pub mod` in `lib.rs`,
   with `stats::median` re-exported at the crate root via `pub use`.
+- **09 — Common Collections**: `HashMap`/`HashSet`/`String` idioms —
+  `word_frequency` (entry-API counting with case-folding and punctuation
+  trimming), `group_anagrams` (sorted-chars key, order-preserving groups),
+  `top_k_frequent` (count, sort by frequency desc / value asc),
+  `dedup_preserve_order` (`HashSet` membership tracking),
+  `run_length_encode` (`String` building over `.chars()`, UTF-8 safe).
 
 ## Fundamentals
 
@@ -178,7 +184,7 @@ library's basic data structures.
 | 6 | Structs & Methods | [`fundamentals/06-structs-and-methods`](./fundamentals/06-structs-and-methods) | Book ch. 5 | done |
 | 7 | Enums & Pattern Matching | [`fundamentals/07-enums-and-pattern-matching`](./fundamentals/07-enums-and-pattern-matching) | Book ch. 6 | done |
 | 8 | Packages, Crates & Modules | [`fundamentals/08-packages-crates-and-modules`](./fundamentals/08-packages-crates-and-modules) | Book ch. 7 | done |
-| 9 | Common Collections (`Vec`, `String`, `HashMap`) | `fundamentals/09-common-collections` | Book ch. 8 | planned |
+| 9 | Common Collections (`Vec`, `String`, `HashMap`) | [`fundamentals/09-common-collections`](./fundamentals/09-common-collections) | Book ch. 8 | done |
 | 10 | Error Handling (`panic!`, `Result`, `?`) | `fundamentals/10-error-handling` | Book ch. 9 | planned |
 
 ## Intermediate
