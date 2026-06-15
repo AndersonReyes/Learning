@@ -3,6 +3,10 @@
 version = 4
 
 [[package]]
+name = "advanced-01-trait-objects-and-oop-patterns"
+version = "0.1.0"
+
+[[package]]
 name = "fundamentals-01-toolchain-cargo-and-hello-world"
 version = "0.1.0"
 

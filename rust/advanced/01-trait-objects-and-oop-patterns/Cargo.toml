@@ -1,0 +1,6 @@
+[package]
+name = "advanced-01-trait-objects-and-oop-patterns"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]

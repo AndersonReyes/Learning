@@ -2,9 +2,9 @@
 
 **Status: in progress.** Curriculum and reference are settled (below). 29
 topics total: 10 Fundamentals + 9 Intermediate + 10 Advanced, plus two
-capstones. Fundamentals (all 10) and Intermediate (all 9) are built (see
-"Build Log" below for what each one's exercises cover); everything else is
-`planned`.
+capstones. Fundamentals (all 10), Intermediate (all 9), and Advanced topic 1
+are built (see "Build Log" below for what each one's exercises cover);
+everything else is `planned`.
 
 ## Reference
 
@@ -261,6 +261,20 @@ across sessions without re-reading every file.
   `run_in_parallel` (runs a `Vec<Box<dyn FnOnce() -> T + Send + 'static>>` on
   one thread each via `thread::spawn`, joins in order to preserve result
   order regardless of completion order).
+- **Advanced 01 — Trait Objects, Dynamic Dispatch & OOP Patterns**: `Expr`
+  trait + `Num`/`Add`/`Sub`/`Mul`/`Div`/`Neg` node types + `eval_all`
+  (recursive `Box<dyn Expr>` tree evaluator returning `Result<f64, String>`,
+  `?`-propagating a `"division by zero"` error from any subtree),
+  `TurnstileState` trait + `Locked`/`Unlocked` + `run_turnstile` (State
+  pattern using `self: Box<Self>` transitions, feeding `Event`s through a
+  turnstile and recording the state name after each), `Task` trait +
+  `run_tasks_in_priority_order` (stable-sorts a heterogeneous
+  `Vec<Box<dyn Task>>` by `priority()`, ties keep insertion order, then runs
+  each), `Shape: Any` trait + `Circle`/`Square`/`Rectangle` + `count_by_type`
+  (`dyn Any::downcast_ref` to tally concrete types in a
+  `Vec<Box<dyn Shape>>`), `Notifier` trait + `EmailNotifier`/`SmsDecorator`/
+  `LoggingDecorator` (Decorator pattern: nested `Box<dyn Notifier>` each
+  prepending their own log line before delegating to the wrapped notifier).
 
 ## Fundamentals
 
@@ -307,7 +321,7 @@ from-scratch `Vec`/`Arc`/`Mutex`.
 
 | # | Topic | Folder | Reference | Status |
 |---|-------|--------|-----------|--------|
-| 1 | Trait Objects, Dynamic Dispatch & OOP Patterns | `advanced/01-trait-objects-and-oop-patterns` | Book ch. 18 | planned |
+| 1 | Trait Objects, Dynamic Dispatch & OOP Patterns | [`advanced/01-trait-objects-and-oop-patterns`](./advanced/01-trait-objects-and-oop-patterns) | Book ch. 18 | done |
 | 2 | Patterns & Matching Deep Dive | `advanced/02-patterns-and-matching` | Book ch. 19 | planned |
 | 3 | Advanced Traits & Types | `advanced/03-advanced-traits-and-types` | Book ch. 20.2-20.3 | planned |
 | 4 | Advanced Functions, Closures & Macros | `advanced/04-advanced-functions-and-macros` | Book ch. 20.4-20.5 | planned |
