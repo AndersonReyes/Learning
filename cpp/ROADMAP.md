@@ -3,9 +3,11 @@
 **Status: in progress.** Curriculum and reference are settled (see below).
 `fundamentals/01-setup-and-hello-world`, `fundamentals/02-types-and-operators`,
 `fundamentals/03-integer-and-floating-point-arithmetic`,
-`fundamentals/04-control-flow-and-entities`, and
-`fundamentals/05-pointers-references-and-memory` are built. Next topic to
-build: `fundamentals/06-functions-and-lambdas`.
+`fundamentals/04-control-flow-and-entities`,
+`fundamentals/05-pointers-references-and-memory`, and
+`fundamentals/06-functions-and-lambdas` (which also built `cpp/testing.h`,
+used by every topic from `fundamentals/07` on) are built. Next topic to
+build: `fundamentals/07-classes-and-raii`.
 
 ## Reference
 
@@ -52,17 +54,21 @@ curriculum, once the language features it needs have been covered:
   until `advanced/02`. `main()` prints an "all tests passed" message and
   returns 0 only if every `assert` survives. Compiled with
   `g++ -std=c++20 -Wall -Wextra -o /tmp/test exercise_test.cpp exercise.cpp && /tmp/test`.
-- **`fundamentals/06` (Functions, Lambdas & the Preprocessor)** includes, as
-  one of its exercises, building `cpp/testing.h`: a small header-only
-  `TEST(name) { ... }` / `CHECK(cond)` / `TEST_MAIN()` framework — macros
-  (`#`, `__FILE__`/`__LINE__`) for registration and diagnostics, and
+- **`fundamentals/06` (Functions, Lambdas & the Preprocessor)** still uses
+  plain `<cassert>` for its own `exercise_test.cpp` (its `runTests` exercise
+  *is* the core logic of a test runner: run named thunks, catch
+  `std::exception` per thunk, record pass/fail). It also builds
+  [`cpp/testing.h`](./testing.h): a small header-only `TEST(name) { ... }` /
+  `CHECK(cond)` / `TEST_MAIN()` framework — macros (`#`/`##`,
+  `__FILE__`/`__LINE__`) for registration and diagnostics, and
   `std::function`/lambdas to hold each test body in a registry that
   `TEST_MAIN()` iterates, catching exceptions per test so one failing test
   can't abort the others.
 - **`fundamentals/07` onward** (all of Intermediate/Advanced):
-  `exercise_test.cpp` uses `cpp/testing.h` from `fundamentals/06`. Stub
-  bodies switch to `throw std::logic_error("not implemented")`, caught by
-  `TEST_MAIN()` and reported as a clean FAIL. Compiled with
+  `exercise_test.cpp` uses `cpp/testing.h` from `fundamentals/06` (included
+  as `../../testing.h`). Stub bodies switch to `throw
+  std::logic_error("not implemented")`, caught by `TEST_MAIN()` and reported
+  as a clean FAIL. Compiled with
   `g++ -std=c++20 -Wall -Wextra -o /tmp/test exercise_test.cpp exercise.cpp && /tmp/test`.
 - **`intermediate/01` (Function Templates)** revisits `cpp/testing.h`,
   adding a templated `CHECK_EQ(a, b)` that prints both sides on failure —
@@ -77,7 +83,7 @@ curriculum, once the language features it needs have been covered:
 | 3 | Integer & Floating-Point Arithmetic | [`fundamentals/03-integer-and-floating-point-arithmetic`](./fundamentals/03-integer-and-floating-point-arithmetic) | MCPP ch. 4–5 | done |
 | 4 | Control Flow, Enums, Structs & Namespaces | [`fundamentals/04-control-flow-and-entities`](./fundamentals/04-control-flow-and-entities) | MCPP ch. 6 | done |
 | 5 | Pointers, References, Memory & `const` | [`fundamentals/05-pointers-references-and-memory`](./fundamentals/05-pointers-references-and-memory) | MCPP ch. 7 | done |
-| 6 | Functions, Lambdas & the Preprocessor (+ build `cpp/testing.h`) | `fundamentals/06-functions-and-lambdas` | MCPP ch. 8 | planned |
+| 6 | Functions, Lambdas & the Preprocessor (+ build `cpp/testing.h`) | [`fundamentals/06-functions-and-lambdas`](./fundamentals/06-functions-and-lambdas) | MCPP ch. 8 | done |
 | 7 | Classes, Constructors, Destructors & RAII | `fundamentals/07-classes-and-raii` | MCPP ch. 9 | planned |
 | 8 | Polymorphism & Operator Overloading | `fundamentals/08-polymorphism-and-operator-overloading` | MCPP ch. 10 | planned |
 
