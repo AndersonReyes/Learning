@@ -1,6 +1,6 @@
 # C++ Roadmap
 
-**Status: Fundamentals and Intermediate complete. Advanced not started.**
+**Status: Fundamentals and Intermediate complete. Advanced in progress.**
 Curriculum and reference are settled (see below). All 8 Fundamentals topics
 (`fundamentals/01-setup-and-hello-world` through
 `fundamentals/08-polymorphism-and-operator-overloading`) are built --
@@ -20,10 +20,13 @@ distribution reproducibility, `std::filesystem::path::lexically_normal`, and
 `std::string_view`), and `intermediate/08-containers-iterators-and-algorithms`
 (container categories, `<deque>`-based monotonic-deque algorithms, custom
 sort comparators, writing a custom forward iterator, and C++20 `<ranges>`
-filter/transform/take pipelines). Next: pick the first Advanced topic
-(`advanced/01-move-semantics-and-type-deduction`), or build the capstone ray
-tracer (Fundamentals + Intermediate are now both complete, satisfying its
-prerequisite).
+filter/transform/take pipelines). Advanced topic 1,
+`advanced/01-move-semantics-and-type-deduction`, is now built (value
+categories, `std::move`/`std::forward`, forwarding references & reference
+collapsing, `auto`/`decltype`/`decltype(auto)`, trailing return types, the
+Rule of 5 via a heap-owning `IntBuffer`, and a juggling-algorithm in-place
+array rotation verified to use moves not copies via a `Tracked` counter
+type). Next: `advanced/02-error-handling-smart-pointers-and-concurrency`.
 
 ## Reference
 
@@ -120,7 +123,7 @@ curriculum, once the language features it needs have been covered:
 
 | # | Topic | Folder | Reference | Status |
 |---|-------|--------|-----------|--------|
-| 1 | Move Semantics, Value Categories & Type Deduction | `advanced/01-move-semantics-and-type-deduction` | MCPP ch. 21 | planned |
+| 1 | Move Semantics, Value Categories & Type Deduction | [`advanced/01-move-semantics-and-type-deduction`](./advanced/01-move-semantics-and-type-deduction) | MCPP ch. 21 | done |
 | 2 | Error Handling, Smart Pointers & Concurrency | `advanced/02-error-handling-smart-pointers-and-concurrency` | MCPP ch. 22 | planned |
 | 3 | Performance Fundamentals: Architecture & Memory Hierarchy | `advanced/03-performance-fundamentals` | MCPP ch. 23 | planned |
 | 4 | Code-Level Optimization Techniques | `advanced/04-code-optimization` | MCPP ch. 24 | planned |
