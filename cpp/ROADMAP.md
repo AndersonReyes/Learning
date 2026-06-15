@@ -1,24 +1,29 @@
 # C++ Roadmap
 
-**Status: Fundamentals complete, Intermediate in progress.** Curriculum and
-reference are settled (see below). All 8 Fundamentals topics
+**Status: Fundamentals and Intermediate complete. Advanced not started.**
+Curriculum and reference are settled (see below). All 8 Fundamentals topics
 (`fundamentals/01-setup-and-hello-world` through
 `fundamentals/08-polymorphism-and-operator-overloading`) are built --
 `fundamentals/06-functions-and-lambdas` also built `cpp/testing.h`, used by
-every topic from `fundamentals/07` on. `intermediate/01-function-templates`
-is built (and extended `cpp/testing.h` with `CHECK_EQ`), as are
-`intermediate/02-class-templates-and-concepts`,
+every topic from `fundamentals/07` on. All 8 Intermediate topics are built:
+`intermediate/01-function-templates` (extended `cpp/testing.h` with
+`CHECK_EQ`), `intermediate/02-class-templates-and-concepts`,
 `intermediate/03-translation-units-and-odr`,
 `intermediate/04-modules-and-libraries` (also added a small `lib/` "library"
 subdirectory, demonstrating a real multi-file/`-I` build),
 `intermediate/05-code-conventions`,
 `intermediate/06-debugging-testing-and-cmake` (the first topic with a
 `CMakeLists.txt`, plus a `-DENABLE_SANITIZERS=ON` build verified clean under
-ASan+UBSan), and `intermediate/07-standard-library-utilities` (`std::optional`
+ASan+UBSan), `intermediate/07-standard-library-utilities` (`std::optional`
 + `std::from_chars`, `std::variant`/`std::visit`, `<random>` engine vs.
 distribution reproducibility, `std::filesystem::path::lexically_normal`, and
-`std::string_view`). Next topic to build:
-`intermediate/08-containers-iterators-and-algorithms`.
+`std::string_view`), and `intermediate/08-containers-iterators-and-algorithms`
+(container categories, `<deque>`-based monotonic-deque algorithms, custom
+sort comparators, writing a custom forward iterator, and C++20 `<ranges>`
+filter/transform/take pipelines). Next: pick the first Advanced topic
+(`advanced/01-move-semantics-and-type-deduction`), or build the capstone ray
+tracer (Fundamentals + Intermediate are now both complete, satisfying its
+prerequisite).
 
 ## Reference
 
@@ -109,7 +114,7 @@ curriculum, once the language features it needs have been covered:
 | 5 | Project Organization & Code Conventions | [`intermediate/05-code-conventions`](./intermediate/05-code-conventions) | MCPP ch. 15–16 | done |
 | 6 | Debugging, Sanitizers, Testing & CMake | [`intermediate/06-debugging-testing-and-cmake`](./intermediate/06-debugging-testing-and-cmake) | MCPP ch. 17–18 | done |
 | 7 | Standard Library Utilities (`string`, `optional`, `variant`, `<random>`, filesystem) | [`intermediate/07-standard-library-utilities`](./intermediate/07-standard-library-utilities) | MCPP ch. 19 | done |
-| 8 | Containers, Iterators, Algorithms & Ranges | `intermediate/08-containers-iterators-and-algorithms` | MCPP ch. 20 | planned |
+| 8 | Containers, Iterators, Algorithms & Ranges | [`intermediate/08-containers-iterators-and-algorithms`](./intermediate/08-containers-iterators-and-algorithms) | MCPP ch. 20 | done |
 
 ## Advanced
 
