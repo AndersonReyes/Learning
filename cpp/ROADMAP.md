@@ -2,8 +2,9 @@
 
 **Status: in progress.** Curriculum and reference are settled (see below).
 `fundamentals/01-setup-and-hello-world`, `fundamentals/02-types-and-operators`,
-and `fundamentals/03-integer-and-floating-point-arithmetic` are built. Next
-topic to build: `fundamentals/04-control-flow-and-entities`.
+`fundamentals/03-integer-and-floating-point-arithmetic`, and
+`fundamentals/04-control-flow-and-entities` are built. Next topic to build:
+`fundamentals/05-pointers-references-and-memory`.
 
 ## Reference
 
@@ -73,7 +74,7 @@ curriculum, once the language features it needs have been covered:
 | 1 | Setup, Compilation & Hello World | [`fundamentals/01-setup-and-hello-world`](./fundamentals/01-setup-and-hello-world) | MCPP ch. 2 (Preparation) | done |
 | 2 | Type System, Fundamental Types & Operators | [`fundamentals/02-types-and-operators`](./fundamentals/02-types-and-operators) | MCPP ch. 3 | done |
 | 3 | Integer & Floating-Point Arithmetic | [`fundamentals/03-integer-and-floating-point-arithmetic`](./fundamentals/03-integer-and-floating-point-arithmetic) | MCPP ch. 4–5 | done |
-| 4 | Control Flow, Enums, Structs & Namespaces | `fundamentals/04-control-flow-and-entities` | MCPP ch. 6 | planned |
+| 4 | Control Flow, Enums, Structs & Namespaces | [`fundamentals/04-control-flow-and-entities`](./fundamentals/04-control-flow-and-entities) | MCPP ch. 6 | done |
 | 5 | Pointers, References, Memory & `const` | `fundamentals/05-pointers-references-and-memory` | MCPP ch. 7 | planned |
 | 6 | Functions, Lambdas & the Preprocessor (+ build `cpp/testing.h`) | `fundamentals/06-functions-and-lambdas` | MCPP ch. 8 | planned |
 | 7 | Classes, Constructors, Destructors & RAII | `fundamentals/07-classes-and-raii` | MCPP ch. 9 | planned |
