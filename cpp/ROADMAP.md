@@ -1,6 +1,7 @@
 # C++ Roadmap
 
-**Status: Fundamentals and Intermediate complete. Advanced in progress.**
+**Status: Fundamentals, Intermediate, and Advanced complete. Core curriculum
+done -- next up is the capstone (see below).**
 Curriculum and reference are settled (see below). All 8 Fundamentals topics
 (`fundamentals/01-setup-and-hello-world` through
 `fundamentals/08-polymorphism-and-operator-overloading`) are built --
@@ -69,7 +70,20 @@ Method pattern, a non-virtual `validate()` driving overridable
 publish-subscribe pattern with `std::function` handlers, subscription ids,
 and unsubscribe; and `Comparable<Derived>`/`Version` -- CRTP providing six
 comparison operators from one `compareTo` method, with zero vtable
-overhead). Next: `advanced/07-binary-size-and-build-time`.
+overhead). Advanced topic 7, `advanced/07-binary-size-and-build-time`, is now
+built -- the last of the core curriculum (another adapted topic: a
+"build-graph & binary-size analysis toolkit") with `transitiveIncludeCount`/
+`filesToRebuild` (forward/reverse `#include`-graph reachability, i.e. what a
+TU's compile must parse and what an incremental build must recompile),
+`criticalPathBuildTime` (DAG critical path/makespan with cycle detection --
+"Amdahl's law for builds"), `groupLoadsGreedy` (LPT greedy scheduling across
+parallel compile workers), and `linkedBinarySize` (COMDAT/vague-linkage
+template-instantiation deduplication with ODR-violation detection);
+`notes.md` separately covers binary-size flags/tools (`-Os`,
+`--gc-sections`, `-fvisibility=hidden`, `nm`/`size`/`objdump`/Bloaty) and
+build-time techniques (PCH, unity builds, LTO/ThinLTO, `ccache`, distributed
+compilation, IWYU, C++20 modules) conceptually. Next: the
+`cpp/capstone-ray-tracer/` (see below).
 
 ## Reference
 
@@ -172,7 +186,7 @@ curriculum, once the language features it needs have been covered:
 | 4 | Code-Level Optimization Techniques | [`advanced/04-code-optimization`](./advanced/04-code-optimization) | MCPP ch. 24 | done |
 | 5 | Compiler Optimization, Profiling & Benchmarking | [`advanced/05-profiling-and-benchmarking`](./advanced/05-profiling-and-benchmarking) | MCPP ch. 25 | done |
 | 6 | Software Design Principles, Idioms & Patterns | [`advanced/06-software-design-and-idioms`](./advanced/06-software-design-and-idioms) | MCPP ch. 26–27 | done |
-| 7 | Binary Size & Build Time | `advanced/07-binary-size-and-build-time` | MCPP ch. 28–29 | planned |
+| 7 | Binary Size & Build Time | [`advanced/07-binary-size-and-build-time`](./advanced/07-binary-size-and-build-time) | MCPP ch. 28–29 | done |
 
 ## Exercise difficulty
 
