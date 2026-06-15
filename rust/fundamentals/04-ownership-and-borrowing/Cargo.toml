@@ -1,0 +1,6 @@
+[package]
+name = "fundamentals-04-ownership-and-borrowing"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]

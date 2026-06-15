@@ -20,7 +20,14 @@ truncating division (`fixed_point_divide`). Fundamentals topic 3,
 labels: nested-loop grid search with a labeled break (`find_in_grid`), digit
 extraction with `if`/`else` (`is_armstrong_number`), early-exit accumulation
 (`sum_of_multiples_below`), nested `while` reduction (`digital_root`), and
-direction-aware `loop` termination (`count_steps_to_reach`). Everything else
+direction-aware `loop` termination (`count_steps_to_reach`). Fundamentals
+topic 4, `fundamentals/04-ownership-and-borrowing`, is also built — its 5
+exercises drill move/`Clone`/`Copy` and `&T`/`&mut T` borrowing: stable
+3-way in-place partition (`partition_in_place`), merging a borrowed slice
+into a `&mut Vec` (`merge_sorted_into`), consuming a `Vec` by value and
+redistributing it (`take_ownership_and_split`), in-place removal returning a
+new owned `Vec` (`drain_below_threshold`), and building an owned `String`
+from a borrowed `&[String]` (`longest_common_prefix_owned`). Everything else
 is `planned`.
 
 ## Reference
@@ -153,7 +160,7 @@ library's basic data structures.
 | 1 | Toolchain, Cargo & Hello World | [`fundamentals/01-toolchain-cargo-and-hello-world`](./fundamentals/01-toolchain-cargo-and-hello-world) | Book ch. 1-2 | done |
 | 2 | Variables, Data Types & Functions | [`fundamentals/02-variables-data-types-and-functions`](./fundamentals/02-variables-data-types-and-functions) | Book ch. 3.1-3.3 | done |
 | 3 | Control Flow | [`fundamentals/03-control-flow`](./fundamentals/03-control-flow) | Book ch. 3.4-3.5 | done |
-| 4 | Ownership & Borrowing | `fundamentals/04-ownership-and-borrowing` | Book ch. 4.1-4.2 | planned |
+| 4 | Ownership & Borrowing | [`fundamentals/04-ownership-and-borrowing`](./fundamentals/04-ownership-and-borrowing) | Book ch. 4.1-4.2 | done |
 | 5 | The Slice Type & `&str` | `fundamentals/05-the-slice-type-and-str` | Book ch. 4.3 | planned |
 | 6 | Structs & Methods | `fundamentals/06-structs-and-methods` | Book ch. 5 | planned |
 | 7 | Enums & Pattern Matching | `fundamentals/07-enums-and-pattern-matching` | Book ch. 6 | planned |
