@@ -1,14 +1,12 @@
 # C++ Roadmap
 
-**Status: in progress.** Curriculum and reference are settled (see below).
-`fundamentals/01-setup-and-hello-world`, `fundamentals/02-types-and-operators`,
-`fundamentals/03-integer-and-floating-point-arithmetic`,
-`fundamentals/04-control-flow-and-entities`,
-`fundamentals/05-pointers-references-and-memory`,
-`fundamentals/06-functions-and-lambdas` (which also built `cpp/testing.h`,
-used by every topic from `fundamentals/07` on), and
-`fundamentals/07-classes-and-raii` are built. Next topic to build:
-`fundamentals/08-polymorphism-and-operator-overloading`.
+**Status: Fundamentals complete.** Curriculum and reference are settled (see
+below). All 8 Fundamentals topics
+(`fundamentals/01-setup-and-hello-world` through
+`fundamentals/08-polymorphism-and-operator-overloading`) are built --
+`fundamentals/06-functions-and-lambdas` also built `cpp/testing.h`, used by
+every topic from `fundamentals/07` on. Next topic to build:
+`intermediate/01-function-templates`.
 
 ## Reference
 
@@ -86,7 +84,7 @@ curriculum, once the language features it needs have been covered:
 | 5 | Pointers, References, Memory & `const` | [`fundamentals/05-pointers-references-and-memory`](./fundamentals/05-pointers-references-and-memory) | MCPP ch. 7 | done |
 | 6 | Functions, Lambdas & the Preprocessor (+ build `cpp/testing.h`) | [`fundamentals/06-functions-and-lambdas`](./fundamentals/06-functions-and-lambdas) | MCPP ch. 8 | done |
 | 7 | Classes, Constructors, Destructors & RAII | [`fundamentals/07-classes-and-raii`](./fundamentals/07-classes-and-raii) | MCPP ch. 9 | done |
-| 8 | Polymorphism & Operator Overloading | `fundamentals/08-polymorphism-and-operator-overloading` | MCPP ch. 10 | planned |
+| 8 | Polymorphism & Operator Overloading | [`fundamentals/08-polymorphism-and-operator-overloading`](./fundamentals/08-polymorphism-and-operator-overloading) | MCPP ch. 10 | done |
 
 ## Intermediate
 
