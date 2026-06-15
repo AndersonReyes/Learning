@@ -46,8 +46,17 @@ hand-verified to be independent of `blockSize`). Advanced topic 4,
 unsigned-wraparound trick for `branchlessAbs(INT_MIN)`; bit-manipulation
 tricks via `countSetBits`/`reverseBits`; single-pass "loop fusion"
 `computeStats`; memoization with cache-miss counting via `StepCounter`; and
-a fixed 5-comparator branchless sorting network, `sortNetwork4`). Next:
-`advanced/05-profiling-and-benchmarking`.
+a fixed 5-comparator branchless sorting network, `sortNetwork4`). Advanced
+topic 5, `advanced/05-profiling-and-benchmarking`, is now built (an adapted
+topic -- profiling/benchmarking aren't directly assertable, so the exercises
+build a "benchmark statistics toolkit" instead: `summarize`
+(mean/median/stddev with Bessel's correction, plus min/max), `percentile`
+(linear-interpolation method), `trimmedMean` (drop extreme samples from
+each end before averaging), `amdahlSpeedup`/`gustafsonSpeedup` (fixed-size
+vs scaled-problem parallel speedup predictions), and `isSignificantSpeedup`
+(95%-confidence-interval-overlap significance test); `notes.md` separately
+covers compiler optimization flags, PGO, and profilers (`perf`, `gprof`,
+`callgrind`) conceptually). Next: `advanced/06-software-design-and-idioms`.
 
 ## Reference
 
@@ -148,7 +157,7 @@ curriculum, once the language features it needs have been covered:
 | 2 | Error Handling, Smart Pointers & Concurrency | [`advanced/02-error-handling-smart-pointers-and-concurrency`](./advanced/02-error-handling-smart-pointers-and-concurrency) | MCPP ch. 22 | done |
 | 3 | Performance Fundamentals: Architecture & Memory Hierarchy | [`advanced/03-performance-fundamentals`](./advanced/03-performance-fundamentals) | MCPP ch. 23 | done |
 | 4 | Code-Level Optimization Techniques | [`advanced/04-code-optimization`](./advanced/04-code-optimization) | MCPP ch. 24 | done |
-| 5 | Compiler Optimization, Profiling & Benchmarking | `advanced/05-profiling-and-benchmarking` | MCPP ch. 25 | planned |
+| 5 | Compiler Optimization, Profiling & Benchmarking | [`advanced/05-profiling-and-benchmarking`](./advanced/05-profiling-and-benchmarking) | MCPP ch. 25 | done |
 | 6 | Software Design Principles, Idioms & Patterns | `advanced/06-software-design-and-idioms` | MCPP ch. 26–27 | planned |
 | 7 | Binary Size & Build Time | `advanced/07-binary-size-and-build-time` | MCPP ch. 28–29 | planned |
 
