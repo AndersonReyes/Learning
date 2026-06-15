@@ -6,9 +6,10 @@ reference are settled (see below). All 8 Fundamentals topics
 `fundamentals/08-polymorphism-and-operator-overloading`) are built --
 `fundamentals/06-functions-and-lambdas` also built `cpp/testing.h`, used by
 every topic from `fundamentals/07` on. `intermediate/01-function-templates`
-is built (and extended `cpp/testing.h` with `CHECK_EQ`), as is
-`intermediate/02-class-templates-and-concepts`. Next topic to build:
-`intermediate/03-translation-units-and-odr`.
+is built (and extended `cpp/testing.h` with `CHECK_EQ`), as are
+`intermediate/02-class-templates-and-concepts` and
+`intermediate/03-translation-units-and-odr`. Next topic to build:
+`intermediate/04-modules-and-libraries`.
 
 ## Reference
 
@@ -94,7 +95,7 @@ curriculum, once the language features it needs have been covered:
 |---|-------|--------|-----------|--------|
 | 1 | Function Templates & Compile-Time Utilities | [`intermediate/01-function-templates`](./intermediate/01-function-templates) | MCPP ch. 11 | done |
 | 2 | Class Templates, CTAD, SFINAE & Concepts | [`intermediate/02-class-templates-and-concepts`](./intermediate/02-class-templates-and-concepts) | MCPP ch. 12 | done |
-| 3 | Translation Units, Linkage & the ODR | `intermediate/03-translation-units-and-odr` | MCPP ch. 13 | planned |
+| 3 | Translation Units, Linkage & the ODR | [`intermediate/03-translation-units-and-odr`](./intermediate/03-translation-units-and-odr) | MCPP ch. 13 | done |
 | 4 | Multi-File Projects, `#include`, Modules & Libraries | `intermediate/04-modules-and-libraries` | MCPP ch. 14 | planned |
 | 5 | Project Organization & Code Conventions | `intermediate/05-code-conventions` | MCPP ch. 15–16 | planned |
 | 6 | Debugging, Sanitizers, Testing & CMake | `intermediate/06-debugging-testing-and-cmake` | MCPP ch. 17–18 | planned |
