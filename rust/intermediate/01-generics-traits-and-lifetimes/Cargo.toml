@@ -1,0 +1,6 @@
+[package]
+name = "intermediate-01-generics-traits-and-lifetimes"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]

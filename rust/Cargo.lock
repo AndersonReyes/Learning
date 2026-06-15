@@ -41,3 +41,7 @@ version = "0.1.0"
 [[package]]
 name = "fundamentals-10-error-handling"
 version = "0.1.0"
+
+[[package]]
+name = "intermediate-01-generics-traits-and-lifetimes"
+version = "0.1.0"
