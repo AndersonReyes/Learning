@@ -1,0 +1,6 @@
+[package]
+name = "advanced-02-patterns-and-matching"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]

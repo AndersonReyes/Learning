@@ -2,7 +2,7 @@
 
 **Status: in progress.** Curriculum and reference are settled (below). 29
 topics total: 10 Fundamentals + 9 Intermediate + 10 Advanced, plus two
-capstones. Fundamentals (all 10), Intermediate (all 9), and Advanced topic 1
+capstones. Fundamentals (all 10), Intermediate (all 9), and Advanced topics 1–2
 are built (see "Build Log" below for what each one's exercises cover);
 everything else is `planned`.
 
@@ -275,6 +275,20 @@ across sessions without re-reading every file.
   `Vec<Box<dyn Shape>>`), `Notifier` trait + `EmailNotifier`/`SmsDecorator`/
   `LoggingDecorator` (Decorator pattern: nested `Box<dyn Notifier>` each
   prepending their own log line before delegating to the wrapped notifier).
+- **Advanced 02 — Patterns & Matching Deep Dive**: `simplify(expr: Expr) ->
+  Expr` (algebraic simplifier over a recursive `#[derive(PartialEq,Clone)]`
+  enum using nested arm patterns, `|` alternatives that bind the same
+  variable from different positions `(e, Num(0)) | (Num(0), e)`, and a match
+  guard for `Sub(x, x) → Num(0)`), `parse_ipv4(s: &str) -> Option<[u8; 4]>`
+  (slice pattern `[a, b, c, d]` on the collected dot-separated parts),
+  `balanced_brackets(s: &str) -> bool` (stack-based checker using a single
+  `match (stack.last().copied(), c)` with `|` across `(Some('('), ')') |
+  (Some('['), ']') | (Some('{'), '}')` and or-patterns in the opening arm),
+  `longest_run<T: PartialEq>(slice: &[T]) -> Option<(&T, usize)>` (`[prev,
+  next]` slice pattern over `.windows(2)` with a `if next == prev` match
+  guard), `classify_triangle(a: u64, b: u64, c: u64) -> &'static str` (array
+  destructuring `let [s, m, l] = sorted;` + a match guard for the
+  Pythagorean theorem + `|` pattern for isosceles detection).
 
 ## Fundamentals
 
@@ -322,7 +336,7 @@ from-scratch `Vec`/`Arc`/`Mutex`.
 | # | Topic | Folder | Reference | Status |
 |---|-------|--------|-----------|--------|
 | 1 | Trait Objects, Dynamic Dispatch & OOP Patterns | [`advanced/01-trait-objects-and-oop-patterns`](./advanced/01-trait-objects-and-oop-patterns) | Book ch. 18 | done |
-| 2 | Patterns & Matching Deep Dive | `advanced/02-patterns-and-matching` | Book ch. 19 | planned |
+| 2 | Patterns & Matching Deep Dive | [`advanced/02-patterns-and-matching`](./advanced/02-patterns-and-matching) | Book ch. 19 | done |
 | 3 | Advanced Traits & Types | `advanced/03-advanced-traits-and-types` | Book ch. 20.2-20.3 | planned |
 | 4 | Advanced Functions, Closures & Macros | `advanced/04-advanced-functions-and-macros` | Book ch. 20.4-20.5 | planned |
 | 5 | Unsafe Rust Foundations | `advanced/05-unsafe-rust-foundations` | Book ch. 20.1; Nomicon "Meet Safe and Unsafe", "Working with Unsafe" | planned |
