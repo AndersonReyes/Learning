@@ -65,3 +65,7 @@ version = "0.1.0"
 [[package]]
 name = "intermediate-06-error-handling-deep-dive"
 version = "0.1.0"
+
+[[package]]
+name = "intermediate-07-cargo-workspaces-and-profiles"
+version = "0.1.0"

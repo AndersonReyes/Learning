@@ -2,7 +2,7 @@
 
 **Status: in progress.** Curriculum and reference are settled (below). 29
 topics total: 10 Fundamentals + 9 Intermediate + 10 Advanced, plus two
-capstones. Fundamentals (all 10) are built, and Intermediate topics 1-6 are
+capstones. Fundamentals (all 10) are built, and Intermediate topics 1-7 are
 built (see "Build Log" below for what each one's exercises cover); everything
 else is `planned`.
 
@@ -226,6 +226,17 @@ across sessions without re-reading every file.
   with a propagated `ParseIntError`), `first_valid_port` (`Box<dyn Error>`
   port picker distinguishing "no candidate in range" from "no candidate
   parsed" via downcasting to `NoValidPortError` vs `ParseIntError`).
+- **Intermediate 07 — Cargo Workspaces, Profiles & Iterator Performance**
+  (adapted; `notes.md` covers ch. 13.4 + ch. 14 conceptually, exercises are
+  all ch. 13.4 "loop -> iterator chain" translations): `longest_increasing_run`
+  (`.windows(2)` + `.fold()` tracking `(longest, current)`), `moving_average`
+  (`.windows(window)` + `.map()`/`.sum()`, guarding `window == 0` and
+  `window > len`), `zigzag_merge` (`.zip()` + `.flat_map()` + `.chain()` to
+  interleave two slices and append the longer one's remainder),
+  `count_local_maxima` (`.windows(3)` + `.filter()` + `.count()` for interior
+  elements, direct comparisons for the two endpoints), `exponential_moving_average`
+  (`.scan()` carrying the running EMA, seeded via `std::iter::once` +
+  `.chain()`).
 
 ## Fundamentals
 
@@ -259,7 +270,7 @@ pointers, and concurrency.
 | 4 | Closures & Iterators | [`intermediate/04-closures-and-iterators`](./intermediate/04-closures-and-iterators) | Book ch. 13.1-13.2 | done |
 | 5 | Custom Iterators & Adapters | [`intermediate/05-custom-iterators-and-adapters`](./intermediate/05-custom-iterators-and-adapters) | Book ch. 13.2 (deepening) | done |
 | 6 | Error Handling Deep Dive (`From`, `Box<dyn Error>`) | [`intermediate/06-error-handling-deep-dive`](./intermediate/06-error-handling-deep-dive) | Book ch. 9 (deepening) | done |
-| 7 | Cargo Workspaces, Profiles & Performance | `intermediate/07-cargo-workspaces-and-profiles` | Book ch. 13.4, 14 (adapted) | planned |
+| 7 | Cargo Workspaces, Profiles & Performance | [`intermediate/07-cargo-workspaces-and-profiles`](./intermediate/07-cargo-workspaces-and-profiles) | Book ch. 13.4, 14 (adapted) | done |
 | 8 | Smart Pointers (`Box`, `Deref`, `Drop`, `Rc`, `RefCell`) | `intermediate/08-smart-pointers` | Book ch. 15 | planned |
 | 9 | Fearless Concurrency (threads, channels, `Mutex`/`Arc`) | `intermediate/09-fearless-concurrency` | Book ch. 16 | planned |
 
