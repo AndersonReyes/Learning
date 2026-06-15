@@ -2,7 +2,7 @@
 
 **Status: in progress.** Curriculum and reference are settled (below). 29
 topics total: 10 Fundamentals + 9 Intermediate + 10 Advanced, plus two
-capstones. Fundamentals (all 10) are built, and Intermediate topic 1 is
+capstones. Fundamentals (all 10) are built, and Intermediate topics 1-2 are
 built (see "Build Log" below for what each one's exercises cover); everything
 else is `planned`.
 
@@ -183,6 +183,14 @@ across sessions without re-reading every file.
   over both primitives and a custom `Money` type; `Tokenizer<'a>::next_token`
   (lifetime-bound `&'a str` slices, ASCII-alphanumeric lexing over UTF-8
   input).
+- **Intermediate 02 — Writing Tests & Project Organization**: standard
+  hard-algorithm exercises chosen so `tests/exercise_test.rs` itself
+  demonstrates ch.11's testing techniques — `binary_search<T: Ord>` (generic
+  over `&str` too), `kth_smallest` (panics with a specific message, exercised
+  via `#[should_panic(expected = "...")]`), `merge_intervals` (sort + merge
+  overlapping/touching ranges, with one test using the `-> Result<(), String>`
+  pattern), `longest_increasing_subsequence` (O(n²) DP), `min_coins` (coin
+  change DP, `Option<u32>`).
 
 ## Fundamentals
 
@@ -211,7 +219,7 @@ pointers, and concurrency.
 | # | Topic | Folder | Reference | Status |
 |---|-------|--------|-----------|--------|
 | 1 | Generics, Traits & Lifetimes | [`intermediate/01-generics-traits-and-lifetimes`](./intermediate/01-generics-traits-and-lifetimes) | Book ch. 10 | done |
-| 2 | Writing Tests & Project Organization | `intermediate/02-testing-and-project-organization` | Book ch. 11 | planned |
+| 2 | Writing Tests & Project Organization | [`intermediate/02-testing-and-project-organization`](./intermediate/02-testing-and-project-organization) | Book ch. 11 | done |
 | 3 | CLI I/O Project (args, files, env, stderr) | `intermediate/03-cli-io-project` | Book ch. 12 | planned |
 | 4 | Closures & Iterators | `intermediate/04-closures-and-iterators` | Book ch. 13.1-13.2 | planned |
 | 5 | Custom Iterators & Adapters | `intermediate/05-custom-iterators-and-adapters` | Book ch. 13.2 (deepening) | planned |

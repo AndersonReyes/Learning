@@ -45,3 +45,7 @@ version = "0.1.0"
 [[package]]
 name = "intermediate-01-generics-traits-and-lifetimes"
 version = "0.1.0"
+
+[[package]]
+name = "intermediate-02-testing-and-project-organization"
+version = "0.1.0"
