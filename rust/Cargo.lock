@@ -9,3 +9,7 @@ version = "0.1.0"
 [[package]]
 name = "fundamentals-02-variables-data-types-and-functions"
 version = "0.1.0"
+
+[[package]]
+name = "fundamentals-03-control-flow"
+version = "0.1.0"
