@@ -2,7 +2,7 @@
 
 **Status: in progress.** Curriculum and reference are settled (below). 29
 topics total: 10 Fundamentals + 9 Intermediate + 10 Advanced, plus two
-capstones. Fundamentals (all 10), Intermediate (all 9), and Advanced topics 1–2
+capstones. Fundamentals (all 10), Intermediate (all 9), and Advanced topics 1–3
 are built (see "Build Log" below for what each one's exercises cover);
 everything else is `planned`.
 
@@ -289,6 +289,18 @@ across sessions without re-reading every file.
   guard), `classify_triangle(a: u64, b: u64, c: u64) -> &'static str` (array
   destructuring `let [s, m, l] = sorted;` + a match guard for the
   Pythagorean theorem + `|` pattern for isosceles detection).
+- **Advanced 03 — Advanced Traits & Types**: `Magnitude` trait with associated
+  `Output` type implemented for `i64` (unsigned_abs) and `(f64,f64)` (Euclidean
+  length), plus `max_magnitude<T: Magnitude>` using `.map().reduce()`; `Matrix2x2`
+  with `std::ops::Add` (elementwise), `std::ops::Mul<f64>` (scalar), and
+  `mat_mul` (standard 2×2 product); `WordCloud` newtype wrapping
+  `HashMap<String, usize>` with a `Display` impl sorted descending-by-count /
+  ascending-alpha-on-ties and a `top_n` extractor; `Summarize: Display`
+  supertrait with a default `headline()` method implemented on `NewsArticle`,
+  plus a `headlines<T: Summarize>` collector; `Greet` and `Farewell` traits
+  both declaring `fn message(&self) -> String` on `Person`, disambiguated via
+  `<Person as Greet>::message(p)` / `<Person as Farewell>::message(p)` in
+  `greet_and_farewell`.
 
 ## Fundamentals
 
@@ -337,7 +349,7 @@ from-scratch `Vec`/`Arc`/`Mutex`.
 |---|-------|--------|-----------|--------|
 | 1 | Trait Objects, Dynamic Dispatch & OOP Patterns | [`advanced/01-trait-objects-and-oop-patterns`](./advanced/01-trait-objects-and-oop-patterns) | Book ch. 18 | done |
 | 2 | Patterns & Matching Deep Dive | [`advanced/02-patterns-and-matching`](./advanced/02-patterns-and-matching) | Book ch. 19 | done |
-| 3 | Advanced Traits & Types | `advanced/03-advanced-traits-and-types` | Book ch. 20.2-20.3 | planned |
+| 3 | Advanced Traits & Types | [`advanced/03-advanced-traits-and-types`](./advanced/03-advanced-traits-and-types) | Book ch. 20.2-20.3 | done |
 | 4 | Advanced Functions, Closures & Macros | `advanced/04-advanced-functions-and-macros` | Book ch. 20.4-20.5 | planned |
 | 5 | Unsafe Rust Foundations | `advanced/05-unsafe-rust-foundations` | Book ch. 20.1; Nomicon "Meet Safe and Unsafe", "Working with Unsafe" | planned |
 | 6 | Data Layout & Type Conversions | `advanced/06-data-layout-and-type-conversions` | Nomicon "Data Layout", "Type Conversions" | planned |
