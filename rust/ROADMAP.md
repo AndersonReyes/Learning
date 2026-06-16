@@ -402,30 +402,29 @@ started — no need to scope it out this far ahead.
 ### Capstone B: Distributed Message Queue (`rust/capstone-message-queue/`)
 
 A "mini-Kafka": a single growing project, built in phases, each phase a
-runnable milestone (and a thin integration-test layer where it helps, but
-the deliverable is the running broker + a client driving it).
+runnable milestone (see [`capstone-message-queue/README.md`](./capstone-message-queue/README.md)).
 
-1. **Storage engine** — append-only log segments on disk; length-prefixed
-   message framing; offset index files; a `Log` type with `append`/`read`.
-   Pure Fundamentals/Intermediate Rust: structs, `Result`-based error
-   handling, file I/O.
+**Protocol:** custom **newline-delimited JSON over TCP** (not the real Kafka
+wire protocol). Payload bytes are base64-encoded within JSON. This keeps scope
+on storage/concurrency/async learning rather than protocol compliance.
+
+1. **Storage engine** ✓ — append-only log (`data.log`): fixed-header records
+   `[offset u64 BE][length u32 BE][payload]`; sparse index (`data.idx`): one
+   16-byte `[offset][file_position]` entry every 64 records; `Log` with
+   `append`/`read`/`scan`, crash-recovery on reopen, truncation of partial
+   trailing writes. 18 integration tests (tempfile-based). See
+   `src/storage.rs`.
 2. **Topics & partitions** — a topic/partition registry on top of the
    storage engine; a producer API (with a partitioning strategy) and a
-   consumer API (sequential read by offset). Uses generics, collections,
-   `Rc`/`RefCell` or `Arc` for shared registry state.
+   consumer API (sequential read by offset).
 3. **Concurrency** — multiple producer/consumer threads against shared
-   partitions (`Arc<Mutex<...>>`/`RwLock`), a background flush thread.
-   Directly applies `intermediate/09-fearless-concurrency` and
-   `advanced/08-concurrency-internals`.
-4. **Network protocol & async server** — a small binary wire protocol
-   (length-prefixed frames) over TCP; an async server (`tokio`) handling
-   concurrent produce/fetch/metadata requests. Applies
-   `advanced/09-async-await-and-futures`.
-5. **Consumer groups & offsets** — consumer group membership, per-group
-   committed offsets, basic partition assignment/rebalancing.
-6. **Replication & clustering (stretch)** — leader/follower replication
-   between broker instances (primary-backup, or a minimal Raft-style leader
-   election), plus log compaction.
+   partitions (`Arc<RwLock<...>>`), a background flush thread.
+4. **Network server** — tokio async TCP server; newline-delimited JSON
+   framing; produce/fetch/metadata request handlers.
+5. **Consumer groups & offsets** — group membership, per-group committed
+   offsets, basic partition assignment/rebalancing.
+6. **Replication & log compaction (stretch)** — leader/follower replication,
+   log compaction.
 
 ### Future: Capstone C (cross-referenced from `go/ROADMAP.md`)
 
