@@ -2,9 +2,9 @@
 
 **Status: in progress.** Curriculum and reference are settled (below). 29
 topics total: 10 Fundamentals + 9 Intermediate + 10 Advanced, plus two
-capstones. Fundamentals (all 10), Intermediate (all 9), and Advanced topics 1–9
-are built (see "Build Log" below for what each one's exercises cover);
-everything else is `planned`.
+capstones. Fundamentals (all 10), Intermediate (all 9), and all 10 Advanced topics
+are built (see "Build Log" below for what each one's exercises cover).
+The full curriculum is complete — only the two capstones remain.
 
 ## Reference
 
@@ -289,6 +289,7 @@ across sessions without re-reading every file.
   guard), `classify_triangle(a: u64, b: u64, c: u64) -> &'static str` (array
   destructuring `let [s, m, l] = sorted;` + a match guard for the
   Pythagorean theorem + `|` pattern for isosceles detection).
+- **Advanced 10 — Implementing Vec and Arc from Scratch**: `MyVec<T>` — `push`/`pop`/`len`/`is_empty`/`Index<usize>` (raw allocation via `Layout::array`, `ptr::write`/`ptr::read`, double-capacity growth, `drop_in_place` + `dealloc` in `Drop`); `MyVec<T>` — `insert`/`remove` (shift via `std::ptr::copy`, bounds-check panics with `"index out of bounds"`); `IntoIterator for MyVec<T>` via `MyVecIntoIter<T>` (transfers buffer ownership to iter via `mem::forget`, `Drop` impl drops remaining elements and frees buffer); `MyArc<T>` — `new`/`Deref`/`Clone` (`Box::into_raw` to heap-allocate `ArcInner<T>`, `Relaxed` `fetch_add` on clone); `MyArc<T>` — `Drop` (`Release` `fetch_sub`, early-return if `!= 1`, `Acquire` fence, `Box::from_raw` to reclaim and run `T`'s destructor; `T: Send + Sync` bound on `Send`/`Sync` impls).
 - **Advanced 09 — Async/Await & Futures**: `async_double` (trivial `async fn` returning `x * 2`, demonstrates desugaring), `async_map<A,B,F,Fut>` (sequential `for &item in items { out.push(f(item).await); }` converting `&[A]` to `Vec<B>` via an async closure), `async_filter<A,F,Fut>` (same sequential loop retaining only items where the predicate future resolves to `true`), `async_first_match<A,F,Fut>` (early-return loop using `return Some(item)` inside an `async fn`), `async_fold<A,B,F,Fut>` (left fold with an async combiner, accumulator ownership transferred each iteration — `B` has no `Copy` bound, enabling `String` accumulators). All tests driven by `pollster::block_on`.
 - **Advanced 08 — Concurrency Internals: Send, Sync & Atomics**: `AtomicCounter` (wraps `AtomicUsize`, exposes `new`/`increment`→returns old/`get`/`reset` with `AcqRel`/`Acquire`/`Release` orderings), `parallel_sum(data: Vec<u64>, num_threads: usize) -> u64` (chunks via `Arc`, spawns threads, sums partial results), `spin_until(flag: Arc<AtomicBool>, delay_ms: u64) -> u64` (spawns setter thread, busy-waits with `spin_loop()`, returns spin count ≥ 1), `fetch_max(atom: &AtomicUsize, new_val: usize) -> usize` (CAS loop: loads, skips if `new_val ≤ old`, compare-exchanges, retries on failure), `ThreadSafeStack<T>` (`Arc<Mutex<Vec<T>>>` with `push`/`pop`/`len`/`is_empty`/`Clone`).
 - **Advanced 07 — Advanced Lifetimes, Variance & PhantomData**: `longest_with_announcement<'a,'b: 'a>` (two lifetime params + `'b: 'a` outlives constraint, prints `ann` side-effect then returns the longer slice), `StrSplit<'h,'d>` (struct-based iterator splitting `&'h str` on a `&'d str` delimiter via `.find()` + `Option<&'h str>` remainder), `Token<Brand>` (unit-struct branding via `PhantomData<Brand>`, same-value tokens of different brands are distinct types), `split_fields` (return `(&mut record.name, &mut record.description)` simultaneously — the compiler verifies disjoint field borrows), `apply_all_refs<T,F>` (HRTB `for<'a> Fn(&'a T) -> &'a T` — collects mapped item references).
@@ -362,7 +363,7 @@ from-scratch `Vec`/`Arc`/`Mutex`.
 | 7 | Advanced Lifetimes, Variance & `PhantomData` | [`advanced/07-advanced-lifetimes-variance-and-phantomdata`](./advanced/07-advanced-lifetimes-variance-and-phantomdata) | Nomicon "Ownership" (subtyping, HRTB, `PhantomData`, splitting borrows) | done |
 | 8 | Concurrency Internals: `Send`, `Sync` & Atomics | [`advanced/08-concurrency-internals`](./advanced/08-concurrency-internals) | Nomicon "Concurrency" (races, `Send`/`Sync`, atomics) | done |
 | 9 | Async/Await & Futures | [`advanced/09-async-await-and-futures`](./advanced/09-async-await-and-futures) | Book ch. 17 (adapted) | done |
-| 10 | Implementing `Vec` and `Arc` from Scratch | `advanced/10-implementing-vec-and-arc` | Nomicon "Implementing Vec", "Implementing Arc and Mutex" | planned |
+| 10 | Implementing `Vec` and `Arc` from Scratch | [`advanced/10-implementing-vec-and-arc`](./advanced/10-implementing-vec-and-arc) | Nomicon "Implementing Vec", "Implementing Arc and Mutex" | done |
 
 ## Capstones
 

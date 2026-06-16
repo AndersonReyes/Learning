@@ -42,6 +42,10 @@ dependencies = [
 ]
 
 [[package]]
+name = "advanced-10-implementing-vec-and-arc"
+version = "0.1.0"
+
+[[package]]
 name = "fundamentals-01-toolchain-cargo-and-hello-world"
 version = "0.1.0"
 

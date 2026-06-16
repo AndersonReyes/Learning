@@ -1,0 +1,4 @@
+[package]
+name = "advanced-10-implementing-vec-and-arc"
+version = "0.1.0"
+edition = "2021"
