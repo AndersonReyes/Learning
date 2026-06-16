@@ -440,3 +440,23 @@ a **TCP/IP stack from scratch in Rust** (CS144/`smoltcp`-style — IP, ARP, TCP
 handshake, retransmission, flow control over a TUN device). Not part of this
 track's two active capstones, but recorded here as the natural "go all the
 way to advanced" follow-on once both capstones above are done.
+
+### Future: Capstone D — Python-to-Assembly Compiler
+
+A toy compiler written in Rust: parse a small subset of Python (functions,
+arithmetic, `if`/`while`, variables) and emit x86-64 assembly (or LLVM IR as
+a stretch). Natural exercise for the full Rust skill set — recursive descent
+parsing, tree-walking/IR lowering, code generation — and a bridge into
+compilers/systems programming. Planned phases (to be fleshed out when started):
+
+1. **Lexer** — tokenize a Python subset (`def`, `return`, `if`, `while`,
+   integer literals, operators, identifiers).
+2. **Parser** — recursive descent → AST.
+3. **Semantic analysis** — scope resolution, type checking (integers only to
+   start).
+4. **IR lowering** — AST → three-address / SSA IR.
+5. **Code generation** — IR → x86-64 assembly (NASM syntax) or LLVM IR.
+6. **Driver** — shell out to `nasm`/`ld` (or `llc`/`clang`) and run the
+   resulting binary; integration tests compare stdout.
+
+Not started — record here for future sessions.
