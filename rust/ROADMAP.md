@@ -2,7 +2,7 @@
 
 **Status: in progress.** Curriculum and reference are settled (below). 29
 topics total: 10 Fundamentals + 9 Intermediate + 10 Advanced, plus two
-capstones. Fundamentals (all 10), Intermediate (all 9), and Advanced topics 1–7
+capstones. Fundamentals (all 10), Intermediate (all 9), and Advanced topics 1–8
 are built (see "Build Log" below for what each one's exercises cover);
 everything else is `planned`.
 
@@ -289,6 +289,7 @@ across sessions without re-reading every file.
   guard), `classify_triangle(a: u64, b: u64, c: u64) -> &'static str` (array
   destructuring `let [s, m, l] = sorted;` + a match guard for the
   Pythagorean theorem + `|` pattern for isosceles detection).
+- **Advanced 08 — Concurrency Internals: Send, Sync & Atomics**: `AtomicCounter` (wraps `AtomicUsize`, exposes `new`/`increment`→returns old/`get`/`reset` with `AcqRel`/`Acquire`/`Release` orderings), `parallel_sum(data: Vec<u64>, num_threads: usize) -> u64` (chunks via `Arc`, spawns threads, sums partial results), `spin_until(flag: Arc<AtomicBool>, delay_ms: u64) -> u64` (spawns setter thread, busy-waits with `spin_loop()`, returns spin count ≥ 1), `fetch_max(atom: &AtomicUsize, new_val: usize) -> usize` (CAS loop: loads, skips if `new_val ≤ old`, compare-exchanges, retries on failure), `ThreadSafeStack<T>` (`Arc<Mutex<Vec<T>>>` with `push`/`pop`/`len`/`is_empty`/`Clone`).
 - **Advanced 07 — Advanced Lifetimes, Variance & PhantomData**: `longest_with_announcement<'a,'b: 'a>` (two lifetime params + `'b: 'a` outlives constraint, prints `ann` side-effect then returns the longer slice), `StrSplit<'h,'d>` (struct-based iterator splitting `&'h str` on a `&'d str` delimiter via `.find()` + `Option<&'h str>` remainder), `Token<Brand>` (unit-struct branding via `PhantomData<Brand>`, same-value tokens of different brands are distinct types), `split_fields` (return `(&mut record.name, &mut record.description)` simultaneously — the compiler verifies disjoint field borrows), `apply_all_refs<T,F>` (HRTB `for<'a> Fn(&'a T) -> &'a T` — collects mapped item references).
 - **Advanced 06 — Data Layout & Type Conversions**: `TemperatureKelvin` newtype with `From<TemperatureCelsius>` (C + 273.15), `From<TemperatureFahrenheit>` ((F-32)×5/9 + 273.15), and `TryFrom<TemperatureKelvin> for TemperatureCelsius` (error on negative Kelvin); `cast_behaviors()` returning a 5-tuple of `as`-cast results (truncation, wrap, bit-reinterpretation, saturation); `f32_round_trip` using `f32::to_bits`/`from_bits`; `CPoint` (`#[repr(C)]`) with `cpoint_layout()` computing `(size, align, offset_of_y)` via raw-pointer arithmetic; `Pair<i32>` with `TryFrom<&str>` parsing `"a,b"` format (`"no comma"` / `"multiple commas"` / `ParseIntError` propagation).
 - **Advanced 05 — Unsafe Rust Foundations**: `raw_swap<T>(a: *mut T, b: *mut T)` (swap via `ptr::swap` or `ptr::read`/`ptr::write`), `sum_slice_ptr(ptr: *const i64, len: usize) -> i64` (raw pointer arithmetic loop), `split_at_mid<T>(slice: &[T], mid: usize) -> (&[T], &[T])` (safe wrapper around `std::slice::from_raw_parts`; panics with `"mid out of bounds"` if `mid > len`), `read_le_u32(ptr: *const u8) -> u32` (byte-by-byte little-endian read via `ptr.add(i)` → `u32::from_le_bytes`), `count_zeros_unsafe(ptr: *const u8, len: usize) -> usize` (raw-pointer zero-byte counter).
@@ -358,7 +359,7 @@ from-scratch `Vec`/`Arc`/`Mutex`.
 | 5 | Unsafe Rust Foundations | [`advanced/05-unsafe-rust-foundations`](./advanced/05-unsafe-rust-foundations) | Book ch. 20.1; Nomicon "Meet Safe and Unsafe", "Working with Unsafe" | done |
 | 6 | Data Layout & Type Conversions | [`advanced/06-data-layout-and-type-conversions`](./advanced/06-data-layout-and-type-conversions) | Nomicon "Data Layout", "Type Conversions" | done |
 | 7 | Advanced Lifetimes, Variance & `PhantomData` | [`advanced/07-advanced-lifetimes-variance-and-phantomdata`](./advanced/07-advanced-lifetimes-variance-and-phantomdata) | Nomicon "Ownership" (subtyping, HRTB, `PhantomData`, splitting borrows) | done |
-| 8 | Concurrency Internals: `Send`, `Sync` & Atomics | `advanced/08-concurrency-internals` | Nomicon "Concurrency" (races, `Send`/`Sync`, atomics) | planned |
+| 8 | Concurrency Internals: `Send`, `Sync` & Atomics | [`advanced/08-concurrency-internals`](./advanced/08-concurrency-internals) | Nomicon "Concurrency" (races, `Send`/`Sync`, atomics) | done |
 | 9 | Async/Await & Futures | `advanced/09-async-await-and-futures` | Book ch. 17 (adapted) | planned |
 | 10 | Implementing `Vec` and `Arc` from Scratch | `advanced/10-implementing-vec-and-arc` | Nomicon "Implementing Vec", "Implementing Arc and Mutex" | planned |
 
