@@ -11,6 +11,37 @@ name = "advanced-02-patterns-and-matching"
 version = "0.1.0"
 
 [[package]]
+name = "advanced-03-advanced-traits-and-types"
+version = "0.1.0"
+
+[[package]]
+name = "advanced-04-advanced-functions-and-macros"
+version = "0.1.0"
+
+[[package]]
+name = "advanced-05-unsafe-rust-foundations"
+version = "0.1.0"
+
+[[package]]
+name = "advanced-06-data-layout-and-type-conversions"
+version = "0.1.0"
+
+[[package]]
+name = "advanced-07-advanced-lifetimes-variance-and-phantomdata"
+version = "0.1.0"
+
+[[package]]
+name = "advanced-08-concurrency-internals"
+version = "0.1.0"
+
+[[package]]
+name = "advanced-09-async-await-and-futures"
+version = "0.1.0"
+dependencies = [
+ "pollster",
+]
+
+[[package]]
 name = "fundamentals-01-toolchain-cargo-and-hello-world"
 version = "0.1.0"
 
@@ -85,3 +116,9 @@ version = "0.1.0"
 [[package]]
 name = "intermediate-09-fearless-concurrency"
 version = "0.1.0"
+
+[[package]]
+name = "pollster"
+version = "0.3.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "22686f4785f02a4fcc856d3b3bb19bf6c8160d103f7a99cc258bddd0251dc7f2"

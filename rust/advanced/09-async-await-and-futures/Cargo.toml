@@ -1,0 +1,10 @@
+[package]
+name = "advanced-09-async-await-and-futures"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+pollster = "0.3"
+
+[dev-dependencies]
+pollster = "0.3"
