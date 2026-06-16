@@ -5,6 +5,9 @@ pub enum Error {
     Io(std::io::Error),
     OffsetOutOfRange(u64),
     CorruptRecord(String),
+    TopicAlreadyExists(String),
+    TopicNotFound(String),
+    PartitionOutOfRange(u32),
 }
 
 impl fmt::Display for Error {
@@ -13,6 +16,9 @@ impl fmt::Display for Error {
             Error::Io(e) => write!(f, "io error: {e}"),
             Error::OffsetOutOfRange(o) => write!(f, "offset {o} out of range"),
             Error::CorruptRecord(msg) => write!(f, "corrupt record: {msg}"),
+            Error::TopicAlreadyExists(name) => write!(f, "topic already exists: {name}"),
+            Error::TopicNotFound(name) => write!(f, "topic not found: {name}"),
+            Error::PartitionOutOfRange(id) => write!(f, "partition {id} out of range"),
         }
     }
 }
