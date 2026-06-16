@@ -64,10 +64,10 @@ func (g *GroupCoordinator) FetchOffset(group, topic string, partition uint32) (*
 // Members returns sorted member IDs in group.
 // Returns an empty slice (not an error) if the group does not exist.
 func (g *GroupCoordinator) Members(group string) []string {
-	return nil
+	return []string{}
 }
 
 // GroupNames returns sorted names of all known groups.
 func (g *GroupCoordinator) GroupNames() []string {
-	return nil
+	return []string{}
 }
