@@ -2,7 +2,7 @@
 
 **Status: in progress.** Curriculum and reference are settled (below). 29
 topics total: 10 Fundamentals + 9 Intermediate + 10 Advanced, plus two
-capstones. Fundamentals (all 10), Intermediate (all 9), and Advanced topics 1–3
+capstones. Fundamentals (all 10), Intermediate (all 9), and Advanced topics 1–4
 are built (see "Build Log" below for what each one's exercises cover);
 everything else is `planned`.
 
@@ -289,6 +289,7 @@ across sessions without re-reading every file.
   guard), `classify_triangle(a: u64, b: u64, c: u64) -> &'static str` (array
   destructuring `let [s, m, l] = sorted;` + a match guard for the
   Pythagorean theorem + `|` pattern for isosceles detection).
+- **Advanced 04 — Advanced Functions, Closures & Macros**: `apply_all` (dispatch table of `fn` pointers zipped with values), `make_pipeline` (left-to-right closure composition returning `Box<dyn Fn(i32) -> i32>`, identity for empty input), `call_with_one` (generic `F: Fn(i32) -> i32` — accepts both fn pointers and capturing closures), `sum_of_squares!` (`macro_rules!` accepting one-or-more `$expr` arguments, summing their squares as `i64` via `$($x as i64 * $x as i64 +)+ 0`), `fold_with<T,B,F>` (standalone `FnMut`-based left fold over `&[T]`).
 - **Advanced 03 — Advanced Traits & Types**: `Magnitude` trait with associated
   `Output` type implemented for `i64` (unsigned_abs) and `(f64,f64)` (Euclidean
   length), plus `max_magnitude<T: Magnitude>` using `.map().reduce()`; `Matrix2x2`
@@ -350,7 +351,7 @@ from-scratch `Vec`/`Arc`/`Mutex`.
 | 1 | Trait Objects, Dynamic Dispatch & OOP Patterns | [`advanced/01-trait-objects-and-oop-patterns`](./advanced/01-trait-objects-and-oop-patterns) | Book ch. 18 | done |
 | 2 | Patterns & Matching Deep Dive | [`advanced/02-patterns-and-matching`](./advanced/02-patterns-and-matching) | Book ch. 19 | done |
 | 3 | Advanced Traits & Types | [`advanced/03-advanced-traits-and-types`](./advanced/03-advanced-traits-and-types) | Book ch. 20.2-20.3 | done |
-| 4 | Advanced Functions, Closures & Macros | `advanced/04-advanced-functions-and-macros` | Book ch. 20.4-20.5 | planned |
+| 4 | Advanced Functions, Closures & Macros | [`advanced/04-advanced-functions-and-macros`](./advanced/04-advanced-functions-and-macros) | Book ch. 20.4-20.5 | done |
 | 5 | Unsafe Rust Foundations | `advanced/05-unsafe-rust-foundations` | Book ch. 20.1; Nomicon "Meet Safe and Unsafe", "Working with Unsafe" | planned |
 | 6 | Data Layout & Type Conversions | `advanced/06-data-layout-and-type-conversions` | Nomicon "Data Layout", "Type Conversions" | planned |
 | 7 | Advanced Lifetimes, Variance & `PhantomData` | `advanced/07-advanced-lifetimes-variance-and-phantomdata` | Nomicon "Ownership" (subtyping, HRTB, `PhantomData`, splitting borrows) | planned |

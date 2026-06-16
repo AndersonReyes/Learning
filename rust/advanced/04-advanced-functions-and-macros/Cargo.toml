@@ -1,0 +1,6 @@
+[package]
+name = "advanced-04-advanced-functions-and-macros"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
