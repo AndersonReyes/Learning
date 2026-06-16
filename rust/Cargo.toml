@@ -4,5 +4,4 @@ members = [
     "fundamentals/*",
     "intermediate/*",
     "advanced/*",
-    "capstone-message-queue",
 ]

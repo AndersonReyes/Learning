@@ -399,39 +399,14 @@ Built from two guides, worked through in order:
 Detailed phase/exercise breakdown is deferred until the capstone is actually
 started — no need to scope it out this far ahead.
 
-### Capstone B: Distributed Message Queue (`rust/capstone-message-queue/`)
+### Capstone B: Distributed Message Queue → moved to Go
 
-A "mini-Kafka": a single growing project, built in phases, each phase a
-runnable milestone (see [`capstone-message-queue/README.md`](./capstone-message-queue/README.md)).
+This capstone was redesigned as a Go project. See `go/capstone-message-queue/`
+(planned) and `go/ROADMAP.md` Capstone D for the full phase-by-phase plan.
 
-**Protocol:** custom **newline-delimited JSON over TCP** (not the real Kafka
-wire protocol). Payload bytes are base64-encoded within JSON. This keeps scope
-on storage/concurrency/async learning rather than protocol compliance.
-
-1. **Storage engine** ✓ — append-only log (`data.log`): fixed-header records
-   `[offset u64 BE][length u32 BE][payload]`; sparse index (`data.idx`): one
-   16-byte `[offset][file_position]` entry every 64 records; `Log` with
-   `append`/`read`/`scan`, crash-recovery on reopen, truncation of partial
-   trailing writes. 18 integration tests (tempfile-based). See
-   `src/storage.rs`.
-2. **Topics & partitions** ✓ — a topic/partition registry on top of the
-   storage engine; FNV-1a key-based routing + round-robin; producer/consumer
-   API. 20 integration tests. See `src/broker.rs`.
-3. **Concurrency** ✓ — `SharedRegistry` wrapping `Arc<RwLock<Registry>>`
-   for concurrent producer/consumer threads; background flush thread with
-   `AtomicBool` shutdown. 15 integration tests. See `src/concurrent.rs`.
-4. **Network server** ✓ — tokio async TCP server; one task per connection;
-   newline-delimited JSON framing; base64-encoded payloads;
-   produce/fetch/fetch_batch/metadata request handlers; `BufReader::lines()`
-   read loop. 18 integration tests (unit + TCP e2e). See `src/server.rs`.
-5. **Consumer groups & offsets** ✓ — `GroupCoordinator` with
-   `RwLock<HashMap<String, GroupState>>`; `join`/`leave` trigger rebalance
-   (round-robin across sorted member IDs); per-group committed offsets;
-   server-assigned member IDs (`member-{n}`). `BrokerHandle` threads both
-   registry and coordinator through the server. 34 integration tests (16
-   groups + 18 server). See `src/groups.rs`.
-6. **Replication & log compaction (stretch)** — leader/follower replication,
-   log compaction.
+The Go version exercises the same concepts — append-only storage, concurrent
+access, async networking, consumer groups — using Go idioms (`sync.RWMutex`,
+goroutines, `chan struct{}` shutdown) instead of Rust's ownership/async model.
 
 ### Future: Capstone C (cross-referenced from `go/ROADMAP.md`)
 
