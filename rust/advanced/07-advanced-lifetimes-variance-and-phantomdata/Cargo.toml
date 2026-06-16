@@ -1,0 +1,6 @@
+[package]
+name = "advanced-07-advanced-lifetimes-variance-and-phantomdata"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
