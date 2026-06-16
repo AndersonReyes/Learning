@@ -2,7 +2,11 @@
 // service lookup, and CIDR-style port-range arithmetic.
 package ports
 
-import "errors"
+import (
+	"errors"
+	"fmt"
+	"strconv"
+)
 
 // OutOfRangeError indicates a syntactically valid integer that falls outside
 // the valid port range 0-65535.
@@ -11,7 +15,7 @@ type OutOfRangeError struct {
 }
 
 func (e *OutOfRangeError) Error() string {
-	return "not implemented"
+	return fmt.Sprintf("value %d is not in range 0-65635", e.Value)
 }
 
 // ErrUnknownService is returned (wrapped) by LookupService when name is not
@@ -34,7 +38,17 @@ type Service struct {
 //	ParsePort("abc")   -> 0, error (NOT an *OutOfRangeError — a wrapped
 //	                       syntax error)
 func ParsePort(s string) (uint16, error) {
-	return 0, errors.New("not implemented")
+	port, err := strconv.ParseInt(s, 10, 64)
+
+	if err != nil {
+		return 0, fmt.Errorf("unable to parse port %s: %w", s, err)
+	}
+
+	if port < 0 || port > 65535 {
+		return 0, &OutOfRangeError{int64(port)}
+	}
+
+	return uint16(port), nil
 }
 
 // ClassifyPort categorizes port per RFC 6335:
@@ -43,7 +57,16 @@ func ParsePort(s string) (uint16, error) {
 //	1024-49151:  "registered"
 //	49152-65535: "dynamic"
 func ClassifyPort(port uint16) string {
-	return ""
+	switch {
+	case port < 1024:
+		return "well-known"
+	case port >= 1024 && port < 49152:
+		return "registered"
+	case port >= 49152:
+		return "dynamic"
+	default:
+		return ""
+	}
 }
 
 // LookupService looks up a well-known service by name, case-insensitively.
