@@ -122,3 +122,22 @@ Add a `rust/` track and build a **TCP/IP stack from scratch in Rust**
 retransmission and flow control over a TUN device. This is the "go all the
 way to advanced, in Rust" project discussed alongside this Go track — roadmap
 it in `rust/ROADMAP.md` when that track is created.
+
+### Capstone D: Distributed Message Queue (Go) — done
+
+A "mini-Kafka" distributed message queue implemented in pure Go (no external
+dependencies). Lives at [`go/capstone-message-queue/`](./capstone-message-queue/).
+
+All 5 phases are built:
+
+| Phase | What it builds | Package |
+|-------|----------------|---------|
+| 1 | Append-only log with 12-byte fixed header, sparse index (every 64 records), crash recovery | `storage/` |
+| 2 | Partition, Topic (FNV-1a key routing + round-robin), Registry with directory-based persistence | `broker/` |
+| 3 | `SharedRegistry` with `sync.RWMutex` + background flush goroutine, full concurrent produce/fetch | `concurrent/` |
+| 4 | TCP server — newline-delimited JSON, base64 payloads, one goroutine per connection | `server/` |
+| 5 | `GroupCoordinator` — join/leave with round-robin rebalancing, committed offset tracking | `groups/` |
+
+The wire protocol is identical to the Rust capstone (same JSON format, same
+base64 encoding), so Go and Rust brokers are interoperable at the protocol
+level. Three CLI tools in `cmd/`: `broker`, `producer`, `consumer`.
