@@ -4,8 +4,8 @@ use std::time::Duration;
 use base64::{engine::general_purpose::STANDARD, Engine as _};
 use mini_mq::broker::Registry;
 use mini_mq::concurrent::SharedRegistry;
-use mini_mq::protocol::{Request, Response, TopicMeta};
-use mini_mq::server::process_request;
+use mini_mq::protocol::{Request, Response};
+use mini_mq::server::{process_request, BrokerHandle};
 use tempfile::TempDir;
 use tokio::io::{AsyncBufReadExt, AsyncWriteExt, BufReader};
 use tokio::net::TcpListener;
@@ -17,6 +17,10 @@ fn make_registry(dir: &TempDir) -> Arc<SharedRegistry> {
         Registry::open(dir.path()).unwrap(),
         Duration::from_millis(100),
     ))
+}
+
+fn make_handle(dir: &TempDir) -> BrokerHandle {
+    BrokerHandle::new(make_registry(dir))
 }
 
 fn b64(s: &str) -> String {
@@ -32,9 +36,9 @@ fn from_b64(s: &str) -> String {
 #[test]
 fn create_topic_response() {
     let dir = TempDir::new().unwrap();
-    let reg = make_registry(&dir);
+    let handle = make_handle(&dir);
     let resp = process_request(
-        &reg,
+        &handle,
         Request::CreateTopic { topic: "events".into(), partitions: 3 },
     );
     assert_eq!(
@@ -46,27 +50,27 @@ fn create_topic_response() {
 #[test]
 fn create_topic_idempotent() {
     let dir = TempDir::new().unwrap();
-    let reg = make_registry(&dir);
-    process_request(&reg, Request::CreateTopic { topic: "t".into(), partitions: 2 });
+    let handle = make_handle(&dir);
+    process_request(&handle, Request::CreateTopic { topic: "t".into(), partitions: 2 });
     let resp =
-        process_request(&reg, Request::CreateTopic { topic: "t".into(), partitions: 2 });
+        process_request(&handle, Request::CreateTopic { topic: "t".into(), partitions: 2 });
     assert!(matches!(resp[0], Response::TopicCreated { .. }));
 }
 
 #[test]
 fn produce_returns_partition_and_offset() {
     let dir = TempDir::new().unwrap();
-    let reg = make_registry(&dir);
-    process_request(&reg, Request::CreateTopic { topic: "t".into(), partitions: 1 });
+    let handle = make_handle(&dir);
+    process_request(&handle, Request::CreateTopic { topic: "t".into(), partitions: 1 });
 
     let resp = process_request(
-        &reg,
+        &handle,
         Request::Produce { topic: "t".into(), key: None, payload: b64("hello") },
     );
     assert_eq!(resp, vec![Response::Produced { partition: 0, offset: 0 }]);
 
     let resp2 = process_request(
-        &reg,
+        &handle,
         Request::Produce { topic: "t".into(), key: None, payload: b64("world") },
     );
     assert_eq!(resp2, vec![Response::Produced { partition: 0, offset: 1 }]);
@@ -75,9 +79,9 @@ fn produce_returns_partition_and_offset() {
 #[test]
 fn produce_unknown_topic_returns_error() {
     let dir = TempDir::new().unwrap();
-    let reg = make_registry(&dir);
+    let handle = make_handle(&dir);
     let resp = process_request(
-        &reg,
+        &handle,
         Request::Produce { topic: "nope".into(), key: None, payload: b64("x") },
     );
     assert!(matches!(resp[0], Response::Error { .. }));
@@ -86,10 +90,10 @@ fn produce_unknown_topic_returns_error() {
 #[test]
 fn produce_invalid_base64_returns_error() {
     let dir = TempDir::new().unwrap();
-    let reg = make_registry(&dir);
-    process_request(&reg, Request::CreateTopic { topic: "t".into(), partitions: 1 });
+    let handle = make_handle(&dir);
+    process_request(&handle, Request::CreateTopic { topic: "t".into(), partitions: 1 });
     let resp = process_request(
-        &reg,
+        &handle,
         Request::Produce { topic: "t".into(), key: None, payload: "!!!not_b64".into() },
     );
     assert!(matches!(resp[0], Response::Error { .. }));
@@ -98,15 +102,15 @@ fn produce_invalid_base64_returns_error() {
 #[test]
 fn fetch_roundtrip() {
     let dir = TempDir::new().unwrap();
-    let reg = make_registry(&dir);
-    process_request(&reg, Request::CreateTopic { topic: "t".into(), partitions: 1 });
+    let handle = make_handle(&dir);
+    process_request(&handle, Request::CreateTopic { topic: "t".into(), partitions: 1 });
     process_request(
-        &reg,
+        &handle,
         Request::Produce { topic: "t".into(), key: None, payload: b64("ping") },
     );
 
     let resp = process_request(
-        &reg,
+        &handle,
         Request::Fetch { topic: "t".into(), partition: 0, offset: 0 },
     );
     assert_eq!(resp.len(), 2);
@@ -122,10 +126,10 @@ fn fetch_roundtrip() {
 #[test]
 fn fetch_out_of_range_returns_error() {
     let dir = TempDir::new().unwrap();
-    let reg = make_registry(&dir);
-    process_request(&reg, Request::CreateTopic { topic: "t".into(), partitions: 1 });
+    let handle = make_handle(&dir);
+    process_request(&handle, Request::CreateTopic { topic: "t".into(), partitions: 1 });
     let resp = process_request(
-        &reg,
+        &handle,
         Request::Fetch { topic: "t".into(), partition: 0, offset: 99 },
     );
     assert!(matches!(resp[0], Response::Error { .. }));
@@ -134,11 +138,11 @@ fn fetch_out_of_range_returns_error() {
 #[test]
 fn fetch_batch_returns_records_and_end() {
     let dir = TempDir::new().unwrap();
-    let reg = make_registry(&dir);
-    process_request(&reg, Request::CreateTopic { topic: "t".into(), partitions: 1 });
+    let handle = make_handle(&dir);
+    process_request(&handle, Request::CreateTopic { topic: "t".into(), partitions: 1 });
     for i in 0..5_u32 {
         process_request(
-            &reg,
+            &handle,
             Request::Produce {
                 topic: "t".into(),
                 key: None,
@@ -148,7 +152,7 @@ fn fetch_batch_returns_records_and_end() {
     }
 
     let resp = process_request(
-        &reg,
+        &handle,
         Request::FetchBatch { topic: "t".into(), partition: 0, offset: 1, max_count: 3 },
     );
     // 3 records + End
@@ -167,10 +171,10 @@ fn fetch_batch_returns_records_and_end() {
 #[test]
 fn fetch_batch_empty_returns_just_end() {
     let dir = TempDir::new().unwrap();
-    let reg = make_registry(&dir);
-    process_request(&reg, Request::CreateTopic { topic: "t".into(), partitions: 1 });
+    let handle = make_handle(&dir);
+    process_request(&handle, Request::CreateTopic { topic: "t".into(), partitions: 1 });
     let resp = process_request(
-        &reg,
+        &handle,
         Request::FetchBatch { topic: "t".into(), partition: 0, offset: 0, max_count: 10 },
     );
     assert_eq!(resp, vec![Response::End]);
@@ -179,11 +183,11 @@ fn fetch_batch_empty_returns_just_end() {
 #[test]
 fn metadata_lists_all_topics() {
     let dir = TempDir::new().unwrap();
-    let reg = make_registry(&dir);
-    process_request(&reg, Request::CreateTopic { topic: "beta".into(), partitions: 2 });
-    process_request(&reg, Request::CreateTopic { topic: "alpha".into(), partitions: 1 });
+    let handle = make_handle(&dir);
+    process_request(&handle, Request::CreateTopic { topic: "beta".into(), partitions: 2 });
+    process_request(&handle, Request::CreateTopic { topic: "alpha".into(), partitions: 1 });
 
-    let resp = process_request(&reg, Request::Metadata);
+    let resp = process_request(&handle, Request::Metadata);
     assert_eq!(resp.len(), 1);
     if let Response::Metadata { topics } = &resp[0] {
         let mut names: Vec<&str> = topics.iter().map(|t| t.name.as_str()).collect();
@@ -201,24 +205,24 @@ fn metadata_lists_all_topics() {
 #[test]
 fn metadata_empty_registry() {
     let dir = TempDir::new().unwrap();
-    let reg = make_registry(&dir);
-    let resp = process_request(&reg, Request::Metadata);
+    let handle = make_handle(&dir);
+    let resp = process_request(&handle, Request::Metadata);
     assert_eq!(resp, vec![Response::Metadata { topics: vec![] }]);
 }
 
 #[test]
 fn produce_with_key_routes_deterministically() {
     let dir = TempDir::new().unwrap();
-    let reg = make_registry(&dir);
-    process_request(&reg, Request::CreateTopic { topic: "t".into(), partitions: 4 });
+    let handle = make_handle(&dir);
+    process_request(&handle, Request::CreateTopic { topic: "t".into(), partitions: 4 });
 
     let key = b64("user-42");
     let r1 = process_request(
-        &reg,
+        &handle,
         Request::Produce { topic: "t".into(), key: Some(key.clone()), payload: b64("a") },
     );
     let r2 = process_request(
-        &reg,
+        &handle,
         Request::Produce { topic: "t".into(), key: Some(key.clone()), payload: b64("b") },
     );
 
@@ -247,7 +251,7 @@ async fn start_test_broker(dir: &TempDir) -> (u16, Arc<SharedRegistry>) {
     let reg_clone = Arc::clone(&reg);
 
     tokio::spawn(async move {
-        mini_mq::server::run_server(listener, reg_clone).await.ok();
+        mini_mq::server::run_server(listener, BrokerHandle::new(reg_clone)).await.ok();
     });
 
     (port, reg)

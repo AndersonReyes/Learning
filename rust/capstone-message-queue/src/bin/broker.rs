@@ -10,7 +10,7 @@ use std::time::Duration;
 
 use mini_mq::broker::Registry;
 use mini_mq::concurrent::SharedRegistry;
-use mini_mq::server::run_server;
+use mini_mq::server::{run_server, BrokerHandle};
 
 fn usage() -> ! {
     eprintln!("Usage: broker [--data-dir <path>] [--port <port>] [--flush-ms <ms>]");
@@ -63,5 +63,5 @@ async fn main() {
 
     eprintln!("mini-mq broker listening on {addr}  (data-dir={data_dir})");
 
-    run_server(listener, shared).await.expect("server error");
+    run_server(listener, BrokerHandle::new(shared)).await.expect("server error");
 }

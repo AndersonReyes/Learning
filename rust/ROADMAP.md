@@ -414,15 +414,22 @@ on storage/concurrency/async learning rather than protocol compliance.
    `append`/`read`/`scan`, crash-recovery on reopen, truncation of partial
    trailing writes. 18 integration tests (tempfile-based). See
    `src/storage.rs`.
-2. **Topics & partitions** — a topic/partition registry on top of the
-   storage engine; a producer API (with a partitioning strategy) and a
-   consumer API (sequential read by offset).
-3. **Concurrency** — multiple producer/consumer threads against shared
-   partitions (`Arc<RwLock<...>>`), a background flush thread.
-4. **Network server** — tokio async TCP server; newline-delimited JSON
-   framing; produce/fetch/metadata request handlers.
-5. **Consumer groups & offsets** — group membership, per-group committed
-   offsets, basic partition assignment/rebalancing.
+2. **Topics & partitions** ✓ — a topic/partition registry on top of the
+   storage engine; FNV-1a key-based routing + round-robin; producer/consumer
+   API. 20 integration tests. See `src/broker.rs`.
+3. **Concurrency** ✓ — `SharedRegistry` wrapping `Arc<RwLock<Registry>>`
+   for concurrent producer/consumer threads; background flush thread with
+   `AtomicBool` shutdown. 15 integration tests. See `src/concurrent.rs`.
+4. **Network server** ✓ — tokio async TCP server; one task per connection;
+   newline-delimited JSON framing; base64-encoded payloads;
+   produce/fetch/fetch_batch/metadata request handlers; `BufReader::lines()`
+   read loop. 18 integration tests (unit + TCP e2e). See `src/server.rs`.
+5. **Consumer groups & offsets** ✓ — `GroupCoordinator` with
+   `RwLock<HashMap<String, GroupState>>`; `join`/`leave` trigger rebalance
+   (round-robin across sorted member IDs); per-group committed offsets;
+   server-assigned member IDs (`member-{n}`). `BrokerHandle` threads both
+   registry and coordinator through the server. 34 integration tests (16
+   groups + 18 server). See `src/groups.rs`.
 6. **Replication & log compaction (stretch)** — leader/follower replication,
    log compaction.
 
