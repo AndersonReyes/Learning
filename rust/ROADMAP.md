@@ -2,7 +2,7 @@
 
 **Status: in progress.** Curriculum and reference are settled (below). 29
 topics total: 10 Fundamentals + 9 Intermediate + 10 Advanced, plus two
-capstones. Fundamentals (all 10), Intermediate (all 9), and Advanced topics 1–5
+capstones. Fundamentals (all 10), Intermediate (all 9), and Advanced topics 1–6
 are built (see "Build Log" below for what each one's exercises cover);
 everything else is `planned`.
 
@@ -289,6 +289,7 @@ across sessions without re-reading every file.
   guard), `classify_triangle(a: u64, b: u64, c: u64) -> &'static str` (array
   destructuring `let [s, m, l] = sorted;` + a match guard for the
   Pythagorean theorem + `|` pattern for isosceles detection).
+- **Advanced 06 — Data Layout & Type Conversions**: `TemperatureKelvin` newtype with `From<TemperatureCelsius>` (C + 273.15), `From<TemperatureFahrenheit>` ((F-32)×5/9 + 273.15), and `TryFrom<TemperatureKelvin> for TemperatureCelsius` (error on negative Kelvin); `cast_behaviors()` returning a 5-tuple of `as`-cast results (truncation, wrap, bit-reinterpretation, saturation); `f32_round_trip` using `f32::to_bits`/`from_bits`; `CPoint` (`#[repr(C)]`) with `cpoint_layout()` computing `(size, align, offset_of_y)` via raw-pointer arithmetic; `Pair<i32>` with `TryFrom<&str>` parsing `"a,b"` format (`"no comma"` / `"multiple commas"` / `ParseIntError` propagation).
 - **Advanced 05 — Unsafe Rust Foundations**: `raw_swap<T>(a: *mut T, b: *mut T)` (swap via `ptr::swap` or `ptr::read`/`ptr::write`), `sum_slice_ptr(ptr: *const i64, len: usize) -> i64` (raw pointer arithmetic loop), `split_at_mid<T>(slice: &[T], mid: usize) -> (&[T], &[T])` (safe wrapper around `std::slice::from_raw_parts`; panics with `"mid out of bounds"` if `mid > len`), `read_le_u32(ptr: *const u8) -> u32` (byte-by-byte little-endian read via `ptr.add(i)` → `u32::from_le_bytes`), `count_zeros_unsafe(ptr: *const u8, len: usize) -> usize` (raw-pointer zero-byte counter).
 - **Advanced 04 — Advanced Functions, Closures & Macros**: `apply_all` (dispatch table of `fn` pointers zipped with values), `make_pipeline` (left-to-right closure composition returning `Box<dyn Fn(i32) -> i32>`, identity for empty input), `call_with_one` (generic `F: Fn(i32) -> i32` — accepts both fn pointers and capturing closures), `sum_of_squares!` (`macro_rules!` accepting one-or-more `$expr` arguments, summing their squares as `i64` via `$($x as i64 * $x as i64 +)+ 0`), `fold_with<T,B,F>` (standalone `FnMut`-based left fold over `&[T]`).
 - **Advanced 03 — Advanced Traits & Types**: `Magnitude` trait with associated
@@ -354,7 +355,7 @@ from-scratch `Vec`/`Arc`/`Mutex`.
 | 3 | Advanced Traits & Types | [`advanced/03-advanced-traits-and-types`](./advanced/03-advanced-traits-and-types) | Book ch. 20.2-20.3 | done |
 | 4 | Advanced Functions, Closures & Macros | [`advanced/04-advanced-functions-and-macros`](./advanced/04-advanced-functions-and-macros) | Book ch. 20.4-20.5 | done |
 | 5 | Unsafe Rust Foundations | [`advanced/05-unsafe-rust-foundations`](./advanced/05-unsafe-rust-foundations) | Book ch. 20.1; Nomicon "Meet Safe and Unsafe", "Working with Unsafe" | done |
-| 6 | Data Layout & Type Conversions | `advanced/06-data-layout-and-type-conversions` | Nomicon "Data Layout", "Type Conversions" | planned |
+| 6 | Data Layout & Type Conversions | [`advanced/06-data-layout-and-type-conversions`](./advanced/06-data-layout-and-type-conversions) | Nomicon "Data Layout", "Type Conversions" | done |
 | 7 | Advanced Lifetimes, Variance & `PhantomData` | `advanced/07-advanced-lifetimes-variance-and-phantomdata` | Nomicon "Ownership" (subtyping, HRTB, `PhantomData`, splitting borrows) | planned |
 | 8 | Concurrency Internals: `Send`, `Sync` & Atomics | `advanced/08-concurrency-internals` | Nomicon "Concurrency" (races, `Send`/`Sync`, atomics) | planned |
 | 9 | Async/Await & Futures | `advanced/09-async-await-and-futures` | Book ch. 17 (adapted) | planned |

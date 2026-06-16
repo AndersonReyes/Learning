@@ -1,0 +1,6 @@
+[package]
+name = "advanced-06-data-layout-and-type-conversions"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
