@@ -122,3 +122,32 @@ Add a `rust/` track and build a **TCP/IP stack from scratch in Rust**
 retransmission and flow control over a TUN device. This is the "go all the
 way to advanced, in Rust" project discussed alongside this Go track — roadmap
 it in `rust/ROADMAP.md` when that track is created.
+
+### Capstone D: Distributed Message Queue (`go/capstone-message-queue/`)
+
+A "mini-Kafka" built in Go: a single growing project, built in phases, each
+phase a runnable milestone. Same protocol as the Rust capstone — custom
+**newline-delimited JSON over TCP**, base64-encoded payloads.
+
+Suggested phases:
+
+1. **Storage engine** — append-only log (`data.log`): fixed-header records
+   `[offset uint64 BE][length uint32 BE][payload]`; sparse index (`data.idx`):
+   one 16-byte `[offset][file_position]` entry every 64 records; `Log` with
+   `Append`/`Read`/`Scan`, crash recovery on reopen, truncation of partial
+   trailing writes.
+2. **Topics & partitions** — `Registry` wrapping a map of topic → partitions;
+   `Produce` (FNV-1a key routing + round-robin fallback) and `Fetch`/`FetchBatch`.
+3. **Concurrency** — `SharedRegistry` wrapping `*Registry` with `sync.RWMutex`;
+   background flush goroutine controlled via `chan struct{}` shutdown signal.
+4. **Network server** — `net.Listener`; one goroutine per connection;
+   `bufio.Scanner` for newline-delimited reads; `encoding/json` for
+   marshal/unmarshal; produce/fetch/fetch_batch/metadata handlers.
+5. **Consumer groups** — `GroupCoordinator` with `sync.RWMutex`; join/leave
+   trigger round-robin rebalance across sorted member IDs; per-group committed
+   offsets; server-assigned member IDs (`member-0`, `member-1`, …).
+6. **Replication (stretch)** — leader/follower replication, log compaction.
+
+Reference: the Rust implementation at `rust/capstone-message-queue/` is a
+complete working version — use it to check expected behavior, on-disk formats,
+and test cases, but implement in idiomatic Go from scratch.
