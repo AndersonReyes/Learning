@@ -139,28 +139,28 @@ func PortRangeSize(ranges ...[2]uint16) (uint64, error) {
 // Returns an error if any range has start > end.
 func MergePortRanges(ranges [][2]uint16) ([][2]uint16, error) {
 
-	if len(ranges) < 2 {
-		return ranges, nil
-	}
-
 	sort.Slice(ranges, func(i, j int) bool {
 		return ranges[i][0] < ranges[j][0]
 	})
 
-	out := [][2]uint16{
-		ranges[0],
-	}
+	out := [][2]uint16{}
 
-	var i = 1
-	var last_i = 0
+	var i = 0
 
 	for i < len(ranges) {
-		fmt.Printf("Size of ranges: %d for ranges: %+v\n", len(ranges), ranges)
-		left := &out[last_i]
 		right := ranges[i]
 		if right[0] > right[1] {
 			return [][2]uint16{}, fmt.Errorf("invalid port range: %+v\n", right)
 		}
+
+		if len(out) == 0 {
+			out = append(out, right)
+			continue
+		}
+
+		fmt.Printf("Size of ranges: %d for ranges: %+v, i:%d, out: %+v\n", len(ranges), ranges, i, out)
+		last_i := len(out) - 1
+		left := &out[last_i]
 
 		if left[1] >= right[0] || (left[1]+1) == right[0] {
 			// there is overlap now
@@ -179,7 +179,6 @@ func MergePortRanges(ranges [][2]uint16) ([][2]uint16, error) {
 		} else {
 			// no overlap
 			out = append(out, right)
-			last_i = i
 		}
 		i++
 	}
