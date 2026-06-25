@@ -3,6 +3,8 @@
 // removal, and CIDR route aggregation (RFC 4632 §3).
 package routing
 
+import "fmt"
+
 // Route is a single routing table entry: the network Prefix/PrefixLen
 // (CIDR block) and the NextHop that traffic for that block is sent to.
 type Route struct {
@@ -20,6 +22,16 @@ type Route struct {
 //	Matches(Route{Prefix: 10.0.0.0, PrefixLen: 8}, 11.0.0.0)  -> false
 //	Matches(Route{Prefix: 0, PrefixLen: 0}, anything)         -> true
 func Matches(r Route, addr uint32) bool {
+
+	if r.Prefix == 0 && r.PrefixLen == 0 {
+		return true
+	}
+
+	network := r.Prefix >> uint32(32-r.PrefixLen)
+
+	if (addr >> uint32(32-r.PrefixLen)) == network {
+		return true
+	}
 	return false
 }
 
@@ -28,7 +40,20 @@ func Matches(r Route, addr uint32) bool {
 // multiple routes tie on PrefixLen, the one appearing earliest in routes
 // wins. If no route matches, it returns the zero Route and false.
 func LongestPrefixMatch(routes []Route, addr uint32) (Route, bool) {
-	return Route{}, false
+	largest, matched := Route{}, false
+
+	fmt.Printf("")
+	for i, r := range routes {
+		if Matches(r, addr) {
+			// if its the first match (i == 0), just set it to largest
+			if i == 0 || (r.PrefixLen > largest.PrefixLen) {
+				largest = r
+				matched = true
+			}
+
+		}
+	}
+	return largest, matched
 }
 
 // GroupByPrefixLen groups routes by their PrefixLen, preserving the
@@ -37,7 +62,11 @@ func LongestPrefixMatch(routes []Route, addr uint32) (Route, bool) {
 //	GroupByPrefixLen([]Route{{PrefixLen: 8}, {PrefixLen: 16}, {PrefixLen: 8}})
 //	  -> map[uint8][]Route{8: {route0, route2}, 16: {route1}}
 func GroupByPrefixLen(routes []Route) map[uint8][]Route {
-	return nil
+	m := make(map[uint8][]Route)
+	for _, r := range routes {
+		m[r.PrefixLen] = append(m[r.PrefixLen], r)
+	}
+	return m
 }
 
 // RemoveRoute returns a new slice containing all routes EXCEPT those whose
@@ -45,7 +74,14 @@ func GroupByPrefixLen(routes []Route) map[uint8][]Route {
 // this can remove multiple entries that share a CIDR block but differ in
 // NextHop). The relative order of the remaining routes is preserved.
 func RemoveRoute(routes []Route, prefix uint32, prefixLen uint8) []Route {
-	return nil
+	out := []Route{}
+
+	for _, r := range routes {
+		if r.Prefix != prefix && r.PrefixLen != prefixLen {
+			out = append(out, r)
+		}
+	}
+	return out
 }
 
 // AggregateRoutes repeatedly merges pairs of "sibling" routes — same
