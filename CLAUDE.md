@@ -96,8 +96,9 @@ advanced all fully built). Unlike the JS track, **every topic pairs a Go
 language concept with a networking concept** — Go is the implementation
 language for a computer-networking curriculum, basics through advanced. With
 Advanced complete, the roadmap's "Capstones" section lists follow-on
-projects (a network monitoring tool, a BitTorrent client, and a future
-`rust/` track building a TCP/IP stack from scratch, CS144/`smoltcp`-style).
+projects (a network monitoring tool, a BitTorrent client, a container
+runtime, an SDN/VLAN monitor, and a future `rust/` track building a TCP/IP
+stack from scratch, CS144/`smoltcp`-style).
 
 ### Per-topic structure
 
@@ -331,6 +332,14 @@ A third future project — a TCP/IP stack from scratch in Rust — is
 cross-referenced from `go/ROADMAP.md`'s Capstones section and recorded as a
 "someday" follow-on in `rust/ROADMAP.md`, not part of the two active
 capstones.
+
+## Capstone projects — description only
+
+Capstones are **user-implemented**. Claude describes what to build (phases,
+packages, functions, test strategies, stdlib references) in English — the
+user writes all the code: stubs, tests, wiring, README, go.mod, everything.
+The ROADMAP.md entry is the only file Claude should write/update for a new
+capstone.
 
 ## Checkpointing & quota awareness
 

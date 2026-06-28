@@ -267,3 +267,21 @@ construction), function objects/lambdas as comparators, image file I/O.
 Adds: numerical/probabilistic code organization, abstract base classes for
 swappable sampling strategies (strategy pattern), refactoring the Phase 1–2
 codebase without breaking it.
+
+## TODO: Rescope to C-first, then C++
+
+Rescope this track to start with **C** (not C++) and learn it through
+baremetal / OS programming / embedded programming. Progress to C++ after
+the C foundation is solid. The current C++ curriculum (fundamentals through
+advanced + ray tracer capstone) stays but shifts later in the sequence.
+
+References:
+- **C language**: [Beej's Guide to C Programming](https://beej.us/guide/bgc/html/)
+- **Baremetal (STM32)**: [Bare Metal Programming Guide](https://github.com/cpq/bare-metal-programming-guide) — C on STM32 Nucleo-F429ZI (ARM Cortex-M4), from blinking LEDs through a full embedded web server
+- **Baremetal (RPi Pico)**: [RPi-Pico-Baremetal](https://github.com/carlosftm/RPi-Pico-Baremetal) — bare-metal C on Raspberry Pi Pico (RP2040, ARM Cortex-M0+)
+- **OS programming**: [raspberry-pi-os](https://github.com/s-matyukevich/raspberry-pi-os) — writing an OS kernel from scratch for Raspberry Pi (ARM64)
+- **Minimal Linux**: [Building a Minimal Linux for Raspberry Pi](https://linuxvox.com/blog/building-a-minimal-linux-for-raspberry-pi/)
+- **Embedded concepts**: [ESE101](https://embedded.fm/blog/ese101) — embedded systems engineering fundamentals series
+- **Rust embedded**: [The Embedded Rust Book](https://docs.rust-embedded.org/book/intro/index.html), [Getting Started with Rust on a Raspberry Pi](https://reltech.substack.com/p/getting-started-with-rust-on-a-raspberry)
+
+Detailed breakdown TBD.

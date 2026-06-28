@@ -151,3 +151,74 @@ Suggested phases:
 Reference: the Rust implementation at `rust/capstone-message-queue/` is a
 complete working version — use it to check expected behavior, on-disk formats,
 and test cases, but implement in idiomatic Go from scratch.
+
+### Capstone E: Linux Container Runtime (`go/capstone-container-runtime/`)
+
+A minimal "build your own Docker" — a two-process container runtime using
+Linux namespaces, `pivot_root`, cgroups, capabilities, and seccomp. Based on
+[Linux Containers in 500 Lines of Code](https://blog.lizzie.io/linux-containers-in-500-loc.html)
+(Lizzie Dixon, C, ~570 LOC with security analysis) and
+[Build Your Own Container Using Less than 100 Lines of Go](https://www.infoq.com/articles/build-a-container-golang/)
+(Julian Friedman, Go `/proc/self/exe` re-exec pattern). Source material saved
+in `sources/diydocker.txt`.
+
+Suggested phases:
+
+1. **Namespace config** (`namespace/`) — namespace type metadata (UTS, PID,
+   MNT, NET, IPC, USER, CGROUP), clone flag computation from types and
+   reverse-parsing, hostname generation, `/proc/self/exe` re-exec arg
+   building. Pure computation, no syscalls. Stdlib: `syscall` (CLONE_NEW*
+   constants), `fmt`.
+2. **Filesystem isolation** (`filesystem/`) — mount operation planning for
+   `pivot_root`: `MS_PRIVATE|MS_REC` remount, bind-mount rootfs, compute
+   `newRoot`/`putOld` paths, `/proc` mounting, rootfs validation (check
+   `/bin` or `/usr/bin` exists), unmount plan (`MNT_DETACH`). Stdlib:
+   `syscall` (MS_*, MNT_DETACH, SYS_PIVOT_ROOT), `os`, `path/filepath`.
+3. **Resource limits** (`cgroup/`) — cgroup v2 config (memory.max,
+   cpu.weight, pids.max, io.weight), path computation, filesystem writes
+   (mkdir + write entries), read-back, process addition (`cgroup.procs`),
+   cleanup (rmdir). Testable with `t.TempDir()` as fake cgroup root. Stdlib:
+   `os`, `strconv`, `path/filepath`.
+4. **Security policy** (`security/`) — the 28 capabilities to drop (with
+   reasons from the article: `CAP_DAC_READ_SEARCH` enables
+   `open_by_handle_at`, `CAP_MKNOD` enables device file creation, etc.),
+   retained capabilities (safe inside namespaces), seccomp filter rules
+   (chmod+setuid, CLONE_NEWUSER nesting, TIOCSTI ioctl, keyctl, ptrace,
+   NUMA ops, userfaultfd, perf_event_open). Pure data construction, no
+   syscalls. Stdlib: `syscall` (define CAP_* constants matching kernel
+   values).
+5. **Container lifecycle** (`container/` + `cmd/container/`) — wire phases
+   1–4: parse CLI flags, validate config, spawn child via
+   `os/exec.Cmd` with `SysProcAttr.Cloneflags`, parent writes
+   `/proc/<pid>/uid_map` + `/proc/<pid>/gid_map` and sets up cgroups, child
+   calls `sethostname` → `mount`/`pivot_root` → `prctl(PR_CAPBSET_DROP)` →
+   `seccomp(SECCOMP_SET_MODE_FILTER)` → `syscall.Exec`. Parent waits,
+   cleans up cgroups. Stdlib: `os/exec`, `syscall`, `flag`, `os`.
+
+Topics exercised: `advanced/01` (syscall/unsafe), `advanced/03` (BPF
+concepts for seccomp), `fundamentals/06`–`07` (goroutines/channels for
+parent-child coordination), `fundamentals/04` (maps for cgroup config).
+Needs Linux + root for full runs; phases 1–4 are testable without
+privileges.
+
+### Capstone F: SDN Monitor & VLAN Manager (`go/capstone-sdn-monitor/`)
+
+A software-defined networking tool that creates/manages Linux bridges and
+VLANs, monitors per-VLAN traffic, and exposes topology + stats via an API:
+
+1. **VLAN management** — create/delete VLAN interfaces via `ioctl`/netlink,
+   assign ports (`advanced/01-raw-sockets-and-tun-tap`).
+2. **Bridge management** — create/configure Linux bridges, attach interfaces
+   via `ioctl(SIOCBRADDBR)` (`advanced/01`).
+3. **Traffic monitoring** — per-VLAN packet/byte counters via raw sockets
+   with cBPF filters (`advanced/03-cbpf-packet-filters`), flow tracking
+   with maps (`intermediate/01-generics-pool-and-cache`).
+4. **Topology discovery** — parse LLDP frames for neighbor discovery, build
+   adjacency graph (`fundamentals/03-structs-pointers-and-packet-headers`).
+5. **REST/WebSocket API** — real-time VLAN stats and topology view
+   (`fundamentals/11-json-rest-rpc-api`,
+   `intermediate/03-websockets-and-chat-server`).
+6. **CLI** — create/delete/list VLANs, show bridge topology, start
+   monitoring daemon.
+
+Needs raw-socket/netlink privileges.
