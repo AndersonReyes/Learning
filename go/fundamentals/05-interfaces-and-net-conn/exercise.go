@@ -6,6 +6,7 @@ package transport
 import (
 	"errors"
 	"fmt"
+	"io"
 )
 
 // ErrConnClosed is returned by Read, Write, and Close on a *BufferConn
@@ -77,7 +78,12 @@ func (c *BufferConn) RemoteAddr() Addr {
 //	c is closed -> 0, error wrapping ErrConnClosed
 //	otherwise   -> len(p), nil
 func (c *BufferConn) Write(p []byte) (int, error) {
-	return 0, errors.New("not implemented")
+	if c.closed {
+		return 0, errors.Join(errors.New("failed to write to buffercon"), ErrConnClosed)
+	}
+
+	c.data = append(c.data, p...)
+	return len(p), nil
 }
 
 // Read copies up to len(p) bytes from c's unread buffer into p, advancing
@@ -87,13 +93,32 @@ func (c *BufferConn) Write(p []byte) (int, error) {
 //	c is closed            -> 0, error wrapping ErrConnClosed
 //	otherwise               -> n>0, nil   (n = min(len(p), unread bytes))
 func (c *BufferConn) Read(p []byte) (int, error) {
-	return 0, errors.New("not implemented")
+	if c.closed {
+		return 0, errors.Join(errors.New("onnection closed"), ErrConnClosed)
+	}
+
+	if c.pos >= len(c.data) {
+		return 0, io.EOF
+
+	}
+
+	unread := len(c.data) - c.pos
+	n := min(len(p), unread)
+	end := c.pos + n
+	copy(p, c.data[c.pos:end])
+	c.pos = end
+	return n, nil
 }
 
 // Close marks c as closed. The first call returns nil; any subsequent
 // call returns ErrConnClosed.
 func (c *BufferConn) Close() error {
-	return errors.New("not implemented")
+	if c.closed {
+		return errors.Join(errors.New("buffer conn already closed"), ErrConnClosed)
+	}
+	c.closed = true
+	c.data = nil
+	return nil
 }
 
 // CopyAll reads from src until io.EOF, writing everything read to dst,
@@ -102,7 +127,36 @@ func (c *BufferConn) Close() error {
 // immediately. A short write (dst.Write returning n < len(p) with a nil
 // error) is reported by wrapping io.ErrShortWrite.
 func CopyAll(dst, src Conn) (int64, error) {
-	return 0, errors.New("not implemented")
+	buf := make([]byte, 1024)
+	var bytesCopied int64 = 0
+
+	for {
+
+		nRead, err := src.Read(buf)
+
+		fmt.Printf("num bytess: %d nRead=%d\n", len(buf), nRead)
+		if err == io.EOF {
+			break
+		}
+
+		if err != nil {
+			return 0, err
+		}
+
+		nWritten, err := dst.Write(buf[:nRead])
+
+		if err != nil {
+			return 0, err
+		}
+
+		if nRead != nWritten {
+			return 0, fmt.Errorf("failed to write all bytes")
+		}
+
+		bytesCopied += int64(nWritten)
+
+	}
+	return bytesCopied, nil
 }
 
 // ValidateConns checks each conn's RemoteAddr: it must be non-nil
@@ -112,5 +166,15 @@ func CopyAll(dst, src Conn) (int64, error) {
 // can use errors.Is(err, ErrNilAddr) / errors.Is(err, ErrUnknownNetwork)
 // to check which problems occurred.
 func ValidateConns(conns ...Conn) error {
-	return errors.New("not implemented")
+
+	var err error = nil
+
+	for _, c := range conns {
+		if c.RemoteAddr() == nil {
+			err = errors.Join(ErrNilAddr, err)
+		} else if c.RemoteAddr().Network() != "tcp" && c.RemoteAddr().Network() != "udp" {
+			err = errors.Join(ErrUnknownNetwork, err)
+		}
+	}
+	return err
 }
