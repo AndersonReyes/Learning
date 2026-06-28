@@ -19,7 +19,13 @@ type Conn struct {
 // EchoConn is synchronous; call it with `go EchoConn(c)` to run it
 // concurrently with other connections.
 func EchoConn(c Conn) int {
-	return 0
+	var count = 0
+	for m := range c.In {
+		c.Out <- m
+		count++
+	}
+	close(c.Out)
+	return count
 }
 
 // RunEchoServer starts EchoConn for every connection in conns,
@@ -32,7 +38,17 @@ func EchoConn(c Conn) int {
 // RunEchoServer(nil) and RunEchoServer() return an already-closed
 // channel.
 func RunEchoServer(conns []Conn) <-chan int {
-	return nil
+	msgs := make(chan int)
+
+	go func() {
+		for _, c := range conns {
+			count := EchoConn(c)
+			msgs <- count
+		}
+		close(msgs)
+	}()
+
+	return msgs
 }
 
 // FanIn merges zero or more read-only int channels into a single output
@@ -43,7 +59,16 @@ func RunEchoServer(conns []Conn) <-chan int {
 //
 // FanIn() with no inputs returns an already-closed channel.
 func FanIn(inputs ...<-chan int) <-chan int {
-	return nil
+	out := make(chan int)
+
+	for _, ch := range inputs {
+		for v := range ch {
+			out <- v
+		}
+
+	}
+	close(out)
+	return out
 }
 
 // Pipeline runs nums through a three-stage processing pipeline connected
