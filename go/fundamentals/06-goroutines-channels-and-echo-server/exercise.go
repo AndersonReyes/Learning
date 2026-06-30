@@ -3,10 +3,6 @@
 // of net.Conn, and the fan-in/fan-out/pipeline patterns used to build one.
 package echoserver
 
-import (
-	"fmt"
-)
-
 // Conn is a simulated bidirectional connection: In delivers messages
 // arriving from the client, and Out is where a handler writes responses
 // back to the client.
@@ -43,12 +39,21 @@ func EchoConn(c Conn) int {
 // channel.
 func RunEchoServer(conns []Conn) <-chan int {
 	msgs := make(chan int)
+	done := make(chan int)
 
-	go func() {
-		for _, c := range conns {
+	for _, c := range conns {
+		go func(c Conn) {
 			count := EchoConn(c)
 			msgs <- count
+			done <- 1
+		}(c)
+	}
+
+	go func() {
+		for range len(conns) {
+			<-done
 		}
+		close(done)
 		close(msgs)
 	}()
 
@@ -63,17 +68,29 @@ func RunEchoServer(conns []Conn) <-chan int {
 //
 // FanIn() with no inputs returns an already-closed channel.
 func FanIn(inputs ...<-chan int) <-chan int {
-	out := make(chan int, len(inputs)*2)
+	done := make(chan int)
+	out := make(chan int)
 
 	for _, ch := range inputs {
-		if ch != nil {
-			for v := range ch {
-				fmt.Printf("wrote value=%d to out channel\n", v)
-				out <- v
+		go func(ch <-chan int) {
+			if ch != nil {
+				for v := range ch {
+					out <- v
+				}
+
+				done <- 1
 			}
-		}
+
+		}(ch)
 	}
-	close(out)
+
+	go func() {
+		for range len(inputs) {
+			<-done
+		}
+		close(out)
+
+	}()
 	return out
 }
 
@@ -98,7 +115,6 @@ func Pipeline(nums []int) <-chan int {
 		// stage 1
 		for _, v := range nums {
 			generate <- v
-			fmt.Printf("stage 1 v=%d done\n", v)
 		}
 		close(generate)
 
@@ -109,7 +125,6 @@ func Pipeline(nums []int) <-chan int {
 		// stage 2
 		for v := range generate {
 			squares <- v * v
-			fmt.Printf("stage 2 v=%d done\n", v)
 		}
 		close(squares)
 	}()
@@ -119,7 +134,6 @@ func Pipeline(nums []int) <-chan int {
 		for v := range squares {
 			if v%2 == 0 {
 				filterEven <- v
-				fmt.Printf("stage 3 v=%d done\n", v)
 			}
 		}
 		close(filterEven)
@@ -149,11 +163,9 @@ func WorkerPool(jobs []int, numWorkers int, work func(int) int) []int {
 	for workerId, ch := range workerReadChannels {
 		// start worker thread
 		go func() {
-			fmt.Printf("Starting worker=%d\n", workerId)
 			for jobId := range ch {
 				result := work(jobs[jobId])
 				out[jobId] = result
-				fmt.Printf("Worker=%d completed JobId=%d Job=%d with result=%d\n", workerId, jobId, jobs[jobId], result)
 			}
 			close(workerDoneChannels[workerId])
 
@@ -162,7 +174,6 @@ func WorkerPool(jobs []int, numWorkers int, work func(int) int) []int {
 	// Separate work for each worker
 	for jobId := range jobs {
 		workerId := jobId % numWorkers
-		fmt.Printf("Sending JobId=%d to Worker=%d\n", jobId, workerId)
 		workerReadChannels[workerId] <- jobId
 	}
 
@@ -172,11 +183,10 @@ func WorkerPool(jobs []int, numWorkers int, work func(int) int) []int {
 	}
 
 	// wait for workers to be finish working
-	for workerId, ch := range workerDoneChannels {
+	for _, ch := range workerDoneChannels {
 		for range ch {
 		}
 
-		fmt.Printf("worker %d is done\n", workerId)
 	}
 
 	return out

@@ -133,7 +133,8 @@ func MergeWithContext(ctx context.Context, inputs ...<-chan int) <-chan int {
 
 	}
 
-	// wait and close need to be on a separate coroutine so we can return out
+	// wait and close need to be on a separate coroutine so we can return out and allow
+	// caller to start consuming. The key is to close after wgg.Wait on go routine
 	go func() {
 		wg.Wait()
 		close(out)
