@@ -171,7 +171,7 @@ func WorkerPool(jobs []int, numWorkers int, work func(int) int) []int {
 		close(ch)
 	}
 
-	// wait for channels to be done
+	// wait for workers to be finish working
 	for workerId, ch := range workerDoneChannels {
 		for range ch {
 		}
