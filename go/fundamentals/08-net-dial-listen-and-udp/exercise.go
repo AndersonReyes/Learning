@@ -129,6 +129,7 @@ func SendUDP(addr string, data []byte, timeout time.Duration) ([]byte, error) {
 	if err != nil {
 		return nil, err
 	}
+	defer conn.Close()
 
 	_, err = conn.Write(data)
 	if err != nil {
