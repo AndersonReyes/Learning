@@ -5,6 +5,7 @@ package wire
 
 import (
 	"bufio"
+	"encoding/binary"
 	"errors"
 	"io"
 )
@@ -17,7 +18,31 @@ var ErrMessageTooLarge = errors.New("wire: message exceeds size limit")
 // 4-byte big-endian header containing len(payload), followed by payload
 // itself.
 func WriteMessage(w io.Writer, payload []byte) error {
-	return errors.New("not implemented")
+
+	var header [4]byte
+	binary.BigEndian.PutUint32(header[:], uint32(len(payload)))
+
+	bytesWritten, err := w.Write(header[:])
+
+	if err != nil {
+		return err
+	}
+
+	if bytesWritten != 4 {
+		return errors.New("did not write header correctly")
+	}
+
+	bytesWritten, err = w.Write(payload[:])
+
+	if err != nil {
+		return err
+	}
+
+	if bytesWritten != len(payload) {
+		return errors.New("did not write payload correctly")
+	}
+
+	return nil
 }
 
 // ReadMessage reads one length-prefixed message from r and returns its
@@ -26,7 +51,30 @@ func WriteMessage(w io.Writer, payload []byte) error {
 // short read (a truncated header or payload) is reported as an error
 // wrapping io.ErrUnexpectedEOF.
 func ReadMessage(r io.Reader) ([]byte, error) {
-	return nil, errors.New("not implemented")
+	header := make([]byte, 4)
+	nRead, err := r.Read(header)
+
+	if err != nil {
+		return nil, err
+	}
+
+	if nRead != 4 {
+		return nil, errors.New("did not read header correctly")
+	}
+
+	payloadSize := binary.BigEndian.Uint32(header)
+	payload := make([]byte, payloadSize)
+
+	nRead, err = r.Read(payload)
+
+	if err != nil {
+		return nil, err
+	}
+	if nRead != int(payloadSize) {
+		return nil, errors.New("did not read payload correctly")
+	}
+
+	return payload, nil
 }
 
 // ReadMessageLimit behaves like ReadMessage, but first checks the decoded
@@ -34,14 +82,48 @@ func ReadMessage(r io.Reader) ([]byte, error) {
 // ReadMessageLimit returns an error wrapping ErrMessageTooLarge without
 // attempting to read (or allocate a buffer for) the payload.
 func ReadMessageLimit(r io.Reader, maxSize uint32) ([]byte, error) {
-	return nil, errors.New("not implemented")
+	header := make([]byte, 4)
+	nRead, err := r.Read(header)
+
+	if err != nil {
+		return nil, err
+	}
+
+	if nRead != 4 {
+		return nil, errors.New("did not read header correctly")
+	}
+
+	payloadSize := binary.BigEndian.Uint32(header)
+
+	if payloadSize >= maxSize {
+		return nil, ErrMessageTooLarge
+	}
+
+	payload := make([]byte, payloadSize)
+
+	nRead, err = r.Read(payload)
+
+	if err != nil {
+		return nil, err
+	}
+	if nRead != int(payloadSize) {
+		return nil, errors.New("did not read payload correctly")
+	}
+	return payload, nil
 }
 
 // WriteMessages writes each element of payloads to w as a separate
 // length-prefixed message (via WriteMessage), then flushes w so all
 // messages reach the underlying writer.
 func WriteMessages(w *bufio.Writer, payloads [][]byte) error {
-	return errors.New("not implemented")
+	for _, p := range payloads {
+		err := WriteMessage(w, p)
+		if err != nil {
+			return err
+		}
+	}
+
+	return w.Flush()
 }
 
 // ReadAllMessages reads length-prefixed messages from r (via ReadMessage)
@@ -49,5 +131,19 @@ func WriteMessages(w *bufio.Writer, payloads [][]byte) error {
 // at a message boundary is not an error; any other error from ReadMessage
 // is returned to the caller.
 func ReadAllMessages(r *bufio.Reader) ([][]byte, error) {
-	return nil, errors.New("not implemented")
+	var out [][]byte
+	for {
+		payload, err := ReadMessage(r)
+
+		if err != nil {
+			if err == io.EOF {
+				break
+			}
+			return nil, err
+		}
+
+		out = append(out, payload)
+
+	}
+	return out, nil
 }
