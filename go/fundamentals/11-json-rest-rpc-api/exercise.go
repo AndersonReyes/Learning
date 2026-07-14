@@ -6,6 +6,8 @@ package jsonapi
 
 import (
 	"encoding/json"
+	"io"
+	"log"
 	"net/http"
 	"sync"
 )
@@ -25,18 +27,32 @@ func NewStore() *Store {
 // Get returns the value stored for key and true, or (nil, false) if key
 // is not present. Get is safe to call concurrently with Set and Delete.
 func (s *Store) Get(key string) (json.RawMessage, bool) {
-	return nil, false
+	s.mu.Lock()
+	defer s.mu.Unlock()
+
+	v, ok := s.data[key]
+	return v, ok
 }
 
 // Set stores value under key, replacing any existing value. Set is safe
 // to call concurrently with Get, Set, and Delete.
 func (s *Store) Set(key string, value json.RawMessage) {
+	s.mu.Lock()
+	defer s.mu.Unlock()
+
+	s.data[key] = value
 }
 
 // Delete removes key from the store and reports whether it was present.
 // Delete is safe to call concurrently with Get, Set, and Delete.
 func (s *Store) Delete(key string) bool {
-	return false
+	s.mu.Lock()
+	defer s.mu.Unlock()
+	_, ok := s.data[key]
+	if ok {
+		delete(s.data, key)
+	}
+	return ok
 }
 
 // ServeHTTP implements a REST API over Store for paths of the form
@@ -54,7 +70,55 @@ func (s *Store) Delete(key string) bool {
 //
 // A request whose path has an empty {key} responds 400.
 func (s *Store) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	http.Error(w, "not implemented", http.StatusNotImplemented)
+	key := r.PathValue("key")
+
+	switch r.Method {
+	case "GET":
+		v, ok := s.Get(key)
+		if !ok {
+			w.WriteHeader(http.StatusNotFound)
+			return
+		} else {
+			w.WriteHeader(http.StatusOK)
+			w.Header().Add("Content-Type", "application/json")
+			w.Write(v)
+		}
+	case "PUT":
+		body, err := io.ReadAll(r.Body)
+
+		if ok := json.Valid(body); !ok || err != nil {
+			log.Printf("bad request body: %v\nerror: %s\n", string(body), err)
+			w.WriteHeader(http.StatusBadRequest)
+			return
+		}
+
+		var data json.RawMessage
+		err = json.Unmarshal(body, &data)
+		if err != nil {
+			log.Printf("bad request body: %v, error: %s\n", string(body), err)
+			w.WriteHeader(http.StatusBadRequest)
+			return
+		}
+
+		s.Set(key, data)
+		w.WriteHeader(http.StatusNoContent)
+
+	case "DELETE":
+		_, exists := s.data[key]
+
+		if !exists {
+			log.Printf("key [%s] does not exist\n", key)
+			w.WriteHeader(http.StatusNotFound)
+			return
+		}
+		delete(s.data, key)
+		w.WriteHeader(http.StatusNoContent)
+
+	default:
+		log.Printf("unimplemented path: %s\n", r.URL)
+		http.Error(w, "not implemented", http.StatusMethodNotAllowed)
+	}
+
 }
 
 // RPCRequest is a JSON-RPC-style request: a method name, method-specific
@@ -81,5 +145,50 @@ type RPCResponse struct {
 // json.Marshal into Result. In all cases the response's ID matches
 // req.ID.
 func HandleRPC(req RPCRequest, methods map[string]func(json.RawMessage) (any, error)) RPCResponse {
-	return RPCResponse{}
+	m, exists := methods[req.Method]
+
+	if !exists {
+		return RPCResponse{
+			Result: nil,
+			Error:  "method does not exist",
+			ID:     req.ID,
+		}
+	}
+
+	result, err := m(req.Params)
+
+	if err != nil {
+		return RPCResponse{
+			Result: nil,
+			Error:  err.Error(),
+			ID:     req.ID,
+		}
+	}
+
+	var msg json.RawMessage
+
+	bytes, err := json.Marshal(result)
+	if err != nil {
+
+		return RPCResponse{
+			Result: nil,
+			Error:  err.Error(),
+			ID:     req.ID,
+		}
+	}
+
+	err = json.Unmarshal(bytes, &msg)
+	if err != nil {
+
+		return RPCResponse{
+			Result: nil,
+			Error:  err.Error(),
+			ID:     req.ID,
+		}
+	}
+
+	return RPCResponse{
+		Result: msg,
+		ID:     req.ID,
+	}
 }
