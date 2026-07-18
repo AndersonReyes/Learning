@@ -5,8 +5,12 @@
 package dns
 
 import (
+	"bytes"
+	"encoding/binary"
 	"errors"
+	"fmt"
 	"net"
+	"strings"
 	"time"
 )
 
@@ -33,7 +37,27 @@ type Response struct {
 // EncodeName returns an error if any label is empty or longer than 63
 // bytes.
 func EncodeName(name string) ([]byte, error) {
-	return nil, errors.New("not implemented")
+	if len(name) == 0 {
+		return []byte{0}, nil
+	}
+
+	var buf bytes.Buffer
+
+	parts := strings.SplitSeq(name, ".")
+	for part := range parts {
+		if len(part) == 0 {
+			return nil, fmt.Errorf("empty part now allowed in [%s]\n", name)
+		}
+
+		lengthByte := len(part)
+		if lengthByte >= 64 {
+			return nil, fmt.Errorf("label [%s] is over 63 bytes long\n", part)
+		}
+		buf.WriteByte(byte(lengthByte))
+		buf.WriteString(part)
+	}
+	buf.WriteByte(0)
+	return buf.Bytes(), nil
 }
 
 // DecodeName decodes a domain name starting at data[offset] (RFC 1035
@@ -42,7 +66,53 @@ func EncodeName(name string) ([]byte, error) {
 // if a pointer was followed, is the offset immediately after that
 // pointer's two bytes, not after the pointed-to data.
 func DecodeName(data []byte, offset int) (name string, next int, err error) {
-	return "", 0, errors.New("not implemented")
+	var parts []string
+	curr := offset
+	done := false
+	for !done {
+		if curr >= len(data) {
+			break
+		}
+
+		b := data[curr]
+		//log.Printf("PRE: curr=%d, b=%x\n", curr, b)
+
+		if b == 0 {
+			// finished. Advace curr to the next offset
+			curr += 1
+			done = true
+			break
+		}
+
+		// check if length byte is a pointer
+		if (b & 0xC0) == 0xC0 {
+			highBits := uint16(data[curr]&0x3F) << 8
+			// set curr to next offset
+			nextOffset := int(highBits | uint16(data[curr+1]))
+			//log.Printf("PTR-pre-recursion: curr=%d, b=%x\n", curr, b)
+			name, _, err := DecodeName(data, nextOffset)
+			curr += 2 // processed curr and curr+1
+			//log.Printf("PTR-post-recursion: curr=%d, b=%x\n", curr, b)
+			parts = append(parts, name)
+
+			if err != nil {
+				return "", 0, err
+			}
+
+			done = true
+		} else {
+			// now its just normal length
+			n := int(b)
+			start := curr + 1
+			end := curr + n + 1
+			slice := data[start:end]
+
+			parts = append(parts, string(slice))
+			curr = end
+			//log.Printf("LENGTH: curr=%d, b=%x\n", curr, b)
+		}
+	}
+	return strings.Join(parts, "."), curr, nil
 }
 
 // EncodeQuery builds a complete DNS query message (RFC 1035 §4.1): a
@@ -50,7 +120,28 @@ func DecodeName(data []byte, offset int) (name string, next int, err error) {
 // and QDCOUNT=1, followed by a single question for name with the given
 // qtype and class IN.
 func EncodeQuery(id uint16, name string, qtype uint16) ([]byte, error) {
-	return nil, errors.New("not implemented")
+	header := make([]byte, 12)
+	binary.BigEndian.PutUint16(header[0:2], id)
+	binary.BigEndian.PutUint16(header[2:4], 0x0100)
+	binary.BigEndian.PutUint16(header[4:6], 1)
+
+	encodedName, err := EncodeName(name)
+	if err != nil {
+		return nil, err
+	}
+	qtypeBuf := []byte{1, 1}
+	binary.BigEndian.PutUint16(qtypeBuf, qtype)
+
+	qclassBuf := []byte{0, 0}
+	binary.BigEndian.PutUint16(qclassBuf, ClassIN)
+
+	var query []byte
+	query = append(query, header...)
+	query = append(query, encodedName...)
+	query = append(query, qtypeBuf...)
+	query = append(query, qclassBuf...)
+
+	return query, nil
 }
 
 // ParseResponse parses a DNS response message: the header's ID and RCODE,
