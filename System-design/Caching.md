@@ -13,14 +13,11 @@ A cache stores reusable data or computed results so later requests can avoid slo
 7. [Hot Keys and Cache Stampedes](#7-hot-keys-and-cache-stampedes)
 8. [Partitioning and Consistent Hashing](#8-partitioning-and-consistent-hashing)
 9. [Replication and Availability](#9-replication-and-availability)
-10. [Concurrency and Race Conditions](#10-concurrency-and-race-conditions)
-11. [Failure Handling](#11-failure-handling)
-12. [Capacity Estimation](#12-capacity-estimation)
-13. [Monitoring](#13-monitoring)
-14. [Worked Example](#14-worked-example)
-15. [Design Interview Approach](#15-design-interview-approach)
-16. [Cheat Sheet](#16-cheat-sheet)
-17. [References](#17-references)
+10. [Failure Handling](#10-failure-handling)
+11. [Capacity Estimation](#11-capacity-estimation)
+12. [Design Interview Approach](#12-design-interview-approach)
+13. [Cheat Sheet](#13-cheat-sheet)
+14. [References](#14-references)
 
 ---
 
@@ -57,31 +54,7 @@ average = 0.95 × 2 + 0.05 × 102 = 7 ms
 - Data that tolerates bounded staleness
 - Responses from slow or rate-limited dependencies
 
-Poor candidates include rapidly changing data requiring strict freshness, sensitive data without safe isolation, and values larger than the work they save.
-
-### Key and value design
-
-Keys should be predictable and collision-safe:
-
-```text
-{namespace}:{version}:{tenant}:{entity}:{id}
-catalog:v2:tenant-7:product:123
-```
-
-- Include the tenant or authorization scope when values differ by caller.
-- Add a schema version when old and new representations may overlap.
-- Canonicalize inputs so equivalent requests share one key.
-- Avoid unbounded keys built from arbitrary query strings.
-
-Values should be cheap to encode and retrieve. Measure serialized size, set a maximum entry size, and compress only when saved network or memory cost exceeds CPU cost. Large values can increase latency and create uneven memory pressure.
-
-### Security
-
-- Authorize the caller before returning cached protected data.
-- Do not share user-specific values under a global key.
-- Avoid sensitive data unless encryption, retention, and deletion rules are satisfied.
-- Validate data before caching it to reduce cache-poisoning risk.
-- For HTTP caches, include every response-varying attribute in the cache key or `Vary` policy.
+Poor candidates include rapidly changing data requiring strict freshness, sensitive data without safe isolation, and values whose storage or transfer cost exceeds the work they save.
 
 ---
 
@@ -309,7 +282,6 @@ Many callers miss the same key and regenerate it concurrently, overloading the s
 
 Mitigations:
 
-- **Request coalescing:** One loader runs; other callers await its result.
 - **Per-key lock:** Serialize regeneration for one key, not the whole cache.
 - **Stale-while-revalidate:** Serve a stale value while one caller refreshes it.
 - **TTL jitter:** Add randomness so many keys do not expire together.
@@ -317,18 +289,6 @@ Mitigations:
 - **Backpressure:** Bound concurrent source requests.
 
 A cold cache can cause a stampede, but the terms are not identical. A cold cache is empty; a stampede is concurrent regeneration.
-
-#### Worked example: stampede
-
-```text
-popular key expires
-10,000 requests arrive
-
-without coalescing: up to 10,000 source reads
-with coalescing:            1 source read + 9,999 waiters
-```
-
-Coalescing must bound wait time and define what happens when the single loader fails.
 
 ---
 
@@ -344,7 +304,19 @@ node = hash(key) mod node_count
 
 It is simple and balanced when the hash is good. Changing `node_count` remaps most keys, which can cause a large miss spike.
 
-### Consistent hashing
+### Common hash functions to explore
+
+- **SHA-256:** Stable, portable cryptographic hash
+- **MD5:** Stable and widely available, but unsafe for security uses
+- **MurmurHash3:** Fast, non-cryptographic hash common in distributed systems
+- **xxHash / XXH3:** Very fast, non-cryptographic hash
+- **SipHash:** Keyed hash resistant to attacker-chosen collision attacks
+- **FNV-1a:** Simple non-cryptographic hash useful for learning
+- **CRC32 / CRC16:** Checksums sometimes used for partition or slot selection
+
+The same stable hash function should map both keys and node identifiers into the ring's numeric range.
+
+### Ring-based consistent hashing
 
 Hash nodes and keys into the same circular space. A key belongs to the next node clockwise. The original goal is minimal mapping change when membership changes ([Karger et al.](https://people.csail.mit.edu/karger/Papers/web.pdf)).
 
@@ -358,6 +330,14 @@ Hash nodes and keys into the same circular space. A key belongs to the next node
 
 When a node is added or removed, only a fraction of keys move instead of nearly the entire keyspace.
 
+Lookup uses the first node position greater than or equal to the key position. If the key is beyond the final node, lookup wraps to the first node:
+
+```text
+node = first node where node.position >= hash(key)
+if no node exists:
+  node = first node on the ring
+```
+
 #### Worked example: adding one node
 
 Use a ring numbered 0–99:
@@ -367,6 +347,8 @@ A=10, B=40, C=70
 
 key positions: 5→A, 20→B, 35→B, 50→C, 65→C, 80→A
 ```
+
+The key at position 80 wraps around to A at position 10 because no node follows 80 before the ring ends.
 
 Add `D=30`. D takes the interval `(10, 30]` previously owned by B:
 
@@ -381,7 +363,7 @@ Only keys in D's new interval move. With `hash(key) mod node_count`, changing th
 
 Map each physical node to many ring positions. Virtual nodes improve balance, spread a failed node's ranges across multiple survivors, and allow weighted capacity. Amazon's Dynamo describes these benefits ([Dynamo](https://www.amazon.science/publications/dynamo-amazons-highly-available-key-value-store)).
 
-Consistent hashing is one approach, not a requirement. Redis Cluster uses a fixed set of hash slots that can be reassigned between nodes ([Redis Cluster scaling](https://redis.io/docs/latest/operate/oss_and_stack/management/scaling/)).
+Ring-based consistent hashing is not required for partitioning. Redis Cluster uses `CRC16(key) mod 16384` to select a fixed hash slot, then assigns slots to nodes ([Redis Cluster scaling](https://redis.io/docs/latest/operate/oss_and_stack/management/scaling/)).
 
 Partitioning increases total capacity but does not by itself provide redundancy or solve hot keys.
 
@@ -408,38 +390,13 @@ For a disposable cache, missing data can be reloaded from the source of truth. I
 
 ---
 
-## 10. Concurrency and Race Conditions
-
-### Duplicate fills
-
-Several callers miss and load the same value. Use per-key request coalescing when the duplicated work is expensive.
-
-### Stale fill
-
-A slow reader may overwrite a newer cached value. Use version numbers, conditional writes, or invalidation after committed changes.
-
-### Lost update
-
-Read-modify-write operations can overwrite each other. Use atomic cache operations, compare-and-set, transactions, or move the operation to the source of truth.
-
-### Lock cautions
-
-- Prefer per-key locks over global locks.
-- Set lock timeouts or leases.
-- Define behavior when the lock owner fails.
-- Do not assume a distributed lock makes database and cache writes atomic.
-
-Connection pools and worker pools should be bounded. They control resource use but do not replace correctness mechanisms.
-
----
-
-## 11. Failure Handling
+## 10. Failure Handling
 
 Design separately for **cache empty** and **cache unavailable**.
 
 ### Cache empty
 
-Requests reach the cache successfully but miss. Protect the source with warming, coalescing, concurrency limits, and gradual traffic ramp-up.
+Requests reach the cache successfully but miss. Protect the source with warming, concurrency limits, and gradual traffic ramp-up.
 
 ### Cache unavailable
 
@@ -475,40 +432,28 @@ Direct fallback overloads the database by more than 6×. Limit fallback to avail
 
 ---
 
-## 12. Capacity Estimation
+## 11. Capacity Estimation
 
 Estimate the working set, not only the full dataset.
 
 ```text
-raw cache size = entry count × average encoded entry size
-
-provisioned memory
-  = raw cache size
-  + key and metadata overhead
-  + allocator/fragmentation headroom
-  + replication overhead
-  + growth headroom
+cache size
+  ≈ (average key size + average payload size)
+  × number of keys
+  × replication factor
 ```
 
-#### Worked example: provisioned memory
+Treat the replication factor as the total number of copies, including the primary.
 
-Assume:
+#### Worked example
+
+Assume each key and payload together use about 2 KB, the cache holds 10 million keys, and the replication factor is 2:
 
 ```text
-10 million entries
-2,048 bytes serialized value
-200 bytes key and metadata
-25% fragmentation, growth, and operating headroom
-2 total copies: primary + replica
+2 KB × 10 million × 2 ≈ 40 GB
 ```
 
-```text
-base       = 10,000,000 × (2,048 + 200) ≈ 20.94 GiB
-headroom   = 20.94 × 1.25                 ≈ 26.18 GiB
-replicated = 26.18 × 2                    ≈ 52.36 GiB
-```
-
-This is an initial estimate, not a machine count. Measure actual encoding and allocator overhead, then account for shard imbalance and the cache product's failover rules.
+This is a first-pass interview estimate. The eviction policy handles entries that exceed available capacity, although frequent eviction can reduce the hit ratio.
 
 For basic steady-state cache-aside reads, estimate source load as:
 
@@ -516,68 +461,11 @@ For basic steady-state cache-aside reads, estimate source load as:
 source read QPS ≈ read QPS × (1 - hit ratio)
 ```
 
-At 100,000 reads/s and a 95% hit ratio, the source receives about 5,000 demand reads/s. Refreshes, retries, negative caching, request coalescing, and failures change the actual load.
+At 100,000 reads/s and a 95% hit ratio, the source receives about 5,000 demand reads/s. Refreshes, retries, negative caching, and failures change the actual load.
 
 ---
 
-## 13. Monitoring
-
-Track:
-
-- Hit and miss ratio by endpoint or key class
-- Cache latency percentiles
-- Source latency and request volume
-- Memory usage and fragmentation
-- Evictions and expirations
-- Connection count and saturation
-- Errors, timeouts, and retries
-- Hot keys and skew between shards
-- Replication lag and failovers
-- Fill duration and concurrent loaders
-
-A global hit ratio can hide a broken endpoint. Segment metrics by workload and compare them with source load and user latency.
-
----
-
-## 14. Worked Example
-
-Suppose a service reads product content by ID:
-
-```text
-product-content:123 → {name, description}
-```
-
-Requirements:
-
-- 100,000 reads/s
-- 1,000 writes/s
-- Product content may be stale for 60 seconds
-- Checkout prices must be current
-
-Design:
-
-1. Use a shared distributed cache with `product-content:{id}` keys.
-2. Use cache-aside for product-page reads.
-3. Apply a TTL near 60 seconds with jitter.
-4. After a committed product update, invalidate its cache key.
-5. Coalesce concurrent fills per product ID.
-6. Partition keys across cache shards.
-7. Add replicas for failover if required.
-8. Protect the database with timeouts and bounded fallback.
-9. Read checkout price from the authoritative pricing service; do not put it in the content entry.
-
-Request flow:
-
-```text
-product page → cache content → database on miss
-checkout     → authoritative pricing service
-```
-
-The split follows the freshness requirement: content tolerates staleness; checkout price does not. During a cache outage, bounded fallback protects the product database while checkout remains independent of cached content.
-
----
-
-## 15. Design Interview Approach
+## 12. Design Interview Approach
 
 Use this sequence:
 
@@ -630,16 +518,50 @@ Name the metrics that prove the cache helps: hit ratio, latency, source load, ev
 - Memory cost versus hit ratio
 - Simplicity versus stronger guarantees
 
+### Worked example: product catalog
+
+Suppose a service reads product content by ID:
+
+```text
+product-content:123 → {name, description}
+```
+
+Requirements:
+
+- 100,000 reads/s
+- 1,000 writes/s
+- Product content may be stale for 60 seconds
+- Checkout prices must be current
+
+Design:
+
+1. Use a shared distributed cache with `product-content:{id}` keys.
+2. Use cache-aside for product-page reads.
+3. Apply a TTL near 60 seconds with jitter.
+4. After a committed product update, invalidate its cache key.
+5. Partition keys across cache shards.
+6. Add replicas for failover if required.
+7. Protect the database with timeouts and bounded fallback.
+8. Read checkout price from the authoritative pricing service; do not put it in the content entry.
+
+Request flow:
+
+```text
+product page → cache content → database on miss
+checkout     → authoritative pricing service
+```
+
+The split follows the freshness requirement: content tolerates staleness; checkout price does not. During a cache outage, bounded fallback protects the product database while checkout remains independent of cached content.
+
 ### Practice questions
 
 1. Why can adding or restarting cache nodes increase database load?
 2. Why does ordinary sharding not solve a hot key?
 3. What happens when a database write succeeds but cache invalidation fails?
 4. When is a local cache better than a shared cache?
-5. How does request coalescing change stampede load?
-6. Why is hit ratio insufficient without miss cost and source capacity?
-7. Which keys move when a node joins a consistent-hashing ring?
-8. When is write-back unsafe?
+5. Why is hit ratio insufficient without miss cost and source capacity?
+6. Which keys move when a node joins a consistent-hashing ring?
+7. When is write-back unsafe?
 
 For each answer, state the request flow, failure case, mitigation, and tradeoff.
 
@@ -655,7 +577,7 @@ For each answer, state the request flow, failure case, mitigation, and tradeoff.
 
 ---
 
-## 16. Cheat Sheet
+## 13. Cheat Sheet
 
 | Question | Main options |
 |---|---|
@@ -664,7 +586,7 @@ For each answer, state the request flow, failure case, mitigation, and tradeoff.
 | Write pattern? | Write-through, write-around, write-back |
 | Freshness? | TTL, invalidation, update, versions, events |
 | Memory full? | LRU, LFU, FIFO, random, reject writes |
-| Stampede? | Coalescing, per-key lock, stale serving, TTL jitter, warming |
+| Stampede? | Per-key lock, stale serving, TTL jitter, warming |
 | Scale? | Partitioning, consistent hashing/hash slots, replication |
 | Failure? | Short timeout, bounded fallback, circuit breaker, load shedding |
 | Measure? | Hit ratio, latency, source load, memory, evictions, skew, errors |
@@ -680,7 +602,7 @@ Remember:
 
 ---
 
-## 17. References
+## 14. References
 
 - [Microsoft: Cache-Aside pattern](https://learn.microsoft.com/en-us/azure/architecture/patterns/cache-aside)
 - [AWS: Database caching strategies using Redis](https://docs.aws.amazon.com/whitepapers/latest/database-caching-strategies-using-redis/caching-patterns.html)
