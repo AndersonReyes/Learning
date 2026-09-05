@@ -1,61 +1,55 @@
 # Rust
 
-**Status: planning.** Curriculum is settled (see [`ROADMAP.md`](./ROADMAP.md)).
-`fundamentals/01-toolchain-cargo-and-hello-world` is built; see `ROADMAP.md`
-for status of the rest.
+A self-directed Rust research track for experienced engineers. The roadmap
+focuses on Rust's ownership and borrowing model, type system, standard library,
+concurrency and async model, unsafe boundary, compilation model, tooling, and
+idiomatic API design.
 
-## How this track works
+This roadmap targets Rust Edition 2024. It does not pin a compiler release;
+check stabilization and version markers in current documentation before
+relying on newer behavior.
 
-Numbered topic folders are organized under `fundamentals/`, `intermediate/`,
-and `advanced/`. Each topic is its own Cargo package with `notes.md`,
-`src/lib.rs` (5 stubbed exercises),
-`tests/exercise_test.rs`, and `examples/examples.rs`. `tests/exercise_test.rs`
-is the spec/answer key — there are no separate solution files. See
-[`ROADMAP.md`](./ROADMAP.md) for the full curriculum, per-topic file pattern,
-and "Adding a new topic" workflow.
+## How it is organized
 
-The curriculum is built around
-[**The Rust Programming Language**](https://doc.rust-lang.org/book/) (the
-Book) for Fundamentals through most of Intermediate/Advanced, and
-[**The Rustonomicon**](https://doc.rust-lang.org/nomicon/) for the unsafe,
-data-layout, and from-scratch `Vec`/`Arc`/`Mutex` topics at the end of
-Advanced. Each topic's "Further Reading" links the matching chapter(s).
-
-## Building and testing
-
-This is a Cargo workspace — `rust/Cargo.toml` lists every topic as a
-workspace member. From `rust/`:
-
-```sh
-# Build one topic
-cargo build -p fundamentals-01-toolchain-cargo-and-hello-world
-
-# Run a topic's examples
-cargo run --example examples -p fundamentals-01-toolchain-cargo-and-hello-world
-
-# Run a topic's exercise tests (spec)
-cargo test -p fundamentals-01-toolchain-cargo-and-hello-world
-
-# Run every topic's tests
-cargo test
+```text
+rust/
+├── README.md
+└── ROADMAP.md
 ```
 
-No external dependencies for Fundamentals and most of Intermediate — `cargo
-test` works out of the box. A handful of later topics add a small,
-topic-scoped dependency where the concept genuinely needs one (an async
-runtime for `advanced/09`, `tokio` for the message-queue capstone) — see
-"Adapted topics" in `ROADMAP.md`.
+- [`ROADMAP.md`](./ROADMAP.md) defines ordered research phases, topic
+  boundaries, completion criteria, authoritative sources, and capstone ideas.
+- There are no generated notes, per-topic packages, exercises, or answer keys.
+- Capstones replace isolated exercises and may evolve while related topics are
+  being researched.
 
-## Capstones
+## Suggested workflow
 
-Two capstones, unlocked progressively as the curriculum builds out — see the
-"Capstones" section of [`ROADMAP.md`](./ROADMAP.md):
+1. Choose the next topic whose prerequisites you understand.
+2. Begin with the Rust Reference or standard-library contract, then use the
+   Book, Edition Guide, Cargo Book, rustc documentation, or Rustonomicon for
+   context.
+3. Write minimal probes for ownership, inference, layout, concurrency, or
+   compiler behavior when reading alone is insufficient.
+4. Record the rules, guarantees, unspecified behavior, tradeoffs, and failure
+   modes in your own words.
+5. Apply the topic to an active capstone when it belongs there naturally.
 
-- **`rust/capstone-embedded/`** — embedded Rust on the BBC micro:bit v2, on
-  real hardware via `probe-rs` end to end (no QEMU): a from-scratch
-  `#![no_std]`/`#![no_main]` phase (Embedonomicon, applied to the nRF52833)
-  followed by the full Discovery (micro:bit v2 edition) curriculum.
-- **`rust/capstone-message-queue/`** — a "mini-Kafka": a concurrent,
-  networked, distributed message queue built in phases (storage engine →
-  topics/partitions → concurrency → async network protocol → consumer
-  groups → replication).
+## Track boundaries
+
+This track covers Rust-specific language semantics, libraries, runtime
+behavior, tooling, and idioms. General networking, distributed-systems,
+embedded-systems, and compiler theory belong in dedicated modules or
+capstones. Their Rust-specific consequences remain in scope.
+
+## Capstone-driven learning
+
+Candidate capstones are described in the roadmap:
+
+- Embedded Rust on the BBC micro:bit v2
+- A user-space TCP/IP stack
+- A small interpreted or compiled language implemented in Rust
+
+Capstones are learner-owned. Start with a narrow vertical slice, extend it as
+the roadmap unlocks new techniques, and document ownership, failure,
+concurrency, unsafe invariants, and verification decisions as they emerge.

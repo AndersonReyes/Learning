@@ -1,433 +1,277 @@
 # Rust Roadmap
 
-**Status: in progress.** Curriculum and reference are settled (below). 29
-topics total: 10 Fundamentals + 9 Intermediate + 10 Advanced, plus two
-capstones. Fundamentals (all 10), Intermediate (all 9), and all 10 Advanced topics
-are built (see "Build Log" below for what each one's exercises cover).
-The full curriculum is complete — only the two capstones remain.
+A self-directed research roadmap for an experienced senior engineer. Use the
+Rust Reference and standard-library API as the primary contracts, supported by
+the Book, Edition Guide, Cargo Book, rustc documentation, Rustonomicon, and
+other primary Rust project documentation.
 
-## Reference
+The baseline is Rust Edition 2024. Current documentation may describe behavior
+from newer compiler releases, so distinguish stable language guarantees,
+edition-specific behavior, library contracts, compiler behavior, and ecosystem
+conventions.
 
-Primary references, in the order they're pulled from:
+## Phase 1 — Language, Ownership, and Data Model
 
-- [**The Rust Programming Language**](https://doc.rust-lang.org/book/) ("the
-  Book") — covers Fundamentals (ch. 1-9) and most of Intermediate/Advanced
-  (ch. 10-21). Each topic's "Further Reading" links the matching chapter(s)
-  at `https://doc.rust-lang.org/book/chXX-...`.
-- [**The Rustonomicon**](https://doc.rust-lang.org/nomicon/) ("the Nomicon")
-  — unsafe Rust, data layout, advanced ownership/lifetimes, and the
-  from-scratch `Vec`/`Arc`/`Mutex` implementations that anchor the back half
-  of Advanced.
-- [**The Embedonomicon**](https://doc.rust-lang.org/embedonomicon/) and
-  [**Discovery (micro:bit v2 edition)**](https://docs.rust-embedded.org/discovery-mb2/)
-  — embedded Rust, used for Capstone A.
-- [`rust-lang/rust`](https://github.com/rust-lang/rust) — the compiler and
-  standard library source itself. Not used as teaching material directly,
-  but called out where it's useful to compare a Nomicon's-eye pedagogical
-  implementation (e.g. `Vec`, `Arc`) against the real `alloc`/`core` source.
-- [`std` docs](https://doc.rust-lang.org/std/) and
-  [the Reference](https://doc.rust-lang.org/reference/) — linked per-topic
-  for API/grammar details the Book and Nomicon don't cover exhaustively.
+| # | Topic | Research target |
+| --- | --- | --- |
+| 1 | Toolchain, editions, and compilation model | Roles of `rustup`, `rustc`, and Cargo; stable, beta, and nightly channels; editions versus compiler versions; crate roots and targets; the prelude; feature stability; edition migration; and cross-edition interoperability. |
+| 2 | Bindings, mutability, types, and inference | `let`, patterns, shadowing, mutability, scalar and compound types, inference, coercions, casts, numeric overflow, unit, never, diverging expressions, and type ascription boundaries. |
+| 3 | Expressions, control flow, and patterns | Expression-oriented blocks, statements and semicolons, `if`, loops, labels, `match`, guards, or-patterns, destructuring, refutability, exhaustiveness, `if let`, `while let`, and `let else`. |
+| 4 | Ownership, moves, copying, cloning, and destruction | Places and values, move paths, partial moves, `Copy`, `Clone`, destructors, drop order, temporaries, assignment, argument passing, return values, and closure capture consequences. |
+| 5 | Borrowing, references, and reborrowing | Shared and mutable references, exclusivity, reborrowing, non-lexical lifetimes, temporary lifetime extension, dereference coercion, two-phase borrows, disjoint fields, indexing, and common borrow-checker diagnostics. |
+| 6 | Slices, strings, and borrowed views | Arrays and slices, `str` and `String`, UTF-8, bytes versus Unicode scalar values and grapheme clusters, indexing restrictions, ranges, `OsStr`/`OsString`, `Path`/`PathBuf`, and ownership choices at API boundaries. |
+| 7 | Structs, enums, methods, and associated items | Product and sum types, field and tuple syntax, inherent implementations, associated functions and constants, constructors by convention, newtypes, recursive types, `Option`, discriminants, and layout guarantees versus optimizations. |
+| 8 | Functions, closures, and callable types | Function items and pointers, closure capture modes, `move`, `Fn`/`FnMut`/`FnOnce`, inference, generic callables, returned closures, higher-order APIs, ABI distinctions, and lifetime effects. |
+| 9 | Errors, `Option`, `Result`, and panics | Recoverable versus unrecoverable failure, combinators, `?`, residual conversion, `From`/`TryFrom`, error sources, context, panic hooks, unwinding versus abort, double panics, and failure contracts. |
+| 10 | Modules, crates, packages, and visibility | Module trees, paths, `use`, re-exports, privacy, `pub(crate)` and restricted visibility, library and binary crates, packages, target discovery, namespaces, conditional compilation, and public API boundaries. |
+| 11 | Constants, statics, and initialization | `const` versus `static`, promotion, constant evaluation, mutable statics, thread-safe lazy initialization, `OnceLock`/`LazyLock`, initialization order, destructors at process exit, and edition-sensitive rules. |
 
-Two Nomicon chapters — **FFI** and **Beneath `std`** (`#[panic_handler]`) —
-aren't given standalone topics. They're covered hands-on in Capstone A: every
-`#![no_std]` program needs a `#[panic_handler]`, and the embedded HALs lean
-on `extern "C"` FFI conventions. Likewise Nomicon's **Uninitialized Memory**
-and **Ownership Based Resource Management** chapters don't get their own
-topics — they're load-bearing material for `advanced/10-implementing-vec-and-arc`,
-which *is* an exercise in managing uninitialized memory and resource
-lifetimes by hand.
+### Phase 1 completion criteria
 
-## Per-topic structure
+- Predict moves, borrows, drop order, closure capture, coercions, and pattern
+  behavior from language rules.
+- Design ownership and failure contracts without defaulting to cloning,
+  reference counting, or panics.
+- Separate Unicode text, OS strings, paths, bytes, and borrowed views.
+- Explain how editions, crates, modules, packages, and compiler channels differ.
 
-Each topic is its own Cargo package, e.g.
-`fundamentals/04-ownership-and-borrowing/`, named
-`<tier>-<NN>-<slug>` (e.g. `fundamentals-04-ownership-and-borrowing`) so
-`cargo test -p <name>` is unambiguous. Every topic has:
+### Authoritative sources
 
-- **`notes.md`** — concept explanation, terse like the other tracks: syntax,
-  rules, gotchas, short snippets. Self-contained — covers what you need to do
-  the exercises without leaving the page. Ends with a "Further Reading"
-  section linking the matching Book/Nomicon chapter(s) and relevant
-  `std`/Reference pages.
-- **`Cargo.toml`** — `edition = "2021"`, no dependencies unless the topic's
-  concept genuinely requires one (async topics need a runtime; the message
-  queue capstone needs `tokio`). Fundamentals through most of Intermediate
-  are dependency-free.
-- **`src/lib.rs`** — 5 exported function/type stubs with full `///` rustdoc
-  comments (signature, behavior, hand-verified example I/O). Every stub body
-  is `todo!()`.
-- **`examples/examples.rs`** — Cargo's built-in examples convention, run via
-  `cargo run --example examples -p <name>`. Demonstrates `notes.md`'s
-  concepts with `println!`. No exercises here.
-- **`tests/exercise_test.rs`** — integration tests (`#[test]` fns +
-  `assert_eq!`/`assert!`). This **is** the spec/answer key — there are no
-  separate solution files. Imports from the package under its `<name>` (or
-  via `<crate_name as snake_case>` — see topic 1 for the exact form).
+- [The Rust Reference](https://doc.rust-lang.org/reference/)
+- [The Rust Programming Language](https://doc.rust-lang.org/book/)
+- [Rust Edition Guide](https://doc.rust-lang.org/edition-guide/)
+- [Rust 2024](https://doc.rust-lang.org/edition-guide/rust-2024/index.html)
+- [Rust standard library](https://doc.rust-lang.org/std/)
+- [Reference: types](https://doc.rust-lang.org/reference/types.html)
+- [Reference: expressions](https://doc.rust-lang.org/reference/expressions.html)
+- [Reference: patterns](https://doc.rust-lang.org/reference/patterns.html)
+- [Reference: destructors](https://doc.rust-lang.org/reference/destructors.html)
 
-## Testing strategy
+## Phase 2 — Traits, Generics, and API Design
 
-Cargo provides the test framework: `cargo test` works from day one. `todo!()`
-panics, and `cargo test` reports a panicking test as a clean `FAILED` — so
-every stub fails its test out of the box, with no bootstrapping topic needed.
+| # | Topic | Research target |
+| --- | --- | --- |
+| 12 | Generics, bounds, inference, and monomorphization | Generic functions and types, type and const parameters, bounds, `where` clauses, turbofish syntax, inference limits, const generics, monomorphization, code-size costs, and when dynamic dispatch is preferable. |
+| 13 | Traits, associated items, and coherence | Trait declarations and implementations, default methods, associated types and constants, supertraits, blanket implementations, coherence, orphan rules, overlap, negative reasoning limits, sealed traits, and semver consequences. |
+| 14 | Trait objects and dynamic dispatch | `dyn Trait`, object safety/dyn compatibility, fat pointers, vtables, lifetime defaults, auto traits, dispatch cost, downcasting boundaries, heterogeneous collections, and alternatives such as enums or generics. |
+| 15 | Lifetimes, variance, and higher-ranked bounds | Lifetime parameters, elision, outlives relations, early and late binding, higher-ranked trait bounds, subtyping, variance, drop checking, `PhantomData`, generic associated types, and API signatures that overconstrain callers. |
+| 16 | Opaque types and return-position abstraction | Argument- and return-position `impl Trait`, opaque type identity, capture rules, return-position `impl Trait` in traits, async functions in traits, public API evolution, and boxing or associated-type alternatives. |
+| 17 | Smart pointers and interior mutability | `Box`, `Rc`, `Weak`, `Arc`, `Cell`, `RefCell`, `UnsafeCell`, `Deref`, `Drop`, reference cycles, runtime borrow checks, thread-safety boundaries, ownership graphs, and explicit cleanup. |
+| 18 | Conversions, borrowing traits, and owned/borrowed APIs | `From`/`Into`, `TryFrom`/`TryInto`, `AsRef`/`AsMut`, `Borrow`, `ToOwned`, `Cow`, deref coercion, blanket implementations, conversion cost, allocation visibility, and coherent generic signatures. |
+| 19 | Iterators and ownership-aware pipelines | `Iterator`, `IntoIterator`, `iter`/`iter_mut`/`into_iter`, laziness, adapters, consumers, `FromIterator`, `Extend`, borrowing across iteration, custom iterators, fused behavior, fallible iteration, and loop tradeoffs. |
+| 20 | Declarative and procedural macros | `macro_rules!`, fragment specifiers, repetition, hygiene, name resolution, expansion order, derive and attribute macros, token streams, spans and diagnostics, edition behavior, debugging expansion, and when functions or generics are clearer. |
+| 21 | Idiomatic public API design | Newtypes, builders, typestate, common traits, naming, visibility, non-exhaustive types, sealed extension points, ownership flexibility, error and panic documentation, thread-safety promises, semver, and avoiding clever type machinery. |
 
-## Exercise difficulty
+### Phase 2 completion criteria
 
-Same bar as the other tracks: **hard, challenging algorithmic problems**,
-hand-verified before writing `tests/exercise_test.rs` (temporarily implement
-a reference solution in `src/lib.rs`, run `cargo test -p <name>` and confirm
-every test passes, then revert every function body to `todo!()` and confirm
-every test now fails). Rust-specific topics (ownership, lifetimes, traits,
-unsafe) should additionally exercise the *language rules* — borrow-checker
-edge cases, trait resolution, `Send`/`Sync` boundaries, alignment/layout —
-not just "happy path" I/O.
+- Choose among generics, associated types, opaque types, trait objects, and
+  enums from API and runtime constraints.
+- Explain coherence, object safety, variance, higher-ranked bounds, and
+  monomorphization.
+- Design owned and borrowed APIs with visible allocation and lifetime costs.
+- Use macros only when syntax or code generation provides material value.
 
-## Adapted topics
+### Authoritative sources
 
-A couple of topics narrow `src/lib.rs`'s scope because their subject doesn't
-map onto plain testable functions:
+- [Reference: generic parameters](https://doc.rust-lang.org/reference/items/generics.html)
+- [Reference: traits](https://doc.rust-lang.org/reference/items/traits.html)
+- [Reference: trait implementations](https://doc.rust-lang.org/reference/items/implementations.html)
+- [Reference: trait objects](https://doc.rust-lang.org/reference/types/trait-object.html)
+- [Reference: lifetime elision](https://doc.rust-lang.org/reference/lifetime-elision.html)
+- [Reference: `impl Trait`](https://doc.rust-lang.org/reference/types/impl-trait.html)
+- [Standard conversion traits](https://doc.rust-lang.org/std/convert/)
+- [Iterator API](https://doc.rust-lang.org/std/iter/trait.Iterator.html)
+- [Reference: macros](https://doc.rust-lang.org/reference/macros.html)
+- [Rust API Guidelines](https://rust-lang.github.io/api-guidelines/)
 
-- **`intermediate/07-cargo-workspaces-and-profiles`** — workspaces,
-  publishing to crates.io, release profiles, and `cargo install` aren't
-  things a unit test can assert on. `notes.md` covers all of it
-  conceptually (and this track's own `rust/Cargo.toml` *is* a live workspace
-  example); `src/lib.rs`'s 5 exercises instead cover ch. 13.4's
-  iterator-vs-loop performance material — writing iterator-chain
-  implementations and proving them equivalent to hand-rolled loops.
-- **`advanced/09-async-await-and-futures`** — there's no async runtime
-  anywhere else in the curriculum yet. This topic adds a minimal
-  dependency (a small async runtime, e.g. `pollster` or a hand-rolled
-  block-on) scoped to just this package, so `src/lib.rs` can have real
-  `async fn` exercises without pulling `tokio` into the whole workspace.
-  (The message-queue capstone is where `tokio` shows up for real.)
+## Phase 3 — Standard Library and Application Boundaries
 
-## Adding a new topic
+| # | Topic | Research target |
+| --- | --- | --- |
+| 22 | Collection contracts and complexity | `Vec`, `VecDeque`, linked lists, hash and tree maps/sets, `BinaryHeap`, capacity, allocation, iteration order, entry APIs, hashing, ordering, key mutation, indexing, documented complexity, locality, and collection selection. |
+| 23 | Formatting, parsing, and binary data | `Display`, `Debug`, formatting machinery, `FromStr`, byte slices, arrays, endian conversion, cursors, UTF-8 validation, zero-copy parsing boundaries, and explicit serialization formats. |
+| 24 | I/O traits, buffering, files, and paths | `Read`, `Write`, `BufRead`, seeking, buffering, partial operations, `io::Error`, files, metadata, directories, canonicalization, platform path behavior, resource ownership, and durability boundaries. |
+| 25 | Networking APIs | TCP and UDP types, address resolution, blocking behavior, timeouts, cloning handles, shutdown, partial reads and writes, framing boundaries, platform differences, and what the standard library intentionally omits. |
+| 26 | Time and measurement | `Duration`, `Instant`, `SystemTime`, monotonic versus wall time, elapsed measurement, overflow, sleeping, deadlines, clock changes, and the boundary between `std` and calendar/time-zone crates. |
+| 27 | Processes, environment, and platform interaction | Arguments, environment variables, child processes, stdio ownership, exit status, signals and terminals outside `std`, platform extensions, non-Unicode data, and injection or quoting hazards. |
+| 28 | Resource and lifecycle design | Scope guards, `Drop`, explicit close/shutdown methods, destructor failure, blocking destructors, cancellation cleanup, leaked values, cycles, global state, and ownership of external resources. |
+| 29 | Library testing and documentation contracts | Unit, integration, and documentation tests; examples; compile-fail behavior; test isolation; filesystem, time, and concurrency seams; rustdoc links; safety sections; and public contract verification. |
 
-1. Pick the next `planned` topic from the tables below, in order
-   (Fundamentals → Intermediate → Advanced), noting its Book/Nomicon
-   chapter(s).
-2. Write, in this order: `notes.md` → `Cargo.toml` → `src/lib.rs` →
-   `tests/exercise_test.rs` → `examples/examples.rs`.
-   - If this is the **first topic in a tier** (`intermediate/` or
-     `advanced/`), add that tier's glob (e.g. `"intermediate/*"`) to
-     `members` in `rust/Cargo.toml` — a glob matching zero directories makes
-     `cargo` error out, so each tier's glob can only be added once it has at
-     least one member.
-3. Verify, from `rust/`:
-   - `cargo build -p <name>` succeeds.
-   - `cargo test -p <name>` — **every test currently fails** (`todo!()`
-     panics), the expected starting state for a learner.
-   - `cargo run --example examples -p <name>` runs cleanly and prints
-     sensible demonstration output.
-   - `cargo test` (no args, from `rust/`) discovers the new package.
-4. Update this file: mark the topic `done` and turn its folder cell into a
-   link, with a one-paragraph summary of what the 5 exercises cover.
+### Phase 3 completion criteria
 
-## Build Log
+- Select standard collections and I/O abstractions from contracts rather than
+  habit.
+- Preserve partial-I/O, path, time, process, and external-resource semantics at
+  system boundaries.
+- Make allocation, encoding, blocking, cleanup, and portability visible in API
+  design.
+- Treat documentation and tests as public-contract evidence, not topic drills.
 
-Short summary of what each built topic's 5 exercises cover, for picking up
-across sessions without re-reading every file.
+### Authoritative sources
 
-- **01 — Toolchain, Cargo & Hello World**: first real Rust programs —
-  `collatz_steps`, `is_prime`, `longest_run`, `caesar_cipher`,
-  `matrix_transpose`.
-- **02 — Variables, Data Types & Functions**: scalar/compound types and `as`
-  cast rules — `rotate_array_left`, `pack_rgb`/`unpack_rgb`,
-  `overflowing_factorial`, `fixed_point_divide`.
-- **03 — Control Flow**: `if`/`else` as an expression, `loop`/`while`/`for`,
-  loop labels — `find_in_grid`, `is_armstrong_number`,
-  `sum_of_multiples_below`, `digital_root`, `count_steps_to_reach`.
-- **04 — Ownership & Borrowing**: move/`Clone`/`Copy` and `&T`/`&mut T`
-  borrowing — `partition_in_place`, `merge_sorted_into`,
-  `take_ownership_and_split`, `drain_below_threshold`,
-  `longest_common_prefix_owned`.
-- **05 — The Slice Type & `&str`**: `&[T]`/`&str` slicing, range syntax,
-  UTF-8 byte-vs-char — `split_on_whitespace_runs`, `first_n_chars`,
-  `longest_palindromic_substring_slice`, `max_subarray_slice`,
-  `chunk_slices`.
-- **06 — Structs & Methods**: a single `Polynomial` struct (canonical
-  `Vec<f64>` coefficient form, trailing zeros trimmed) with an associated
-  `new` constructor and `&self` methods — `evaluate` (Horner's method),
-  `derivative`, `add`, `multiply` (convolution).
-- **07 — Enums & Pattern Matching**: a recursive `Expr` AST (`Box`-based)
-  with `eval -> Option<f64>` (`?` on `Option`, division-by-zero ->
-  `None`); `TriangleKind` enum + `classify_triangle` (tuple-pattern
-  matching with `|`); `Direction` enum + `from_token -> Option<Direction>`
-  and `walk` (exhaustive match over variants); `first_non_repeating_char ->
-  Option<char>`.
-- **08 — Packages, Crates & Modules**: the module system itself is the
-  exercise — `src/geometry.rs` (`polygon_area` via the shoelace formula,
-  `closest_pair_distance` brute force) and `src/stats.rs` (`median`,
-  `standard_deviation`, `mode`), both declared as `pub mod` in `lib.rs`,
-  with `stats::median` re-exported at the crate root via `pub use`.
-- **09 — Common Collections**: `HashMap`/`HashSet`/`String` idioms —
-  `word_frequency` (entry-API counting with case-folding and punctuation
-  trimming), `group_anagrams` (sorted-chars key, order-preserving groups),
-  `top_k_frequent` (count, sort by frequency desc / value asc),
-  `dedup_preserve_order` (`HashSet` membership tracking),
-  `run_length_encode` (`String` building over `.chars()`, UTF-8 safe).
-- **10 — Error Handling**: custom error enums, `?`, `.map_err()`, and error
-  accumulation — `eval_rpn` (RPN calculator over `CalcError`, stack
-  underflow/extra-operands/unknown-operator/div-by-zero), `parse_csv_row`
-  (`RowError` with column-count and per-column number checks),
-  `checked_transfer` (`TransferError`, mutable `HashMap`, all-or-nothing
-  balance updates), `parse_all_or_first_error` (`(usize, ParseIntError)`,
-  first-failure index), `validate_password` (`Result<(), Vec<String>>`,
-  reports *every* violated rule).
-- **Intermediate 01 — Generics, Traits & Lifetimes**: a generic `Bst<T:
-  Ord>` (`insert` ignoring duplicates, `contains`, `in_order` traversal,
-  recursive `Box`-based nodes); `sum_all<T: Add<Output=T> + Copy + Default>`
-  over both primitives and a custom `Money` type; `Tokenizer<'a>::next_token`
-  (lifetime-bound `&'a str` slices, ASCII-alphanumeric lexing over UTF-8
-  input).
-- **Intermediate 02 — Writing Tests & Project Organization**: standard
-  hard-algorithm exercises chosen so `tests/exercise_test.rs` itself
-  demonstrates ch.11's testing techniques — `binary_search<T: Ord>` (generic
-  over `&str` too), `kth_smallest` (panics with a specific message, exercised
-  via `#[should_panic(expected = "...")]`), `merge_intervals` (sort + merge
-  overlapping/touching ranges, with one test using the `-> Result<(), String>`
-  pattern), `longest_increasing_subsequence` (O(n²) DP), `min_coins` (coin
-  change DP, `Option<u32>`).
-- **Intermediate 03 — CLI I/O Project**: pieces of a `minigrep`-style tool as
-  pure, testable functions — `parse_args` (flag/positional parsing into a
-  `Config`, with `-i`/`--ignore-case`, `-n`/`--line-numbers`, and exact error
-  messages for too-few/too-many args and unknown flags), `search_lines`
-  (ch.12.4's TDD'd line search, case-(in)sensitive), `highlight_matches`
-  (non-overlapping `**match**` wrapping, case-folded matching with
-  original-case output, UTF-8-safe), `grep_report` (combines the above into a
-  formatted report with line numbers and singular/plural match-count
-  summary), `resolve_ignore_case` (ch.12.5's CLI-flag-vs-env-var precedence).
-- **Intermediate 04 — Closures & Iterators**: `Memoizer<F: Fn(u64) -> u64>`
-  (generalized `Cacher` keyed by a `HashMap`, `new` provided, `value` caches
-  per-`arg`), `compose` (boxed function composition, `Box<dyn Fn(A) -> C>`),
-  `retry` (`FnMut`-based retry-until-`Ok`, `"no attempts allowed"` for
-  `max_attempts == 0`), `top_n_by<T, K: Ord>` (generic stable top-N-by-key
-  sort, `Reverse` for bottom-N), `running_stats` (`.scan()`-based running
-  min/max per prefix).
-- **Intermediate 05 — Custom Iterators & Adapters**: `Fibonacci` (infinite
-  `Iterator<Item = u64>`, `0,1,1,2,3,...`), `Pairwise<I>` (adapter yielding
-  consecutive `(prev, curr)` pairs), `RunLength<I>` (adapter doing run-length
-  encoding via a `peeked: Option<I::Item>` lookahead field),
-  `ChunksIterator<I>` (adapter yielding fixed-size `Vec<I::Item>` chunks,
-  final chunk possibly shorter, `size == 0` yields nothing), `Grid` +
-  `GridIntoIter` (custom `IntoIterator` impl flattening `Vec<Vec<i32>>` in
-  row-major order, skipping empty rows).
-- **Intermediate 06 — Error Handling Deep Dive**: `parse_duration_ms`
-  (`<digits><unit>` segment parser summing to total ms, `ParseDurationError`
-  with `From<ParseIntError>` for `?`-based conversion and a `source()` impl),
-  `error_chain_messages` (walks an `&dyn Error`'s `source()` chain collecting
-  `Display` messages outermost-first, over a `WrappedError` wrapper type),
-  `describe_error` (`downcast_ref` dispatch over `&(dyn Error + 'static)` for
-  `NotFoundError`/`PermissionError`/fallback), `process_record` (`"name:age"`
-  parser returning `Box<dyn Error>`, combining a custom `RecordError` enum
-  with a propagated `ParseIntError`), `first_valid_port` (`Box<dyn Error>`
-  port picker distinguishing "no candidate in range" from "no candidate
-  parsed" via downcasting to `NoValidPortError` vs `ParseIntError`).
-- **Intermediate 07 — Cargo Workspaces, Profiles & Iterator Performance**
-  (adapted; `notes.md` covers ch. 13.4 + ch. 14 conceptually, exercises are
-  all ch. 13.4 "loop -> iterator chain" translations): `longest_increasing_run`
-  (`.windows(2)` + `.fold()` tracking `(longest, current)`), `moving_average`
-  (`.windows(window)` + `.map()`/`.sum()`, guarding `window == 0` and
-  `window > len`), `zigzag_merge` (`.zip()` + `.flat_map()` + `.chain()` to
-  interleave two slices and append the longer one's remainder),
-  `count_local_maxima` (`.windows(3)` + `.filter()` + `.count()` for interior
-  elements, direct comparisons for the two endpoints), `exponential_moving_average`
-  (`.scan()` carrying the running EMA, seeded via `std::iter::once` +
-  `.chain()`).
-- **Intermediate 08 — Smart Pointers**: `LruCache::get`/`put` (`Rc<RefCell<VecDeque<(K,V)>>>`-style
-  interior mutability for a fixed-capacity LRU cache, ordering entries
-  most- to least-recently-used), `tree_depth`/`lowest_common_ancestor` (a
-  `Node` with owning `Rc` links down to children and a non-owning `Weak` link
-  up to its parent; depth via repeated `.parent.borrow().upgrade()`, LCA by
-  collecting one node's ancestor chain and walking the other's, comparing
-  with `Rc::ptr_eq`), `CountedRef`'s `Deref`/`DerefMut` (a smart pointer that
-  counts reads via `Cell` and writes via a plain field, demonstrating deref
-  coercion vs. explicit `*x`), `Pool`/`PoolGuard` (an RAII object pool:
-  `acquire` pops an item into a guard, `Drop` pushes it back via
-  `RefCell::borrow_mut`).
-- **Intermediate 09 — Fearless Concurrency**: `sum_with_threads` (splits a
-  `Vec<i64>` into `ceil(len/num_threads)`-sized chunks, sums each on its own
-  `thread::spawn`, joins and adds the partial sums), `merge_sort_parallel`
-  (recursive merge sort that spawns a thread for the right half while
-  `max_depth > 0`, sorts the left half on the current thread, joins and
-  merges), `collect_messages` (spawns `num_producers` threads each sending
-  `"producer-{p}-msg-{m}"` over a cloned `mpsc::Sender`, drops the original
-  sender so the receiver's iterator terminates, then sorts the collected
-  messages), `concurrent_word_count` (each thread builds a local `HashMap` for
-  its chunk, then merges into a shared `Arc<Mutex<HashMap<String, usize>>>`),
-  `run_in_parallel` (runs a `Vec<Box<dyn FnOnce() -> T + Send + 'static>>` on
-  one thread each via `thread::spawn`, joins in order to preserve result
-  order regardless of completion order).
-- **Advanced 01 — Trait Objects, Dynamic Dispatch & OOP Patterns**: `Expr`
-  trait + `Num`/`Add`/`Sub`/`Mul`/`Div`/`Neg` node types + `eval_all`
-  (recursive `Box<dyn Expr>` tree evaluator returning `Result<f64, String>`,
-  `?`-propagating a `"division by zero"` error from any subtree),
-  `TurnstileState` trait + `Locked`/`Unlocked` + `run_turnstile` (State
-  pattern using `self: Box<Self>` transitions, feeding `Event`s through a
-  turnstile and recording the state name after each), `Task` trait +
-  `run_tasks_in_priority_order` (stable-sorts a heterogeneous
-  `Vec<Box<dyn Task>>` by `priority()`, ties keep insertion order, then runs
-  each), `Shape: Any` trait + `Circle`/`Square`/`Rectangle` + `count_by_type`
-  (`dyn Any::downcast_ref` to tally concrete types in a
-  `Vec<Box<dyn Shape>>`), `Notifier` trait + `EmailNotifier`/`SmsDecorator`/
-  `LoggingDecorator` (Decorator pattern: nested `Box<dyn Notifier>` each
-  prepending their own log line before delegating to the wrapped notifier).
-- **Advanced 02 — Patterns & Matching Deep Dive**: `simplify(expr: Expr) ->
-  Expr` (algebraic simplifier over a recursive `#[derive(PartialEq,Clone)]`
-  enum using nested arm patterns, `|` alternatives that bind the same
-  variable from different positions `(e, Num(0)) | (Num(0), e)`, and a match
-  guard for `Sub(x, x) → Num(0)`), `parse_ipv4(s: &str) -> Option<[u8; 4]>`
-  (slice pattern `[a, b, c, d]` on the collected dot-separated parts),
-  `balanced_brackets(s: &str) -> bool` (stack-based checker using a single
-  `match (stack.last().copied(), c)` with `|` across `(Some('('), ')') |
-  (Some('['), ']') | (Some('{'), '}')` and or-patterns in the opening arm),
-  `longest_run<T: PartialEq>(slice: &[T]) -> Option<(&T, usize)>` (`[prev,
-  next]` slice pattern over `.windows(2)` with a `if next == prev` match
-  guard), `classify_triangle(a: u64, b: u64, c: u64) -> &'static str` (array
-  destructuring `let [s, m, l] = sorted;` + a match guard for the
-  Pythagorean theorem + `|` pattern for isosceles detection).
-- **Advanced 10 — Implementing Vec and Arc from Scratch**: `MyVec<T>` — `push`/`pop`/`len`/`is_empty`/`Index<usize>` (raw allocation via `Layout::array`, `ptr::write`/`ptr::read`, double-capacity growth, `drop_in_place` + `dealloc` in `Drop`); `MyVec<T>` — `insert`/`remove` (shift via `std::ptr::copy`, bounds-check panics with `"index out of bounds"`); `IntoIterator for MyVec<T>` via `MyVecIntoIter<T>` (transfers buffer ownership to iter via `mem::forget`, `Drop` impl drops remaining elements and frees buffer); `MyArc<T>` — `new`/`Deref`/`Clone` (`Box::into_raw` to heap-allocate `ArcInner<T>`, `Relaxed` `fetch_add` on clone); `MyArc<T>` — `Drop` (`Release` `fetch_sub`, early-return if `!= 1`, `Acquire` fence, `Box::from_raw` to reclaim and run `T`'s destructor; `T: Send + Sync` bound on `Send`/`Sync` impls).
-- **Advanced 09 — Async/Await & Futures**: `async_double` (trivial `async fn` returning `x * 2`, demonstrates desugaring), `async_map<A,B,F,Fut>` (sequential `for &item in items { out.push(f(item).await); }` converting `&[A]` to `Vec<B>` via an async closure), `async_filter<A,F,Fut>` (same sequential loop retaining only items where the predicate future resolves to `true`), `async_first_match<A,F,Fut>` (early-return loop using `return Some(item)` inside an `async fn`), `async_fold<A,B,F,Fut>` (left fold with an async combiner, accumulator ownership transferred each iteration — `B` has no `Copy` bound, enabling `String` accumulators). All tests driven by `pollster::block_on`.
-- **Advanced 08 — Concurrency Internals: Send, Sync & Atomics**: `AtomicCounter` (wraps `AtomicUsize`, exposes `new`/`increment`→returns old/`get`/`reset` with `AcqRel`/`Acquire`/`Release` orderings), `parallel_sum(data: Vec<u64>, num_threads: usize) -> u64` (chunks via `Arc`, spawns threads, sums partial results), `spin_until(flag: Arc<AtomicBool>, delay_ms: u64) -> u64` (spawns setter thread, busy-waits with `spin_loop()`, returns spin count ≥ 1), `fetch_max(atom: &AtomicUsize, new_val: usize) -> usize` (CAS loop: loads, skips if `new_val ≤ old`, compare-exchanges, retries on failure), `ThreadSafeStack<T>` (`Arc<Mutex<Vec<T>>>` with `push`/`pop`/`len`/`is_empty`/`Clone`).
-- **Advanced 07 — Advanced Lifetimes, Variance & PhantomData**: `longest_with_announcement<'a,'b: 'a>` (two lifetime params + `'b: 'a` outlives constraint, prints `ann` side-effect then returns the longer slice), `StrSplit<'h,'d>` (struct-based iterator splitting `&'h str` on a `&'d str` delimiter via `.find()` + `Option<&'h str>` remainder), `Token<Brand>` (unit-struct branding via `PhantomData<Brand>`, same-value tokens of different brands are distinct types), `split_fields` (return `(&mut record.name, &mut record.description)` simultaneously — the compiler verifies disjoint field borrows), `apply_all_refs<T,F>` (HRTB `for<'a> Fn(&'a T) -> &'a T` — collects mapped item references).
-- **Advanced 06 — Data Layout & Type Conversions**: `TemperatureKelvin` newtype with `From<TemperatureCelsius>` (C + 273.15), `From<TemperatureFahrenheit>` ((F-32)×5/9 + 273.15), and `TryFrom<TemperatureKelvin> for TemperatureCelsius` (error on negative Kelvin); `cast_behaviors()` returning a 5-tuple of `as`-cast results (truncation, wrap, bit-reinterpretation, saturation); `f32_round_trip` using `f32::to_bits`/`from_bits`; `CPoint` (`#[repr(C)]`) with `cpoint_layout()` computing `(size, align, offset_of_y)` via raw-pointer arithmetic; `Pair<i32>` with `TryFrom<&str>` parsing `"a,b"` format (`"no comma"` / `"multiple commas"` / `ParseIntError` propagation).
-- **Advanced 05 — Unsafe Rust Foundations**: `raw_swap<T>(a: *mut T, b: *mut T)` (swap via `ptr::swap` or `ptr::read`/`ptr::write`), `sum_slice_ptr(ptr: *const i64, len: usize) -> i64` (raw pointer arithmetic loop), `split_at_mid<T>(slice: &[T], mid: usize) -> (&[T], &[T])` (safe wrapper around `std::slice::from_raw_parts`; panics with `"mid out of bounds"` if `mid > len`), `read_le_u32(ptr: *const u8) -> u32` (byte-by-byte little-endian read via `ptr.add(i)` → `u32::from_le_bytes`), `count_zeros_unsafe(ptr: *const u8, len: usize) -> usize` (raw-pointer zero-byte counter).
-- **Advanced 04 — Advanced Functions, Closures & Macros**: `apply_all` (dispatch table of `fn` pointers zipped with values), `make_pipeline` (left-to-right closure composition returning `Box<dyn Fn(i32) -> i32>`, identity for empty input), `call_with_one` (generic `F: Fn(i32) -> i32` — accepts both fn pointers and capturing closures), `sum_of_squares!` (`macro_rules!` accepting one-or-more `$expr` arguments, summing their squares as `i64` via `$($x as i64 * $x as i64 +)+ 0`), `fold_with<T,B,F>` (standalone `FnMut`-based left fold over `&[T]`).
-- **Advanced 03 — Advanced Traits & Types**: `Magnitude` trait with associated
-  `Output` type implemented for `i64` (unsigned_abs) and `(f64,f64)` (Euclidean
-  length), plus `max_magnitude<T: Magnitude>` using `.map().reduce()`; `Matrix2x2`
-  with `std::ops::Add` (elementwise), `std::ops::Mul<f64>` (scalar), and
-  `mat_mul` (standard 2×2 product); `WordCloud` newtype wrapping
-  `HashMap<String, usize>` with a `Display` impl sorted descending-by-count /
-  ascending-alpha-on-ties and a `top_n` extractor; `Summarize: Display`
-  supertrait with a default `headline()` method implemented on `NewsArticle`,
-  plus a `headlines<T: Summarize>` collector; `Greet` and `Farewell` traits
-  both declaring `fn message(&self) -> String` on `Person`, disambiguated via
-  `<Person as Greet>::message(p)` / `<Person as Farewell>::message(p)` in
-  `greet_and_farewell`.
+- [Standard collections](https://doc.rust-lang.org/std/collections/)
+- [`std::fmt`](https://doc.rust-lang.org/std/fmt/)
+- [`std::io`](https://doc.rust-lang.org/std/io/)
+- [`std::fs`](https://doc.rust-lang.org/std/fs/)
+- [`std::path`](https://doc.rust-lang.org/std/path/)
+- [`std::net`](https://doc.rust-lang.org/std/net/)
+- [`std::time`](https://doc.rust-lang.org/std/time/)
+- [`std::process`](https://doc.rust-lang.org/std/process/)
+- [Rustdoc Book](https://doc.rust-lang.org/rustdoc/)
 
-## Fundamentals
+## Phase 4 — Concurrency and Async Rust
 
-Covers Book ch. 1-9: the language core, ownership, and the standard
-library's basic data structures.
+| # | Topic | Research target |
+| --- | --- | --- |
+| 30 | Threads, scoped threads, and task ownership | Spawning and joining, `move` closures, `'static` bounds, scoped threads, thread-local state, panics, parking, naming, stack size, shutdown, cancellation limits, and ownership of background work. |
+| 31 | `Send`, `Sync`, auto traits, and publication | Auto-trait derivation, negative implementations, raw pointers and interior mutability, safe publication, ownership transfer, shared references, trait-object bounds, unsafe implementations, and soundness contracts. |
+| 32 | Locks, condition variables, and shared state | `Mutex`, `RwLock`, guards, poisoning, lock scope, invariant restoration, condition variables, spurious wakeups, one-time initialization, barriers, deadlocks, fairness, priority inversion, and external calls under locks. |
+| 33 | Atomics and the memory model | Atomic types, relaxed/acquire/release/AcqRel/SeqCst ordering, compare-exchange loops, fences, modification order, happens-before reasoning, linearization points, ABA, false sharing, and when a lock is the safer abstraction. |
+| 34 | Channels and ownership transfer | Standard channels, synchronous versus unbounded behavior, multi-producer ownership, disconnection, shutdown protocols, backpressure, fairness, selection outside `std`, and message passing versus shared state. |
+| 35 | Futures, polling, waking, and pinning | `Future`, state-machine lowering, `Poll`, `Context`, `Waker`, executor responsibilities, cooperative progress, `Pin`/`Unpin`, self-referential state, wake contracts, and why futures do nothing until polled. |
+| 36 | Async composition, cancellation, and lifetimes | `async` blocks and functions, joining and racing, cancellation by dropping, cancellation safety, borrowing across suspension, async closures, streams, timeouts, structured task ownership, and cleanup after partial progress. |
+| 37 | Executors, async I/O, and runtime boundaries | Runtime scheduling, work stealing, reactor/executor roles, blocking in async contexts, `Send` futures, local tasks, spawn boundaries, bridging sync and async code, runtime shutdown, and downstream concurrency limits. |
+| 38 | Concurrency correctness and verification | Data races versus race conditions, deadlock, livelock, starvation, deterministic tests, model checking, stress testing, tracing, lock contention, queue saturation, and defining progress guarantees. |
 
-| # | Topic | Folder | Reference | Status |
-|---|-------|--------|-----------|--------|
-| 1 | Toolchain, Cargo & Hello World | [`fundamentals/01-toolchain-cargo-and-hello-world`](./fundamentals/01-toolchain-cargo-and-hello-world) | Book ch. 1-2 | done |
-| 2 | Variables, Data Types & Functions | [`fundamentals/02-variables-data-types-and-functions`](./fundamentals/02-variables-data-types-and-functions) | Book ch. 3.1-3.3 | done |
-| 3 | Control Flow | [`fundamentals/03-control-flow`](./fundamentals/03-control-flow) | Book ch. 3.4-3.5 | done |
-| 4 | Ownership & Borrowing | [`fundamentals/04-ownership-and-borrowing`](./fundamentals/04-ownership-and-borrowing) | Book ch. 4.1-4.2 | done |
-| 5 | The Slice Type & `&str` | [`fundamentals/05-the-slice-type-and-str`](./fundamentals/05-the-slice-type-and-str) | Book ch. 4.3 | done |
-| 6 | Structs & Methods | [`fundamentals/06-structs-and-methods`](./fundamentals/06-structs-and-methods) | Book ch. 5 | done |
-| 7 | Enums & Pattern Matching | [`fundamentals/07-enums-and-pattern-matching`](./fundamentals/07-enums-and-pattern-matching) | Book ch. 6 | done |
-| 8 | Packages, Crates & Modules | [`fundamentals/08-packages-crates-and-modules`](./fundamentals/08-packages-crates-and-modules) | Book ch. 7 | done |
-| 9 | Common Collections (`Vec`, `String`, `HashMap`) | [`fundamentals/09-common-collections`](./fundamentals/09-common-collections) | Book ch. 8 | done |
-| 10 | Error Handling (`panic!`, `Result`, `?`) | [`fundamentals/10-error-handling`](./fundamentals/10-error-handling) | Book ch. 9 | done |
+### Phase 4 completion criteria
 
-## Intermediate
+- Prove thread transfer and sharing properties using ownership, `Send`, and
+  `Sync`.
+- Select channels, locks, atomics, or confinement from the invariant and
+  progress requirements.
+- Explain futures as state machines driven by an executor rather than threads.
+- Define task ownership, cancellation, shutdown, backpressure, and blocking
+  boundaries explicitly.
 
-Covers Book ch. 10-16: generics/traits/lifetimes, testing, a real CLI
-project, the iterator/closure system in depth, the Cargo ecosystem, smart
-pointers, and concurrency.
+### Authoritative sources
 
-| # | Topic | Folder | Reference | Status |
-|---|-------|--------|-----------|--------|
-| 1 | Generics, Traits & Lifetimes | [`intermediate/01-generics-traits-and-lifetimes`](./intermediate/01-generics-traits-and-lifetimes) | Book ch. 10 | done |
-| 2 | Writing Tests & Project Organization | [`intermediate/02-testing-and-project-organization`](./intermediate/02-testing-and-project-organization) | Book ch. 11 | done |
-| 3 | CLI I/O Project (args, files, env, stderr) | [`intermediate/03-cli-io-project`](./intermediate/03-cli-io-project) | Book ch. 12 | done |
-| 4 | Closures & Iterators | [`intermediate/04-closures-and-iterators`](./intermediate/04-closures-and-iterators) | Book ch. 13.1-13.2 | done |
-| 5 | Custom Iterators & Adapters | [`intermediate/05-custom-iterators-and-adapters`](./intermediate/05-custom-iterators-and-adapters) | Book ch. 13.2 (deepening) | done |
-| 6 | Error Handling Deep Dive (`From`, `Box<dyn Error>`) | [`intermediate/06-error-handling-deep-dive`](./intermediate/06-error-handling-deep-dive) | Book ch. 9 (deepening) | done |
-| 7 | Cargo Workspaces, Profiles & Performance | [`intermediate/07-cargo-workspaces-and-profiles`](./intermediate/07-cargo-workspaces-and-profiles) | Book ch. 13.4, 14 (adapted) | done |
-| 8 | Smart Pointers (`Box`, `Deref`, `Drop`, `Rc`, `RefCell`) | [`intermediate/08-smart-pointers`](./intermediate/08-smart-pointers) | Book ch. 15 | done |
-| 9 | Fearless Concurrency (threads, channels, `Mutex`/`Arc`) | [`intermediate/09-fearless-concurrency`](./intermediate/09-fearless-concurrency) | Book ch. 16 | done |
+- [`std::thread`](https://doc.rust-lang.org/std/thread/)
+- [`std::sync`](https://doc.rust-lang.org/std/sync/)
+- [`std::sync::atomic`](https://doc.rust-lang.org/std/sync/atomic/)
+- [`std::future::Future`](https://doc.rust-lang.org/std/future/trait.Future.html)
+- [`std::task`](https://doc.rust-lang.org/std/task/)
+- [`std::pin`](https://doc.rust-lang.org/std/pin/)
+- [Async Programming in Rust](https://rust-lang.github.io/async-book/)
+- [Rustonomicon: concurrency](https://doc.rust-lang.org/nomicon/concurrency.html)
+- [Tokio documentation](https://docs.rs/tokio/latest/tokio/)
 
-## Advanced
+## Phase 5 — Unsafe Rust, Runtime Behavior, and Performance
 
-Covers Book ch. 17-20 and the Nomicon: trait objects, pattern matching depth,
-advanced traits/types/macros, unsafe Rust, data layout, advanced
-lifetimes/variance, low-level concurrency primitives, async/await, and a
-from-scratch `Vec`/`Arc`/`Mutex`.
+| # | Topic | Research target |
+| --- | --- | --- |
+| 39 | Unsafe boundaries and sound abstractions | Unsafe operations, unsafe functions and traits, safety invariants, caller versus implementer obligations, `unsafe_op_in_unsafe_fn`, minimizing unsafe scope, documenting `# Safety`, reviewing unsafe code, and proving safe callers cannot trigger undefined behavior. |
+| 40 | Raw pointers, provenance, aliasing, and validity | Raw-pointer creation and access, null and dangling pointers, alignment, provenance, aliasing, reference validity, pointer arithmetic, integer round trips, strict provenance APIs, exposed provenance, and areas not fully specified. |
+| 41 | Layout, representations, and dynamically sized types | Size, alignment, padding, `repr(Rust)` guarantees, `repr(C)`, transparent representations, enums and niches, slices and trait-object metadata, fat pointers, zero-sized types, uninhabited types, and layout-dependent API hazards. |
+| 42 | Allocation, initialization, and manual destruction | `alloc`, `Layout`, `NonNull`, `MaybeUninit`, `ManuallyDrop`, `mem::forget`, ownership transfer, partial initialization, drop flags, panic safety, allocator contracts, and avoiding double drop, leaks, or use-after-free. |
+| 43 | Pinning and address-sensitive values | `Pin`, `Unpin`, structural pinning, projection, drop guarantees, self-referential state, intrusive structures, pinned futures, unsafe pin construction, and when pinning should remain hidden behind an abstraction. |
+| 44 | FFI, ABI, and cross-language ownership | `extern` blocks and functions, calling conventions, symbol linkage, `repr(C)`, strings and buffers, callbacks, opaque handles, allocation ownership, thread and unwind boundaries, bindgen-style generation, and safety wrappers. |
+| 45 | Panic and unwind safety | `UnwindSafe`, `RefUnwindSafe`, cleanup during unwinding, partially updated invariants, destructors that panic, `catch_unwind` boundaries, abort configurations, FFI unwind rules, and exception safety in unsafe abstractions. |
+| 46 | Rust compilation pipeline and generated code | Parsing and expansion, name resolution, type checking, HIR, MIR, borrow checking, monomorphization, LLVM/code generation, vtables, drop glue, incremental compilation, codegen units, linking, and useful inspection outputs. |
+| 47 | Performance analysis and optimization | Debug versus release behavior, profiles, benchmarking traps, allocation and cloning, layout and locality, bounds-check elimination, iterator optimization, inlining, vectorization, dynamic dispatch, LTO, PGO, compile-time costs, and evidence-driven tuning. |
+| 48 | `no_std`, targets, and embedded constraints | `core`, `alloc`, panic handlers, allocators, target specifications, cross-compilation, linker scripts, startup, interrupts, volatile access, atomics by target, peripheral ownership, and which language guarantees remain unchanged. |
 
-| # | Topic | Folder | Reference | Status |
-|---|-------|--------|-----------|--------|
-| 1 | Trait Objects, Dynamic Dispatch & OOP Patterns | [`advanced/01-trait-objects-and-oop-patterns`](./advanced/01-trait-objects-and-oop-patterns) | Book ch. 18 | done |
-| 2 | Patterns & Matching Deep Dive | [`advanced/02-patterns-and-matching`](./advanced/02-patterns-and-matching) | Book ch. 19 | done |
-| 3 | Advanced Traits & Types | [`advanced/03-advanced-traits-and-types`](./advanced/03-advanced-traits-and-types) | Book ch. 20.2-20.3 | done |
-| 4 | Advanced Functions, Closures & Macros | [`advanced/04-advanced-functions-and-macros`](./advanced/04-advanced-functions-and-macros) | Book ch. 20.4-20.5 | done |
-| 5 | Unsafe Rust Foundations | [`advanced/05-unsafe-rust-foundations`](./advanced/05-unsafe-rust-foundations) | Book ch. 20.1; Nomicon "Meet Safe and Unsafe", "Working with Unsafe" | done |
-| 6 | Data Layout & Type Conversions | [`advanced/06-data-layout-and-type-conversions`](./advanced/06-data-layout-and-type-conversions) | Nomicon "Data Layout", "Type Conversions" | done |
-| 7 | Advanced Lifetimes, Variance & `PhantomData` | [`advanced/07-advanced-lifetimes-variance-and-phantomdata`](./advanced/07-advanced-lifetimes-variance-and-phantomdata) | Nomicon "Ownership" (subtyping, HRTB, `PhantomData`, splitting borrows) | done |
-| 8 | Concurrency Internals: `Send`, `Sync` & Atomics | [`advanced/08-concurrency-internals`](./advanced/08-concurrency-internals) | Nomicon "Concurrency" (races, `Send`/`Sync`, atomics) | done |
-| 9 | Async/Await & Futures | [`advanced/09-async-await-and-futures`](./advanced/09-async-await-and-futures) | Book ch. 17 (adapted) | done |
-| 10 | Implementing `Vec` and `Arc` from Scratch | [`advanced/10-implementing-vec-and-arc`](./advanced/10-implementing-vec-and-arc) | Nomicon "Implementing Vec", "Implementing Arc and Mutex" | done |
+### Phase 5 completion criteria
 
-## Capstones
+- State an unsafe abstraction's invariants and justify every unsafe operation.
+- Distinguish stable layout, validity, provenance, and ABI guarantees from
+  compiler implementation details.
+- Trace representative Rust constructs through MIR, code generation, linking,
+  and runtime behavior.
+- Measure performance before changing ownership, dispatch, allocation, or
+  safety boundaries.
 
-Both capstones are unlocked once enough of the core curriculum is built (the
-embedded capstone's Phase 1 only needs Fundamentals + a little Advanced
-unsafe; the message-queue capstone needs Intermediate's concurrency topic at
-minimum, and Advanced's async topic for its later phases). These are "build it
-and verify by running" projects — no pre-written test suite to satisfy (light
-integration tests where useful, but the deliverable is a working program).
+### Authoritative sources
 
-### Capstone A: Embedded Rust (`rust/capstone-embedded/`)
+- [Reference: unsafe keyword](https://doc.rust-lang.org/reference/unsafe-keyword.html)
+- [The Rustonomicon](https://doc.rust-lang.org/nomicon/)
+- [Unsafe Code Guidelines Reference](https://rust-lang.github.io/unsafe-code-guidelines/)
+- [`std::ptr`](https://doc.rust-lang.org/std/ptr/)
+- [`std::mem`](https://doc.rust-lang.org/std/mem/)
+- [`std::alloc`](https://doc.rust-lang.org/std/alloc/)
+- [Reference: type layout](https://doc.rust-lang.org/reference/type-layout.html)
+- [Reference: external blocks](https://doc.rust-lang.org/reference/items/external-blocks.html)
+- [rustc-dev-guide](https://rustc-dev-guide.rust-lang.org/)
+- [The Embedonomicon](https://docs.rust-embedded.org/embedonomicon/)
 
-Targets the **BBC micro:bit v2** (Nordic nRF52833, Cortex-M4F,
-`thumbv7em-none-eabihf`) on **real hardware via [`probe-rs`](https://probe.rs/)
-end to end — no QEMU/emulation**. Code is written and cross-compiled in this
-repo's sandbox (`cargo build --target thumbv7em-none-eabihf` needs no
-attached device — already verified to install via `rustup target add
-thumbv7em-none-eabihf`); flashing, running, and debugging (`probe-rs
-run`/`probe-rs attach`, RTT logging) happens on a machine with the board
-plugged in. "Done" means it builds here *and* runs correctly on the board,
-confirmed by the user.
+## Phase 6 — Cargo, Tooling, and Ecosystem Stewardship
 
-Built from two guides, worked through in order:
+| # | Topic | Research target |
+| --- | --- | --- |
+| 49 | Cargo manifests, targets, and workspaces | Manifest fields, automatic and explicit targets, workspaces, package selection, resolver versions, lockfiles, metadata inheritance, virtual manifests, command scope, and reproducible workspace structure. |
+| 50 | Dependencies, features, and compatibility | Registry, git, and path dependencies; source replacement; feature additivity and unification; optional dependencies; target-specific dependencies; resolver behavior; semver; MSRV; duplicate versions; and public dependency exposure. |
+| 51 | Profiles, build scripts, configuration, and cross-compilation | Dev, release, test, and custom profiles; optimization and debug settings; build-script lifecycle and inputs; environment/config precedence; target configuration; linkers; build caching; reproducibility; and build-time diagnosis. |
+| 52 | Diagnostics, formatting, linting, and documentation | Reading compiler diagnostics, lint levels and groups, future-incompatible lints, `rustfmt`, Clippy, rustdoc, doctests, intra-doc links, generated documentation, unsafe documentation, CI policy, and toolchain-version drift. |
+| 53 | Verification and dynamic analysis | Unit/integration/doc tests, compile-fail tests, benchmarks, property testing, fuzzing, Miri, sanitizers, coverage, model checking, unsupported configurations, false confidence, and selecting tools from the suspected failure mode. |
+| 54 | Publishing, API evolution, and supply-chain boundaries | Package metadata, crates.io publishing, yanking, ownership, semver compatibility, feature evolution, deprecation, MSRV policy, auditing dependencies, licenses, build-script risk, unsafe dependency surface, and release reproducibility. |
 
-- [**The Embedonomicon**](https://doc.rust-lang.org/embedonomicon/) —
-  building a `#![no_std]`/`#![no_main]` program from scratch, applied to the
-  nRF52833 instead of its QEMU target.
-- [**Discovery (micro:bit v2 edition)**](https://docs.rust-embedded.org/discovery-mb2/)
-  — the full board curriculum (Hello World through the Snake game) on real
-  hardware via `probe-rs`.
+### Phase 6 completion criteria
 
-Detailed phase/exercise breakdown is deferred until the capstone is actually
-started — no need to scope it out this far ahead.
+- Explain Cargo resolution, feature unification, workspaces, profiles, and build
+  scripts without treating them as opaque automation.
+- Maintain stable APIs across semver, edition, and MSRV constraints.
+- Select compiler, lint, documentation, testing, fuzzing, interpreter, and
+  sanitizer tools from concrete risks.
+- Evaluate dependency and release decisions as part of the system's trust
+  boundary.
 
-### Capstone B: Distributed Message Queue → moved to Go
+### Authoritative sources
 
-This capstone was redesigned as a Go project. See `go/capstone-message-queue/`
-(planned) and `go/ROADMAP.md` Capstone D for the full phase-by-phase plan.
+- [The Cargo Book](https://doc.rust-lang.org/cargo/)
+- [Cargo Reference](https://doc.rust-lang.org/cargo/reference/)
+- [Cargo: specifying dependencies](https://doc.rust-lang.org/cargo/reference/specifying-dependencies.html)
+- [Cargo: features](https://doc.rust-lang.org/cargo/reference/features.html)
+- [Cargo: profiles](https://doc.rust-lang.org/cargo/reference/profiles.html)
+- [Cargo: build scripts](https://doc.rust-lang.org/cargo/reference/build-scripts.html)
+- [The rustc Book](https://doc.rust-lang.org/rustc/)
+- [The rustdoc Book](https://doc.rust-lang.org/rustdoc/)
+- [Clippy documentation](https://doc.rust-lang.org/clippy/)
+- [Miri](https://github.com/rust-lang/miri)
+- [Rust Forge: releases](https://forge.rust-lang.org/release/)
 
-The Go version exercises the same concepts — append-only storage, concurrent
-access, async networking, consumer groups — using Go idioms (`sync.RWMutex`,
-goroutines, `chan struct{}` shutdown) instead of Rust's ownership/async model.
+## Capstone-driven learning
 
-### Future: Capstone C (cross-referenced from `go/ROADMAP.md`)
+Capstones are integration environments, not graduation projects. Start them
+when the required concepts become relevant and evolve them alongside research.
+Keep general domain theory in capstone or dedicated-module documentation; use
+this roadmap for the Rust-specific consequences.
 
-`go/ROADMAP.md`'s Capstones section already roadmaps a third future project:
-a **TCP/IP stack from scratch in Rust** (CS144/`smoltcp`-style — IP, ARP, TCP
-handshake, retransmission, flow control over a TUN device). Not part of this
-track's two active capstones, but recorded here as the natural "go all the
-way to advanced" follow-on once both capstones above are done.
+### Embedded Rust on the BBC micro:bit v2
 
-### Future: Capstone D — Python-to-Assembly Compiler
+Explore `no_std`, target configuration, linker behavior, startup, panic
+handling, interrupts, volatile device access, concurrency, peripheral
+ownership, and hardware debugging. Use the
+[Discovery book](https://docs.rust-embedded.org/discovery-mb2/) and
+[Embedonomicon](https://docs.rust-embedded.org/embedonomicon/) as primary
+project references. Hardware behavior, not compilation alone, defines success.
 
-A toy compiler written in Rust: parse a small subset of Python (functions,
-arithmetic, `if`/`while`, variables) and emit x86-64 assembly (or LLVM IR as
-a stretch). Natural exercise for the full Rust skill set — recursive descent
-parsing, tree-walking/IR lowering, code generation — and a bridge into
-compilers/systems programming. Planned phases (to be fleshed out when started):
+### User-space TCP/IP stack
 
-1. **Lexer** — tokenize a Python subset (`def`, `return`, `if`, `while`,
-   integer literals, operators, identifiers).
-2. **Parser** — recursive descent → AST.
-3. **Semantic analysis** — scope resolution, type checking (integers only to
-   start).
-4. **IR lowering** — AST → three-address / SSA IR.
-5. **Code generation** — IR → x86-64 assembly (NASM syntax) or LLVM IR.
-6. **Driver** — shell out to `nasm`/`ld` (or `llc`/`clang`) and run the
-   resulting binary; integration tests compare stdout.
+Use Rust ownership, byte-oriented parsing, state machines, timers, concurrency,
+and unsafe boundaries while implementing progressively deeper protocol layers.
+Keep protocol and network architecture in the capstone; document buffer
+ownership, partial I/O, cancellation, lifecycle, and verification as Rust
+design decisions.
 
-Not started — record here for future sessions.
+### Small language implementation
+
+Use enums and patterns for syntax trees, traits or generics for phases, owned
+and borrowed representations, diagnostics, testing, and performance analysis
+while evolving a small language from interpretation toward bytecode or native
+compilation. Keep general language and compiler theory in its dedicated
+learning module or wishlist; use the capstone to examine Rust implementation
+tradeoffs.
+
+## Suggested research method
+
+For each topic:
+
+1. Begin with the relevant Reference or standard-library contract.
+2. Check edition and stabilization notes before relying on current syntax or
+   behavior under the Edition 2024 baseline.
+3. Write a minimal compiler probe when ownership, inference, layout, or
+   diagnostics are unclear.
+4. Inspect expanded code, MIR, generated assembly, Miri output, or runtime
+   traces when the abstraction hides relevant behavior.
+5. Record guarantees, non-guarantees, invariants, tradeoffs, and production
+   failure modes in your own words.
+6. Apply the topic to a capstone when it naturally advances a vertical slice.

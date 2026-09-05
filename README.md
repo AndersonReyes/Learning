@@ -72,9 +72,9 @@ the roadmap; they do not need to wait until every phase is complete.
   covering language and core APIs, generics and collections, modern Java, JVM
   internals, concurrency, and a later patterns deep dive. See
   [`java/ROADMAP.md`](./java/ROADMAP.md).
-- [`rust/`](./rust) — Rust track (planning): notes, runnable examples, and
-  test-driven exercises based on *The Rust Programming Language* and *The
-  Rustonomicon*, plus embedded (micro:bit v2) and distributed
-  message-queue ("mini-Kafka") capstones. See
+- [`rust/`](./rust) — Rust Edition 2024 research roadmap for experienced
+  engineers, covering ownership, traits, standard-library boundaries,
+  concurrency and async, unsafe Rust, runtime behavior, tooling, and idiomatic
+  API design. See
   [`rust/README.md`](./rust/README.md) and
   [`rust/ROADMAP.md`](./rust/ROADMAP.md).
