@@ -67,11 +67,9 @@ Each topic is its own Cargo package, e.g.
 
 ## Testing strategy
 
-Unlike the C++ track, there's no framework to build: `cargo test` works from
-day one. `todo!()` panics, and `cargo test` reports a panicking test as a
-clean `FAILED` — so every stub fails its test out of the box, with no
-bootstrapping topic needed. This is the big simplification relative to
-`cpp/testing.h`.
+Cargo provides the test framework: `cargo test` works from day one. `todo!()`
+panics, and `cargo test` reports a panicking test as a clean `FAILED` — so
+every stub fails its test out of the box, with no bootstrapping topic needed.
 
 ## Exercise difficulty
 
@@ -123,8 +121,7 @@ map onto plain testable functions:
      sensible demonstration output.
    - `cargo test` (no args, from `rust/`) discovers the new package.
 4. Update this file: mark the topic `done` and turn its folder cell into a
-   link, with a one-paragraph summary of what the 5 exercises cover (see the
-   style of `cpp/ROADMAP.md`'s status banner).
+   link, with a one-paragraph summary of what the 5 exercises cover.
 
 ## Build Log
 
@@ -370,10 +367,9 @@ from-scratch `Vec`/`Arc`/`Mutex`.
 Both capstones are unlocked once enough of the core curriculum is built (the
 embedded capstone's Phase 1 only needs Fundamentals + a little Advanced
 unsafe; the message-queue capstone needs Intermediate's concurrency topic at
-minimum, and Advanced's async topic for its later phases). Like the C++ ray
-tracer and the JS capstone, these are "build it and verify by running"
-projects — no pre-written test suite to satisfy (light integration tests
-where useful, but the deliverable is a working program).
+minimum, and Advanced's async topic for its later phases). These are "build it
+and verify by running" projects — no pre-written test suite to satisfy (light
+integration tests where useful, but the deliverable is a working program).
 
 ### Capstone A: Embedded Rust (`rust/capstone-embedded/`)
 

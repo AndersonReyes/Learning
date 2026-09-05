@@ -6,9 +6,9 @@ for status of the rest.
 
 ## How this track works
 
-Same shape as `javascript/`, `go/`, and `cpp/`: numbered topic folders under
-`fundamentals/`, `intermediate/`, and `advanced/`. Each topic is its own
-Cargo package with `notes.md`, `src/lib.rs` (5 stubbed exercises),
+Numbered topic folders are organized under `fundamentals/`, `intermediate/`,
+and `advanced/`. Each topic is its own Cargo package with `notes.md`,
+`src/lib.rs` (5 stubbed exercises),
 `tests/exercise_test.rs`, and `examples/examples.rs`. `tests/exercise_test.rs`
 is the spec/answer key — there are no separate solution files. See
 [`ROADMAP.md`](./ROADMAP.md) for the full curriculum, per-topic file pattern,
@@ -41,8 +41,7 @@ cargo test
 ```
 
 No external dependencies for Fundamentals and most of Intermediate — `cargo
-test` works out of the box, no framework to build first (unlike the C++
-track's `cpp/testing.h`). A handful of later topics add a small,
+test` works out of the box. A handful of later topics add a small,
 topic-scoped dependency where the concept genuinely needs one (an async
 runtime for `advanced/09`, `tokio` for the message-queue capstone) — see
 "Adapted topics" in `ROADMAP.md`.

@@ -63,10 +63,6 @@ the roadmap; they do not need to wait until every phase is complete.
 8. Add notes, exercises, or capstones only when they serve the track's learning
    goal. Prefer capstones when one evolving project can integrate the topics.
 
-- [`javascript/`](./javascript) — JavaScript track: notes, runnable examples,
-  and test-driven exercises. See [`javascript/README.md`](./javascript/README.md)
-  to get started and [`javascript/ROADMAP.md`](./javascript/ROADMAP.md) for the
-  full curriculum.
 - [`go/`](./go) — Go research roadmap for experienced engineers, covering
   language semantics, types and generics, the standard library, concurrency,
   runtime and tooling, and idiomatic patterns. Capstones evolve alongside the
@@ -76,15 +72,6 @@ the roadmap; they do not need to wait until every phase is complete.
   covering language and core APIs, generics and collections, modern Java, JVM
   internals, concurrency, and a later patterns deep dive. See
   [`java/ROADMAP.md`](./java/ROADMAP.md).
-- [`html/`](./html) — HTML track: notes and viewable examples (open
-  `.html` files directly in a browser). See [`html/README.md`](./html/README.md).
-- [`css/`](./css) — CSS track: notes and viewable examples (open `.html`
-  files directly in a browser). See [`css/README.md`](./css/README.md) and
-  [`css/ROADMAP.md`](./css/ROADMAP.md).
-- [`cpp/`](./cpp) — C++ track (planning): notes, runnable examples, and
-  test-driven exercises based on the *Modern C++ Programming* course, plus a
-  *Ray Tracing in One Weekend* capstone. See
-  [`cpp/README.md`](./cpp/README.md) and [`cpp/ROADMAP.md`](./cpp/ROADMAP.md).
 - [`rust/`](./rust) — Rust track (planning): notes, runnable examples, and
   test-driven exercises based on *The Rust Programming Language* and *The
   Rustonomicon*, plus embedded (micro:bit v2) and distributed
