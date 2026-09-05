@@ -148,6 +148,16 @@ func EncodeQuery(id uint16, name string, qtype uint16) ([]byte, error) {
 // and — for each answer record of type A — its IPv4 address. Non-A answer
 // records are skipped.
 func ParseResponse(data []byte) (*Response, error) {
+	headerBytes := data[:12]
+	id := binary.BigEndian.Uint16(headerBytes[:2])
+	flags := binary.BigEndian.Uint16(headerBytes[2:4])
+	answerCount := binary.BigEndian.Uint16(headerBytes[6:8])
+	var ips []net.IP
+
+	for range answerCount {
+		
+	}
+
 	return nil, errors.New("not implemented")
 }
 
