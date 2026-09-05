@@ -1,224 +1,251 @@
 # Go Roadmap
 
-This curriculum teaches Go **through computer networking**: every topic
-pairs a Go language concept with a networking concept, and the exercises
-build toward real protocol/network tooling (parsers, servers, clients).
+A self-directed research roadmap for an experienced senior engineer. It focuses
+on Go language semantics, runtime behavior, standard-library contracts, tooling,
+and idioms. Networking protocols, distributed algorithms, and system design
+belong in capstones or dedicated learning modules.
 
-Go reference links point at [A Tour of Go](https://go.dev/tour/),
-[Effective Go](https://go.dev/doc/effective_go), and
-[pkg.go.dev](https://pkg.go.dev/std) for the standard library. Networking
-reference links point at the relevant RFCs (or, where no single RFC fits,
-general background).
+The implementation baseline is the module's current `go 1.24` directive. The
+living Go specification may document newer language versions; check its version
+markers and the relevant release notes before using newer features.
 
-## Fundamentals (12/12 built)
+## Phase 1 — Language Semantics
 
-Go's core syntax is front-loaded here; later fundamentals topics introduce
-fewer new language features and more standard-library/networking depth.
+| # | Topic | Research target |
+| --- | --- | --- |
+| 1 | Declarations, variables, and zero values | Identifiers, declarations, initialization, short declarations, blank identifiers, scope, shadowing, zero values, addressability, and initialization dependencies. |
+| 2 | Constants, numeric types, and conversions | Untyped constants, representability, default types, integer and floating-point behavior, complex numbers, overflow, shifts, explicit conversions, and architecture-dependent integer sizes. |
+| 3 | Assignment, pointers, and value semantics | Assignment evaluation order, copying, aliasing, pointers, addressability, `new`, composite values, parameter passing, multiple assignment, and the absence of pointer arithmetic. |
+| 4 | Control flow, functions, and closures | `if`, `for`, `range`, `switch`, type switches, labels, function values, closures, multiple returns, named results, variadic functions, and evaluation order. |
+| 5 | Strings, bytes, runes, and UTF-8 | String immutability, byte sequences, UTF-8, rune values, indexing, ranging, invalid encodings, conversions, builders, readers, normalization boundaries, and formatting. |
+| 6 | `defer`, `panic`, and `recover` | Argument evaluation, LIFO execution, named-result interaction, cleanup, panic propagation, recovery boundaries, runtime panics, and appropriate library behavior. |
+| 7 | Errors | Error values, wrapping, `errors.Is`, `errors.As`, `errors.Join`, sentinel and typed errors, opaque errors, context, partial results, and API compatibility. |
+| 8 | Packages, initialization, and visibility | Package clauses, imports, exported identifiers, `init`, dependency initialization order, import cycles, internal packages, commands versus libraries, and package-level state. |
 
-| # | Topic (Go + Networking) | Folder | References |
-|---|--------------------------|--------|------------|
-| 1 | Variables, Types, Control Flow & Bitwise Ops + IPv4 Addressing & CIDR Subnetting | [`fundamentals/01-go-basics-and-ip-addressing`](./fundamentals/01-go-basics-and-ip-addressing) | [Tour: Basics](https://go.dev/tour/basics/1), [Effective Go: Control structures](https://go.dev/doc/effective_go#control-structures) — [RFC 791 (IPv4)](https://www.rfc-editor.org/rfc/rfc791), [RFC 4632 (CIDR)](https://www.rfc-editor.org/rfc/rfc4632), [RFC 3021 (/31)](https://www.rfc-editor.org/rfc/rfc3021) |
-| 2 | Functions, Multiple Returns & Error Handling + Transport-Layer Ports & Protocols (TCP vs UDP) | [`fundamentals/02-functions-errors-and-ports`](./fundamentals/02-functions-errors-and-ports) | [Tour: Basics (functions)](https://go.dev/tour/basics/4), [Effective Go: Errors](https://go.dev/doc/effective_go#errors) — [RFC 793 (TCP)](https://www.rfc-editor.org/rfc/rfc793), [RFC 768 (UDP)](https://www.rfc-editor.org/rfc/rfc768) |
-| 3 | Structs, Pointers & Methods + Packet Header Layouts (Ethernet/IPv4/TCP) | [`fundamentals/03-structs-pointers-and-packet-headers`](./fundamentals/03-structs-pointers-and-packet-headers) | [Tour: Structs & pointers](https://go.dev/tour/moretypes/1), [Tour: Methods](https://go.dev/tour/methods/1), [`encoding/binary`](https://pkg.go.dev/encoding/binary) — [RFC 791 §3.1](https://www.rfc-editor.org/rfc/rfc791), [RFC 793 §3.1](https://www.rfc-editor.org/rfc/rfc793) |
-| 4 | Slices, Arrays & Maps + Routing Tables & Longest-Prefix-Match | [`fundamentals/04-slices-maps-and-routing-tables`](./fundamentals/04-slices-maps-and-routing-tables) | [Tour: Slices & maps](https://go.dev/tour/moretypes/7) — [RFC 4632 §3 (LPM)](https://www.rfc-editor.org/rfc/rfc4632) |
-| 5 | Interfaces & Error Wrapping + Abstracting Transports (`net.Conn`) | [`fundamentals/05-interfaces-and-net-conn`](./fundamentals/05-interfaces-and-net-conn) | [Tour: Interfaces](https://go.dev/tour/methods/9), [`errors`](https://pkg.go.dev/errors) — [`net.Conn`](https://pkg.go.dev/net#Conn) |
-| 6 | Goroutines & Channels + Concurrent TCP Echo Server | [`fundamentals/06-goroutines-channels-and-echo-server`](./fundamentals/06-goroutines-channels-and-echo-server) | [Tour: Concurrency](https://go.dev/tour/concurrency/1) — [RFC 862 (Echo)](https://www.rfc-editor.org/rfc/rfc862) |
-| 7 | `select`, `sync` & `context` + Connection Timeouts & Cancellation | [`fundamentals/07-select-sync-context-and-timeouts`](./fundamentals/07-select-sync-context-and-timeouts) | [Tour: select](https://go.dev/tour/concurrency/5), [`context`](https://pkg.go.dev/context) — [`net.Conn.SetDeadline`](https://pkg.go.dev/net#Conn) |
-| 8 | The `net` Package (Dial/Listen) + TCP Chat Server & UDP Datagram Protocol | [`fundamentals/08-net-dial-listen-and-udp`](./fundamentals/08-net-dial-listen-and-udp) | [`net`](https://pkg.go.dev/net) — [RFC 793](https://www.rfc-editor.org/rfc/rfc793), [RFC 768](https://www.rfc-editor.org/rfc/rfc768) |
-| 9 | `bufio`/`io`/`encoding/binary` + Custom Length-Prefixed Binary Wire Protocol | [`fundamentals/09-bufio-io-binary-and-framing`](./fundamentals/09-bufio-io-binary-and-framing) | [`bufio`](https://pkg.go.dev/bufio), [`io`](https://pkg.go.dev/io) — framing concepts |
-| 10 | `net/http` Internals + HTTP/1.1 Server From Scratch (then `net/http`) | [`fundamentals/10-http11-from-scratch`](./fundamentals/10-http11-from-scratch) | [`net/http`](https://pkg.go.dev/net/http) — [RFC 9112 (HTTP/1.1)](https://www.rfc-editor.org/rfc/rfc9112) |
-| 11 | `encoding/json` + JSON REST/RPC API Over the Network | [`fundamentals/11-json-rest-rpc-api`](./fundamentals/11-json-rest-rpc-api) | [`encoding/json`](https://pkg.go.dev/encoding/json) — [RFC 8259 (JSON)](https://www.rfc-editor.org/rfc/rfc8259) |
-| 12 | DNS Protocol + Minimal DNS Resolver Over UDP | [`fundamentals/12-dns-protocol-and-resolver`](./fundamentals/12-dns-protocol-and-resolver) | [`net`](https://pkg.go.dev/net), `encoding/binary` — [RFC 1035 (DNS)](https://www.rfc-editor.org/rfc/rfc1035) |
+### Phase 1 completion criteria
 
-## Intermediate (7/7 built)
+- Predict initialization, assignment, copying, aliasing, and evaluation order.
+- Explain Go's numeric, string, closure, and pointer semantics.
+- Design error and cleanup behavior without using panic for ordinary failures.
+- Organize packages with explicit visibility and minimal initialization effects.
 
-| # | Topic (Go + Networking) | Folder | References |
-|---|--------------------------|--------|------------|
-| 1 | Generics + Generic Connection Pool & DNS-Cache LRU | [`intermediate/01-generics-pool-and-cache`](./intermediate/01-generics-pool-and-cache) | [Tour: Generics](https://go.dev/tour/generics/1) |
-| 2 | TLS (`crypto/tls`) + HTTPS Client/Server & the TLS 1.3 Handshake | [`intermediate/02-tls-https-and-handshake`](./intermediate/02-tls-https-and-handshake) | [`crypto/tls`](https://pkg.go.dev/crypto/tls) — [RFC 8446 (TLS 1.3)](https://www.rfc-editor.org/rfc/rfc8446) |
-| 3 | WebSockets + Real-Time Chat Server | [`intermediate/03-websockets-and-chat-server`](./intermediate/03-websockets-and-chat-server) | [RFC 6455 (WebSocket)](https://www.rfc-editor.org/rfc/rfc6455) |
-| 4 | Reverse Proxy / Load Balancer (`net/http/httputil`) | [`intermediate/04-reverse-proxy-and-load-balancer`](./intermediate/04-reverse-proxy-and-load-balancer) | [`net/http/httputil`](https://pkg.go.dev/net/http/httputil) |
-| 5 | Testing in Go (table-driven tests, `httptest`, fuzzing) + Protocol Parser Test Suites | [`intermediate/05-testing-fuzzing-and-protocol-parsers`](./intermediate/05-testing-fuzzing-and-protocol-parsers) | [`testing`](https://pkg.go.dev/testing), [`net/http/httptest`](https://pkg.go.dev/net/http/httptest) |
-| 6 | `container/heap` + Routing Algorithms (Dijkstra/Bellman-Ford) & Simulating OSPF/BGP Path Selection | [`intermediate/06-routing-algorithms-and-path-selection`](./intermediate/06-routing-algorithms-and-path-selection) | [`container/heap`](https://pkg.go.dev/container/heap) — [RFC 2328 (OSPF)](https://www.rfc-editor.org/rfc/rfc2328), [RFC 2453 (RIP)](https://www.rfc-editor.org/rfc/rfc2453), [RFC 4271 (BGP)](https://www.rfc-editor.org/rfc/rfc4271) |
-| 7 | The `math` Package + Simulating TCP Reno/CUBIC Congestion-Window Growth | [`intermediate/07-congestion-control-and-window-growth`](./intermediate/07-congestion-control-and-window-growth) | [`math`](https://pkg.go.dev/math) — [RFC 5681 (TCP Congestion Control)](https://www.rfc-editor.org/rfc/rfc5681), [RFC 8312 (CUBIC)](https://www.rfc-editor.org/rfc/rfc8312) |
+### Authoritative sources
 
-## Advanced (5/5 built)
+- [The Go Programming Language Specification](https://go.dev/ref/spec)
+- [Go 1 compatibility guarantee](https://go.dev/doc/go1compat)
+- [Effective Go](https://go.dev/doc/effective_go)
+- [Built-in package documentation](https://pkg.go.dev/builtin)
+- [Package initialization model](https://go.dev/ref/spec#Program_initialization_and_execution)
+- [Go blog: Errors are values](https://go.dev/blog/errors-are-values)
+- [Go blog: Defer, Panic, and Recover](https://go.dev/blog/defer-panic-and-recover)
 
-| # | Topic (Go + Networking) | Folder | References |
-|---|--------------------------|--------|------------|
-| 1 | `syscall`, `unsafe` & ioctl + Raw Sockets, TUN/TAP & Reading/Writing Raw IP Packets | [`advanced/01-raw-sockets-and-tun-tap`](./advanced/01-raw-sockets-and-tun-tap) | [`syscall`](https://pkg.go.dev/syscall), [`unsafe`](https://pkg.go.dev/unsafe) — [Linux TUN/TAP docs](https://www.kernel.org/doc/html/latest/networking/tuntap.html), [RFC 1071 (checksum)](https://www.rfc-editor.org/rfc/rfc1071), [RFC 791 (IPv4)](https://www.rfc-editor.org/rfc/rfc791), [RFC 792 (ICMP)](https://www.rfc-editor.org/rfc/rfc792) |
-| 2 | Bit-Twiddling & Event-Driven State Machines + QUIC Varints, CRYPTO Frames & the TLS 1.3 Handshake | [`advanced/02-quic-and-http3`](./advanced/02-quic-and-http3) | [`crypto/tls`](https://pkg.go.dev/crypto/tls) (`QUICConn`), [`encoding/binary`](https://pkg.go.dev/encoding/binary) — [RFC 9000 (QUIC)](https://www.rfc-editor.org/rfc/rfc9000) §16, §19.6, [RFC 9001 (TLS for QUIC)](https://www.rfc-editor.org/rfc/rfc9001), [RFC 9114 (HTTP/3)](https://www.rfc-editor.org/rfc/rfc9114) |
-| 3 | Bit-Twiddling Instruction Encoding + Classic BPF (cBPF) Packet Filters | [`advanced/03-cbpf-packet-filters`](./advanced/03-cbpf-packet-filters) | [`syscall`](https://pkg.go.dev/syscall) (`SockFilter`, `SockFprog`, `BPF_*`), [`unsafe`](https://pkg.go.dev/unsafe) — [Linux socket filtering (cBPF)](https://www.kernel.org/doc/Documentation/networking/filter.txt), `man 7 socket` (`SO_ATTACH_FILTER`) |
-| 4 | Varint Encoding & Type Switches + the Protocol Buffers Wire Format (gRPC, by Hand) | [`advanced/04-protobuf-wire-format`](./advanced/04-protobuf-wire-format) | [Protocol Buffers Encoding](https://protobuf.dev/programming-guides/encoding/), [`sort`](https://pkg.go.dev/sort), [`encoding/binary`](https://pkg.go.dev/encoding/binary) — gRPC's HTTP/2 framing, `fundamentals/09-bufio-io-binary-and-framing` |
-| 5 | `net/rpc` + Raft Consensus: Leader Election, Log Replication & Service Discovery | [`advanced/05-raft-and-service-discovery`](./advanced/05-raft-and-service-discovery) | [`net/rpc`](https://pkg.go.dev/net/rpc), [`encoding/gob`](https://pkg.go.dev/encoding/gob) — [Raft paper, extended version](https://raft.github.io/raft.pdf) (Figure 2, §5.2, §5.3, §5.4.1) |
+## Phase 2 — Types, Data, and Generics
 
-## Capstones (future)
+| # | Topic | Research target |
+| --- | --- | --- |
+| 9 | Arrays and slices | Array value semantics, slice descriptors, length and capacity, slicing expressions, aliasing, append growth, copy, clear, nil versus empty slices, retention, bounds, and multidimensional layouts. |
+| 10 | Maps | Key comparability, zero-value reads, comma-ok, nil maps, insertion and deletion, iteration order, mutation during iteration, references held by entries, equality limitations, and concurrent access rules. |
+| 11 | Structs and composite literals | Field layout, tags, literals, comparability, anonymous fields, promoted members, copying, padding, alignment, empty structs, and serialization-facing design. |
+| 12 | Defined types, aliases, and underlying types | Type definitions, aliases, identity, assignability, conversion, underlying types, predeclared aliases, generic aliases at the target language version, and API migration. |
+| 13 | Methods, receivers, and method sets | Value and pointer receivers, automatic address/dereference in calls, method expressions, method values, method sets, interface satisfaction, copying, nil receivers, and receiver consistency. |
+| 14 | Embedding and composition | Embedded fields and interfaces, promotion, selector depth, ambiguity, overriding through explicit methods, initialization, representation exposure, and composition without inheritance. |
+| 15 | Interfaces and implicit satisfaction | Interface values, dynamic type and value, implicit implementation, method sets, interface embedding, empty interfaces, comparability, type identity, and small consumer-owned interfaces. |
+| 16 | Nil interfaces, assertions, and type switches | Nil interface values versus typed nils, equality, type assertions, comma-ok, type switches, exhaustive assumptions, pointer/value method sets, and failure modes. |
+| 17 | Generics, constraints, and inference | Type parameters, constraint interfaces, type sets, unions, approximation elements, `comparable`, inference, instantiation, generic types and functions, operations permitted by constraints, and Go 1.24 limitations. |
+| 18 | Iterators and range functions | Built-in range forms, per-iteration variables, integer ranges, iterator function signatures, `iter.Seq`/`Seq2`, early termination, pull iterators, ownership, and version requirements. |
 
-The Advanced section above is now built out, so all capstones below are
-unblocked. Each is a standalone project that ties multiple topics together
-into one real tool — pick any (or all), in any order.
+### Phase 2 completion criteria
 
-### Capstone A: Network Monitoring Tool (Go)
+- Explain the runtime-relevant representation and aliasing of arrays, slices,
+  maps, structs, and interfaces.
+- Derive method sets and interface satisfaction for value and pointer types.
+- Recognize typed-nil and promotion traps.
+- Design constraints that expose exactly the operations generic code requires.
 
-Build a CLI/daemon that combines most of this Go track into one real tool —
-roughly "build your own `tcpdump`/`iftop`/`nethogs`", with no new
-dependencies beyond what's already used:
+### Authoritative sources
 
-- **Packet capture**: cBPF-filtered raw sockets (`advanced/01-raw-sockets-and-tun-tap`,
-  `advanced/03-cbpf-packet-filters`) to capture and pre-filter live traffic.
-- **Protocol parsing**: Ethernet/IPv4/TCP/UDP header decoding
-  (`fundamentals/03-structs-pointers-and-packet-headers`), DNS message parsing
-  (`fundamentals/12-dns-protocol-and-resolver`).
-- **Flow tracking & stats**: per-connection (5-tuple) state in a
-  `container/heap`/map-based table (`intermediate/01`, `intermediate/06`),
-  bandwidth/packet counters, and simple RTT/congestion-window estimation
-  (`intermediate/07-congestion-control-and-window-growth`).
-- **Live view**: an HTTP/JSON or WebSocket dashboard serving real-time
-  traffic stats (`fundamentals/11-json-rest-rpc-api`,
-  `intermediate/03-websockets-and-chat-server`).
+- [Go specification: Types](https://go.dev/ref/spec#Types)
+- [Go specification: Properties of types and values](https://go.dev/ref/spec#Properties_of_types_and_values)
+- [Go specification: Method sets](https://go.dev/ref/spec#Method_sets)
+- [Go specification: Type parameters](https://go.dev/ref/spec#Type_parameter_declarations)
+- [Go blog: Go slices—usage and internals](https://go.dev/blog/slices-intro)
+- [Go blog: Maps in action](https://go.dev/blog/maps)
+- [Go blog: The laws of reflection](https://go.dev/blog/laws-of-reflection)
+- [Go Wiki: Range over function iterators](https://go.dev/wiki/RangefuncExperiment)
 
-Lives alongside the existing `go/` topics, e.g. `go/capstone-network-monitor/`,
-with its own README documenting the architecture and how to run it
-(needs raw-socket privileges, per the "personal computer with root access"
-note for the Advanced section).
+## Phase 3 — Core Standard Library
 
-### Capstone B: BitTorrent Client (Go)
+| # | Topic | Research target |
+| --- | --- | --- |
+| 19 | `io` abstractions and resource ownership | `Reader`, `Writer`, `Closer`, composition helpers, partial reads and writes, EOF, buffering, streaming, copying, limits, pipes, ownership, and close/error ordering. |
+| 20 | Files, paths, and filesystems | `os`, `io/fs`, `path`, `filepath`, `embed`, permissions, temporary files, atomic replacement, directory walking, symlinks, platform differences, and cleanup. |
+| 21 | Encoding and serialization APIs | `encoding/json`, `encoding/binary`, `encoding/text`, struct tags, exported fields, zero and omitted values, custom marshalers, streaming decoders, limits, unknown data, compatibility, and unsafe input. |
+| 22 | Time | `time.Time`, monotonic readings, locations, durations, parsing, formatting, timers, tickers, deadlines, equality, serialization, daylight-saving transitions, and testable clocks. |
+| 23 | Networking primitives | `net.Conn`, listeners, packet connections, addresses, DNS resolution, deadlines, cancellation, half-close behavior, temporary failures, resource limits, and ownership. |
+| 24 | HTTP clients and servers | `net/http`, request contexts, transports, connection reuse, body ownership, timeouts, redirects, handlers, middleware, server shutdown, streaming, testing, and protocol selection. |
+| 25 | Database access | `database/sql`, pools, contexts, transactions, prepared statements, scanning, null values, connection lifetime, retries, isolation boundaries, cleanup, and driver contracts. |
+| 26 | Logging | `log/slog`, structured records, handlers, levels, attributes, groups, context, source information, redaction, performance, and library-versus-application ownership. |
+| 27 | Reflection | `reflect.Type`, `Value`, kinds, addressability, settability, conversions, method lookup, tags, generic interaction, panic conditions, performance, and when static alternatives are preferable. |
 
-Build a real, working BitTorrent client (BEP 3) — a concrete P2P protocol
-implementation, end to end:
+### Phase 3 completion criteria
 
-- **Bencoding**: parse `.torrent` files and tracker responses, a new
-  serialization-format-from-scratch in the spirit of
-  `advanced/04-protobuf-wire-format` (dicts/lists/ints/byte strings instead
-  of varints/tags), plus `crypto/sha1` to compute the info hash and verify
-  downloaded pieces.
-- **Tracker protocol**: an HTTP client (`fundamentals/10`,
-  `fundamentals/11-json-rest-rpc-api`) that announces to the tracker and
-  parses the returned compact peer list; optionally the UDP tracker protocol
-  (`fundamentals/08-net-dial-listen-and-udp`).
-- **Peer wire protocol**: TCP connections to peers
-  (`fundamentals/08-net-dial-listen-and-udp`) with the BitTorrent
-  handshake and length-prefixed message framing — directly reusing the
-  framing approach from `fundamentals/09-bufio-io-binary-and-framing`
-  (`choke`/`unchoke`/`interested`/`have`/`bitfield`/`request`/`piece`/`cancel`).
-- **Piece management**: a bitfield of have/missing pieces, a piece-picker
-  (e.g. rarest-first), and concurrent downloads from multiple peers using
-  goroutines/channels and `context` for cancellation
-  (`fundamentals/06`, `fundamentals/07`).
-- **Optional**: a Kademlia DHT (BEP 5) for trackerless peer discovery —
-  XOR-distance routing table, reusing the routing/shortest-path thinking from
-  `intermediate/06-routing-algorithms-and-path-selection`; and/or seeding
-  (uploading pieces back to other peers).
+- Compose standard-library interfaces without losing errors or ownership.
+- Bound I/O, decoding, HTTP, and database operations with context and deadlines.
+- Distinguish bytes, text, paths, times, and serialized representations.
+- Use reflection and structured logging behind narrow, documented boundaries.
 
-Lives alongside the existing `go/` topics, e.g. `go/capstone-bittorrent-client/`,
-with its own README documenting how to run it against a real `.torrent` file
-(e.g. a Linux distro ISO with a public tracker) and verify the downloaded
-file's hash.
+### Authoritative sources
 
-### Capstone C: TCP/IP Stack From Scratch (Rust)
+- [Go standard library](https://pkg.go.dev/std)
+- [`io`](https://pkg.go.dev/io)
+- [`io/fs`](https://pkg.go.dev/io/fs)
+- [`encoding/json`](https://pkg.go.dev/encoding/json)
+- [`time`](https://pkg.go.dev/time)
+- [`net`](https://pkg.go.dev/net)
+- [`net/http`](https://pkg.go.dev/net/http)
+- [`database/sql`](https://pkg.go.dev/database/sql)
+- [`log/slog`](https://pkg.go.dev/log/slog)
+- [`reflect`](https://pkg.go.dev/reflect)
 
-Add a `rust/` track and build a **TCP/IP stack from scratch in Rust**
-(Stanford CS144-style, `smoltcp`-inspired): IP, ARP, TCP handshake,
-retransmission and flow control over a TUN device. This is the "go all the
-way to advanced, in Rust" project discussed alongside this Go track — roadmap
-it in `rust/ROADMAP.md` when that track is created.
+## Phase 4 — Concurrency
 
-### Capstone D: Distributed Message Queue (`go/capstone-message-queue/`)
+| # | Topic | Research target |
+| --- | --- | --- |
+| 28 | Goroutines and lifecycle | Creation, initial stacks, scheduling, blocking, preemption, closure capture, ownership, completion, panic boundaries, process exit, cost model, and leak prevention. |
+| 29 | Channels and ownership | Unbuffered and buffered channels, send/receive synchronization, direction types, close ownership, zero values, nil channels, closed-channel behavior, ranging, capacity, and backpressure. |
+| 30 | `select`, timers, and timeouts | Ready-case selection, default cases, nil-channel disabling, timer and ticker lifecycle, cancellation, timeout composition, fairness assumptions, and busy loops. |
+| 31 | `context` propagation | Cancellation trees, deadlines, causes, values, API placement, request scoping, cleanup functions, detached work, misuse as optional parameters, and interoperability with blocking APIs. |
+| 32 | Go memory model and data races | Sequenced-before, synchronized-before, happens-before, channel and lock synchronization, initialization, atomics, ordinary reads and writes, race-free guarantees, and permitted racy behavior. |
+| 33 | `sync` primitives | `Mutex`, `RWMutex`, `WaitGroup`, `Once`, `Cond`, `Map`, `Pool`, locker discipline, copying restrictions, memory-model edges, contention, and selection criteria. |
+| 34 | Atomics | Typed atomic values, compare-and-swap, swaps, read-modify-write, memory ordering provided by Go, alignment, atomic flags and snapshots, contention, and multi-variable invariants. |
+| 35 | Concurrency ownership and cancellation | Goroutine ownership, channel-closing responsibility, bounded fan-out, cancellation propagation, cleanup, error collection, partial failure, shutdown ordering, and blocked senders/receivers. |
+| 36 | Pipelines and bounded concurrency | Pipelines, fan-out/fan-in, worker groups, semaphores, rate versus concurrency limits, ordering, buffering, backpressure, early termination, and avoiding goroutine-per-item explosions. |
+| 37 | Deadlocks, livelocks, starvation, and leaks | Wait cycles, nil channels, missing senders or receivers, lock ordering, callbacks under locks, scheduler dependence, unfair progress, leaked timers, leaked goroutines, and runtime diagnosis. |
 
-A "mini-Kafka" built in Go: a single growing project, built in phases, each
-phase a runnable milestone. Same protocol as the Rust capstone — custom
-**newline-delimited JSON over TCP**, base64-encoded payloads.
+### Phase 4 completion criteria
 
-Suggested phases:
+- Prove synchronization and visibility with the Go memory model.
+- Assign ownership for every goroutine, channel, timer, context, and shutdown path.
+- Select channels, locks, atomics, or confinement from the invariant.
+- Bound concurrency independently from request or input volume.
+- Diagnose races, deadlocks, starvation, and goroutine leaks.
 
-1. **Storage engine** — append-only log (`data.log`): fixed-header records
-   `[offset uint64 BE][length uint32 BE][payload]`; sparse index (`data.idx`):
-   one 16-byte `[offset][file_position]` entry every 64 records; `Log` with
-   `Append`/`Read`/`Scan`, crash recovery on reopen, truncation of partial
-   trailing writes.
-2. **Topics & partitions** — `Registry` wrapping a map of topic → partitions;
-   `Produce` (FNV-1a key routing + round-robin fallback) and `Fetch`/`FetchBatch`.
-3. **Concurrency** — `SharedRegistry` wrapping `*Registry` with `sync.RWMutex`;
-   background flush goroutine controlled via `chan struct{}` shutdown signal.
-4. **Network server** — `net.Listener`; one goroutine per connection;
-   `bufio.Scanner` for newline-delimited reads; `encoding/json` for
-   marshal/unmarshal; produce/fetch/fetch_batch/metadata handlers.
-5. **Consumer groups** — `GroupCoordinator` with `sync.RWMutex`; join/leave
-   trigger round-robin rebalance across sorted member IDs; per-group committed
-   offsets; server-assigned member IDs (`member-0`, `member-1`, …).
-6. **Replication (stretch)** — leader/follower replication, log compaction.
+### Authoritative sources
 
-Reference: the Rust implementation at `rust/capstone-message-queue/` is a
-complete working version — use it to check expected behavior, on-disk formats,
-and test cases, but implement in idiomatic Go from scratch.
+- [The Go Memory Model](https://go.dev/ref/mem)
+- [`context`](https://pkg.go.dev/context)
+- [`sync`](https://pkg.go.dev/sync)
+- [`sync/atomic`](https://pkg.go.dev/sync/atomic)
+- [Go blog: Pipelines and cancellation](https://go.dev/blog/pipelines)
+- [Go blog: Context](https://go.dev/blog/context)
+- [Data race detector](https://go.dev/doc/articles/race_detector)
 
-### Capstone E: Linux Container Runtime (`go/capstone-container-runtime/`)
+## Phase 5 — Runtime, Testing, and Tooling
 
-A minimal "build your own Docker" — a two-process container runtime using
-Linux namespaces, `pivot_root`, cgroups, capabilities, and seccomp. Based on
-[Linux Containers in 500 Lines of Code](https://blog.lizzie.io/linux-containers-in-500-loc.html)
-(Lizzie Dixon, C, ~570 LOC with security analysis) and
-[Build Your Own Container Using Less than 100 Lines of Go](https://www.infoq.com/articles/build-a-container-golang/)
-(Julian Friedman, Go `/proc/self/exe` re-exec pattern). Source material saved
-in `sources/diydocker.txt`.
+| # | Topic | Research target |
+| --- | --- | --- |
+| 38 | Modules, workspaces, and dependency selection | `go.mod`, `go.sum`, module paths, semantic import versioning, minimum version selection, replacement, retraction, vendoring, workspaces, proxies, checksum database, private modules, and reproducibility. |
+| 39 | Build system and portability | `go` commands, packages and targets, build cache, build constraints, file suffixes, `GOOS`/`GOARCH`, cross-compilation, cgo interaction, linking, embedding, generation, and reproducible build metadata. |
+| 40 | Allocation and escape analysis | Stack and heap decisions, escape analysis, inlining interaction, slice and map allocation, interface boxing, closures, allocation diagnostics, object lifetime, and optimization instability. |
+| 41 | Scheduler and goroutine stacks | G-M-P scheduling, work stealing, network poller, syscalls, blocking, preemption, `GOMAXPROCS`, stack growth and shrinking, cgo transitions, and scheduler tracing. |
+| 42 | Garbage collection | Tracing, concurrent mark and sweep, write barriers, pacing, roots, heap goals, memory limits, finalizers, cleanup APIs for the target release, pools, retention, and latency/throughput tradeoffs. |
+| 43 | Unit tests, subtests, and examples | `testing`, table-driven tests, subtests, parallel tests, cleanup, helpers, examples, test caching, package boundaries, temporary resources, determinism, and testable API design. |
+| 44 | Fuzzing and benchmarks | Native fuzz targets, seed corpora, minimization, supported inputs, persistence, benchmarks, sub-benchmarks, setup exclusion, allocation reporting, compiler effects, and representative workloads. |
+| 45 | Race detection and static analysis | `-race`, coverage limits, overhead, `go vet`, analyzers, build tags, false confidence, platform support, and combining dynamic and static evidence. |
+| 46 | Profiling, tracing, and diagnostics | `pprof`, execution traces, runtime metrics, block and mutex profiles, goroutine dumps, CPU and heap profiles, labels, production collection cost, and evidence-driven optimization. |
+| 47 | `unsafe` and cgo boundaries | `unsafe.Pointer`, `uintptr`, layout, alignment, `unsafe.Add`/`Slice`/`String`, pointer-passing rules, `runtime.KeepAlive`, cgo calls, callbacks, pinning, ownership, and portability. |
 
-Suggested phases:
+### Phase 5 completion criteria
 
-1. **Namespace config** (`namespace/`) — namespace type metadata (UTS, PID,
-   MNT, NET, IPC, USER, CGROUP), clone flag computation from types and
-   reverse-parsing, hostname generation, `/proc/self/exe` re-exec arg
-   building. Pure computation, no syscalls. Stdlib: `syscall` (CLONE_NEW*
-   constants), `fmt`.
-2. **Filesystem isolation** (`filesystem/`) — mount operation planning for
-   `pivot_root`: `MS_PRIVATE|MS_REC` remount, bind-mount rootfs, compute
-   `newRoot`/`putOld` paths, `/proc` mounting, rootfs validation (check
-   `/bin` or `/usr/bin` exists), unmount plan (`MNT_DETACH`). Stdlib:
-   `syscall` (MS_*, MNT_DETACH, SYS_PIVOT_ROOT), `os`, `path/filepath`.
-3. **Resource limits** (`cgroup/`) — cgroup v2 config (memory.max,
-   cpu.weight, pids.max, io.weight), path computation, filesystem writes
-   (mkdir + write entries), read-back, process addition (`cgroup.procs`),
-   cleanup (rmdir). Testable with `t.TempDir()` as fake cgroup root. Stdlib:
-   `os`, `strconv`, `path/filepath`.
-4. **Security policy** (`security/`) — the 28 capabilities to drop (with
-   reasons from the article: `CAP_DAC_READ_SEARCH` enables
-   `open_by_handle_at`, `CAP_MKNOD` enables device file creation, etc.),
-   retained capabilities (safe inside namespaces), seccomp filter rules
-   (chmod+setuid, CLONE_NEWUSER nesting, TIOCSTI ioctl, keyctl, ptrace,
-   NUMA ops, userfaultfd, perf_event_open). Pure data construction, no
-   syscalls. Stdlib: `syscall` (define CAP_* constants matching kernel
-   values).
-5. **Container lifecycle** (`container/` + `cmd/container/`) — wire phases
-   1–4: parse CLI flags, validate config, spawn child via
-   `os/exec.Cmd` with `SysProcAttr.Cloneflags`, parent writes
-   `/proc/<pid>/uid_map` + `/proc/<pid>/gid_map` and sets up cgroups, child
-   calls `sethostname` → `mount`/`pivot_root` → `prctl(PR_CAPBSET_DROP)` →
-   `seccomp(SECCOMP_SET_MODE_FILTER)` → `syscall.Exec`. Parent waits,
-   cleans up cgroups. Stdlib: `os/exec`, `syscall`, `flag`, `os`.
+- Explain module selection, builds, portability, and reproducibility.
+- Relate source code to escape decisions, scheduling, stack growth, and GC.
+- Design deterministic tests and representative fuzz and benchmark targets.
+- Use race, vet, profile, and trace evidence within their documented limits.
+- Isolate unsafe and foreign-code boundaries behind explicit ownership contracts.
 
-Topics exercised: `advanced/01` (syscall/unsafe), `advanced/03` (BPF
-concepts for seccomp), `fundamentals/06`–`07` (goroutines/channels for
-parent-child coordination), `fundamentals/04` (maps for cgroup config).
-Needs Linux + root for full runs; phases 1–4 are testable without
-privileges.
+### Authoritative sources
 
-### Capstone F: SDN Monitor & VLAN Manager (`go/capstone-sdn-monitor/`)
+- [Go Modules Reference](https://go.dev/ref/mod)
+- [Workspace tutorial](https://go.dev/doc/tutorial/workspaces)
+- [Command `go`](https://pkg.go.dev/cmd/go)
+- [Go build constraints](https://pkg.go.dev/cmd/go#hdr-Build_constraints)
+- [Go GC guide](https://go.dev/doc/gc-guide)
+- [Diagnostics](https://go.dev/doc/diagnostics)
+- [`testing`](https://pkg.go.dev/testing)
+- [Go fuzzing](https://go.dev/doc/security/fuzz/)
+- [Data race detector](https://go.dev/doc/articles/race_detector)
+- [`runtime/pprof`](https://pkg.go.dev/runtime/pprof)
+- [`runtime/trace`](https://pkg.go.dev/runtime/trace)
+- [cgo command documentation](https://pkg.go.dev/cmd/cgo)
+- [`unsafe`](https://pkg.go.dev/unsafe)
 
-A software-defined networking tool that creates/manages Linux bridges and
-VLANs, monitors per-VLAN traffic, and exposes topology + stats via an API:
+## Phase 6 — Idiomatic Go Patterns
 
-1. **VLAN management** — create/delete VLAN interfaces via `ioctl`/netlink,
-   assign ports (`advanced/01-raw-sockets-and-tun-tap`).
-2. **Bridge management** — create/configure Linux bridges, attach interfaces
-   via `ioctl(SIOCBRADDBR)` (`advanced/01`).
-3. **Traffic monitoring** — per-VLAN packet/byte counters via raw sockets
-   with cBPF filters (`advanced/03-cbpf-packet-filters`), flow tracking
-   with maps (`intermediate/01-generics-pool-and-cache`).
-4. **Topology discovery** — parse LLDP frames for neighbor discovery, build
-   adjacency graph (`fundamentals/03-structs-pointers-and-packet-headers`).
-5. **REST/WebSocket API** — real-time VLAN stats and topology view
-   (`fundamentals/11-json-rest-rpc-api`,
-   `intermediate/03-websockets-and-chat-server`).
-6. **CLI** — create/delete/list VLANs, show bridge topology, start
-   monitoring daemon.
+Study this phase after the language, library, concurrency, and tooling phases.
+Focus on patterns that arise from Go's zero values, structural interfaces,
+composition, functions, explicit errors, and concurrency model.
 
-Needs raw-socket/netlink privileges.
+| # | Topic | Research target |
+| --- | --- | --- |
+| 48 | Zero-value APIs, constructors, and functional options | Useful zero values, validation, unexported fields, constructor necessity, option functions, defaults, option errors, configuration structs, discoverability, compatibility, and avoiding needless builders. |
+| 49 | Small interfaces and composition roots | Consumer-owned interfaces, capability interfaces, implicit satisfaction, concrete returns, manual dependency injection, composition roots, test fakes, lifecycle ownership, and avoiding service locators or interface pollution. |
+| 50 | Embedding, adapters, decorators, and middleware | Structural adaptation, promoted methods, explicit forwarding, wrappers, HTTP middleware, ordering, identity, optional capabilities, error behavior, and avoiding inheritance-style embedding. |
+| 51 | Error API design | Stable error contracts, wrapping, matching, typed details, operation and resource context, partial success, retries, logging ownership, transport translation, and compatibility. |
+| 52 | Context and concurrent API design | Context-first signatures, cancellation ownership, synchronous versus asynchronous APIs, goroutine lifetime, channel ownership, result and error delivery, backpressure, and shutdown contracts. |
+| 53 | Generics, interfaces, reflection, or generation | Choosing compile-time constraints, runtime polymorphism, metadata-driven behavior, or generated code based on operations, type safety, performance, binary size, tooling, and maintenance. |
+| 54 | Go-specific anti-patterns | Typed-nil errors, copied mutexes, goroutine leaks, unbounded concurrency, forgotten cancellation, premature interfaces, package globals, panic for routine errors, ignored close failures, overuse of reflection or `unsafe`, and Java-style API design. |
+
+### Phase 6 completion criteria
+
+- Design APIs that are useful at their zero value or require construction for a
+  stated invariant.
+- Keep interfaces small, consumer-owned, and behavior-oriented.
+- Make error, context, goroutine, channel, and resource ownership explicit.
+- Choose generics, interfaces, reflection, and generation deliberately.
+- Recognize non-idiomatic patterns imported from class-oriented languages.
+
+### Authoritative sources
+
+- [Effective Go](https://go.dev/doc/effective_go)
+- [Go Code Review Comments](https://go.dev/wiki/CodeReviewComments)
+- [Go blog: Package names](https://go.dev/blog/package-names)
+- [Go blog: Organizing Go code](https://go.dev/blog/organizing-go-code)
+- [Go blog: JSON and Go](https://go.dev/blog/json)
+- [Go blog: First-class functions in Go](https://go.dev/blog/functions-codewalk)
+
+## Capstone-driven learning
+
+Capstones are not graduation projects that must wait until the roadmap is
+complete. Start one after the first phase and evolve it while researching later
+phases.
+
+The current capstones are:
+
+- [Distributed message queue](./capstone-message-queue/)
+- [Linux container runtime](./capstone-container-runtime/)
+
+Use the phases incrementally:
+
+1. Apply language semantics to domain types, errors, configuration, and package
+   boundaries.
+2. Apply data and generic concepts to storage, indexing, messages, and reusable
+   components.
+3. Add standard-library I/O, encoding, networking, persistence, and observability.
+4. Add explicit concurrency ownership, cancellation, bounds, and shutdown.
+5. Test, fuzz, race-check, profile, trace, and inspect runtime behavior.
+6. Refactor toward idiomatic APIs only after concrete usage reveals the needed
+   abstractions.
+
+Keep system-design decisions in the capstone documentation or the system-design
+module. Keep the language roadmap focused on how Go expresses and implements
+those decisions.
+
+## Suggested research method
+
+For each topic:
+
+1. Start with the Go specification or standard-library contract.
+2. Check the module's language version and relevant Go release notes.
+3. Write the smallest experiment needed to probe a language or API boundary.
+4. Apply the concept to the active capstone when it naturally belongs there.
+5. Capture conclusions, invariants, and tradeoffs in your own words.
